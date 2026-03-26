@@ -1666,6 +1666,47 @@ padding-right:24px}
     </div>
   </div>
   <div id="notes-container"></div>
+  <div id="notes-editor-view" class="note-editor-screen">
+    <div class="note-editor-top">
+      <div class="note-editor-meta">
+        <span id="note-editor-status">مسودة جديدة</span>
+        <span id="note-editor-date">الآن</span>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-ghost" onclick="closeNoteEditor()">← رجوع</button>
+        <button class="btn btn-gold" onclick="saveNote()">💾 حفظ التعديلات</button>
+      </div>
+    </div>
+    <div class="note-editor-card">
+      <input id="note-title-input" class="note-title-input" type="text" placeholder="عنوان النوت...">
+      <div class="note-toolbar">
+        <button class="btn btn-ghost" onclick="execNoteCommand('bold')"><b>B</b></button>
+        <button class="btn btn-ghost" onclick="execNoteCommand('italic')"><i>I</i></button>
+        <button class="btn btn-ghost" onclick="execNoteCommand('underline')"><u>U</u></button>
+        <button class="btn btn-ghost" onclick="execNoteCommand('strikeThrough')"><s>S</s></button>
+        <button class="btn btn-ghost" onclick="execNoteCommand('insertUnorderedList')">• قائمة</button>
+        <button class="btn btn-ghost" onclick="execNoteCommand('insertOrderedList')">1. قائمة</button>
+        <select id="note-font-size" onchange="applyNoteFontSize()">
+          <option value="14">خط 14</option>
+          <option value="16" selected>خط 16</option>
+          <option value="18">خط 18</option>
+          <option value="20">خط 20</option>
+          <option value="24">خط 24</option>
+        </select>
+        <select id="note-paper-style" onchange="applyNotePaperStyle()">
+          <option value="plain">صفحة سادة</option>
+          <option value="lined">ورقة بخطوط</option>
+        </select>
+        <button class="btn btn-ghost" onclick="triggerNoteImage()">🖼️ صورة</button>
+        <button class="btn btn-ghost" onclick="triggerNoteAudio()">🎙️ صوت</button>
+        <button class="btn btn-ghost" onclick="clearCurrentNoteBody()">🧹 تنظيف المحتوى</button>
+      </div>
+      <div class="note-mentions" id="note-mentions"></div>
+      <div id="note-editor-input" class="note-editor-area note-paper-plain" contenteditable="true" spellcheck="true"></div>
+      <input id="note-image-input" type="file" accept="image/*" style="display:none" onchange="handleNoteFile(event,'image')">
+      <input id="note-audio-input" type="file" accept="audio/*" style="display:none" onchange="handleNoteFile(event,'audio')">
+    </div>
+  </div>
 </div>
 
 <!-- SETTINGS -->
@@ -1845,6 +1886,7 @@ let onboardingStep=0;
 let onboardingGender='';
 let customStreakEnabled=true;
 let currentCourseLogId=null;
+let activeNoteId=null;
 const NOTE_MENTIONS=['الصلاة','الكورسات','الكلية','الجيم','التعافي','المكافآت','الإعدادات','الرئيسية','المسارات'];
 
 // ═══════════════════════ STORAGE ═══════════════════════
@@ -3518,6 +3560,218 @@ function showToast(msg){
   let t=document.getElementById('mq-toast');
   if(!t){t=document.createElement('div');t.id='mq-toast';t.style.cssText='position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);border-radius:14px;padding:10px 20px;font-size:14px;font-weight:700;color:var(--text);z-index:9999;max-width:90%;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.4);transition:opacity .3s;white-space:nowrap';document.body.appendChild(t);}
   t.textContent=msg;t.style.opacity='1';clearTimeout(t._to);t._to=setTimeout(()=>{t.style.opacity='0'},2800);
+}
+
+function normalizeNoteRecord(note){
+  if(!note||typeof note!=='object')return null;
+  const createdAt=note.createdAt||Date.now();
+  const html=note.html||escapeHtml(note.text||'').replace(/\n/g,'<br>');
+  return{
+    id:note.id||uid(),
+    title:note.title||'',
+    html:sanitizeRichNoteHtml(html),
+    createdAt,
+    updatedAt:note.updatedAt||createdAt,
+    paper:note.paper==='lined'?'lined':'plain',
+    fontSize:Math.max(14,Math.min(24,safeInt(note.fontSize,16)))
+  };
+}
+function getNotesData(){
+  if(!Array.isArray(D.notes))D.notes=[];
+  D.notes=D.notes.map(normalizeNoteRecord).filter(Boolean);
+  return D.notes;
+}
+function sanitizeRichNoteHtml(html=''){
+  const allowed=new Set(['DIV','P','BR','B','STRONG','I','EM','U','S','STRIKE','SPAN','IMG','AUDIO','SOURCE','UL','OL','LI']);
+  const parser=new DOMParser();
+  const doc=parser.parseFromString(`<div>${html}</div>`,'text/html');
+  const cleanNode=node=>{
+    if(node.nodeType===Node.TEXT_NODE)return document.createTextNode(node.nodeValue||'');
+    if(node.nodeType!==Node.ELEMENT_NODE)return document.createDocumentFragment();
+    const tag=node.tagName.toUpperCase();
+    if(!allowed.has(tag)){
+      const frag=document.createDocumentFragment();
+      Array.from(node.childNodes).forEach(child=>frag.appendChild(cleanNode(child)));
+      return frag;
+    }
+    const el=document.createElement(tag.toLowerCase());
+    if(tag==='SPAN'&&node.classList.contains('mention')){
+      el.className='mention';
+      if(node.dataset.mention)el.dataset.mention=node.dataset.mention;
+    }
+    if(tag==='IMG'&&node.getAttribute('src')){el.setAttribute('src',node.getAttribute('src'));el.setAttribute('alt',node.getAttribute('alt')||'');}
+    if(tag==='AUDIO'){el.setAttribute('controls','controls');}
+    if(tag==='SOURCE'&&node.getAttribute('src')){el.setAttribute('src',node.getAttribute('src'));if(node.getAttribute('type'))el.setAttribute('type',node.getAttribute('type'));}
+    Array.from(node.childNodes).forEach(child=>el.appendChild(cleanNode(child)));
+    return el;
+  };
+  const out=document.createElement('div');
+  Array.from(doc.body.firstChild?.childNodes||[]).forEach(child=>out.appendChild(cleanNode(child)));
+  return out.innerHTML.trim();
+}
+function notePlainText(html=''){
+  const tmp=document.createElement('div');
+  tmp.innerHTML=sanitizeRichNoteHtml(html);
+  return (tmp.textContent||'').trim();
+}
+function renderNoteMentions(){
+  const wrap=document.getElementById('note-mentions');
+  if(!wrap)return;
+  wrap.innerHTML=NOTE_MENTIONS.map(label=>`<button class="day-chip" onclick="insertMention('${label}')">@${label}</button>`).join('');
+}
+function showNotesHome(){
+  const editor=document.getElementById('notes-editor-view');
+  const home=document.getElementById('notes-container');
+  if(editor)editor.classList.remove('show');
+  if(home)home.style.display='grid';
+  activeNoteId=null;
+}
+function openNoteEditor(noteId=null){
+  const notes=getNotesData();
+  const note=noteId?notes.find(n=>n.id===noteId):null;
+  activeNoteId=note?.id||null;
+  const editor=document.getElementById('notes-editor-view');
+  const title=document.getElementById('note-title-input');
+  const area=document.getElementById('note-editor-input');
+  const status=document.getElementById('note-editor-status');
+  const date=document.getElementById('note-editor-date');
+  const paper=document.getElementById('note-paper-style');
+  const font=document.getElementById('note-font-size');
+  const home=document.getElementById('notes-container');
+  if(title)title.value=note?.title||'';
+  if(area){area.innerHTML=note?.html||'';area.style.fontSize=(note?.fontSize||16)+'px';}
+  if(status)status.textContent=note?'جار تعديل ملاحظة محفوظة':'مسودة جديدة';
+  if(date)date.textContent=note?fmtDateTime(note.updatedAt||note.createdAt):fmtDateTime(Date.now());
+  if(paper)paper.value=note?.paper||'plain';
+  if(font)font.value=String(note?.fontSize||16);
+  applyNotePaperStyle();
+  renderNoteMentions();
+  if(home)home.style.display='none';
+  if(editor)editor.classList.add('show');
+  setTimeout(()=>{if(area)area.focus();},60);
+}
+function closeNoteEditor(){
+  showNotesHome();
+}
+function execNoteCommand(cmd){
+  const area=document.getElementById('note-editor-input');
+  if(!area)return;
+  area.focus();
+  document.execCommand(cmd,false,null);
+}
+function insertHtmlAtCaret(html){
+  const sel=window.getSelection();
+  if(!sel||!sel.rangeCount)return;
+  const range=sel.getRangeAt(0);
+  range.deleteContents();
+  const temp=document.createElement('div');
+  temp.innerHTML=html;
+  const frag=document.createDocumentFragment();
+  let node,lastNode;
+  while((node=temp.firstChild)){lastNode=frag.appendChild(node);}
+  range.insertNode(frag);
+  if(lastNode){
+    const newRange=document.createRange();
+    newRange.setStartAfter(lastNode);
+    newRange.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(newRange);
+  }
+}
+function insertMention(label){
+  const area=document.getElementById('note-editor-input');
+  if(!area)return;
+  area.focus();
+  insertHtmlAtCaret(`<span class="mention" data-mention="${escapeAttr(label)}">@${escapeHtml(label)}</span>&nbsp;`);
+}
+function applyNoteFontSize(){
+  const area=document.getElementById('note-editor-input');
+  const sel=document.getElementById('note-font-size');
+  if(area&&sel)area.style.fontSize=`${safeInt(sel.value,16)}px`;
+}
+function applyNotePaperStyle(){
+  const area=document.getElementById('note-editor-input');
+  const sel=document.getElementById('note-paper-style');
+  if(!area||!sel)return;
+  area.classList.remove('note-paper-plain','note-paper-lined');
+  area.classList.add(sel.value==='lined'?'note-paper-lined':'note-paper-plain');
+}
+function triggerNoteImage(){const i=document.getElementById('note-image-input');if(i)i.click();}
+function triggerNoteAudio(){const i=document.getElementById('note-audio-input');if(i)i.click();}
+function handleNoteFile(event,type){
+  const file=event.target.files?.[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    const area=document.getElementById('note-editor-input');
+    if(!area)return;
+    area.focus();
+    if(type==='image')insertHtmlAtCaret(`<div><img src="${reader.result}" alt="note-image"></div>`);
+    else insertHtmlAtCaret(`<div><audio controls src="${reader.result}"></audio></div>`);
+  };
+  reader.readAsDataURL(file);
+  event.target.value='';
+}
+function clearCurrentNoteBody(){
+  const area=document.getElementById('note-editor-input');
+  if(area)area.innerHTML='';
+}
+function saveNote(){
+  const title=document.getElementById('note-title-input');
+  const area=document.getElementById('note-editor-input');
+  const paper=document.getElementById('note-paper-style');
+  const font=document.getElementById('note-font-size');
+  if(!area)return;
+  const html=sanitizeRichNoteHtml(area.innerHTML);
+  const plain=notePlainText(html);
+  const noteTitle=(title?.value||'').trim()||plain.slice(0,50)||'ملاحظة بدون عنوان';
+  if(!plain&&!html.includes('<img')&&!html.includes('<audio')){showToast('اكتب محتوى النوت أولًا');return;}
+  rememberUndo(activeNoteId?'التراجع عن تعديل نوت':'التراجع عن إضافة نوت');
+  const notes=getNotesData();
+  const now=Date.now();
+  const payload={id:activeNoteId||uid(),title:noteTitle,html,createdAt:now,updatedAt:now,paper:paper?.value==='lined'?'lined':'plain',fontSize:safeInt(font?.value,16)};
+  if(activeNoteId){
+    const old=notes.find(n=>n.id===activeNoteId);
+    if(old)payload.createdAt=old.createdAt||now;
+    const idx=notes.findIndex(n=>n.id===activeNoteId);
+    if(idx!==-1)notes[idx]=payload;else notes.unshift(payload);
+  }else notes.unshift(payload);
+  D.notes=notes;
+  save();
+  activeNoteId=payload.id;
+  renderNotes();
+  renderUndoCard();
+  showToast('تم حفظ النوت');
+}
+function deleteNote(id){
+  const notes=getNotesData();
+  const note=notes.find(n=>n.id===id);
+  if(!note)return;
+  if(!confirm('تمسح النوت دي؟'))return;
+  rememberUndo('استرجاع النوت المحذوفة');
+  D.notes=notes.filter(n=>n.id!==id);
+  if(activeNoteId===id)activeNoteId=null;
+  save();
+  renderNotes();
+  renderUndoCard();
+}
+function renderNotes(){
+  const container=document.getElementById('notes-container');
+  const cnt=document.getElementById('notes-cnt');
+  const notes=getNotesData().sort((a,b)=>(b.updatedAt||b.createdAt||0)-(a.updatedAt||a.createdAt||0));
+  if(cnt)cnt.textContent=`${fmtNum(notes.length)} ملاحظة`;
+  renderNoteMentions();
+  if(!container)return;
+  container.className='notes-grid';
+  if(!notes.length){
+    container.innerHTML=`<div class="notes-card"><div class="notes-home-actions"><button class="btn btn-gold" onclick="openNoteEditor()">✍️ ابدأ أول نوت</button></div></div><div class="note-empty">لا توجد نوتات بعد. افتح نوت جديدة وابدأ تدوين يومك أو أفكارك أو خططك.</div>`;
+    return;
+  }
+  container.innerHTML=`<div class="notes-card"><div class="notes-home-actions"><button class="btn btn-gold" onclick="openNoteEditor()">✍️ نوت جديدة</button><button class="btn btn-ghost" onclick="renderNotes()">🔄 تحديث</button></div></div>`+notes.map(note=>{
+    const preview=safeText(notePlainText(note.html).slice(0,180)||'بدون محتوى نصي');
+    return`<div class="note-item reveal"><div class="note-head"><div><div class="note-title">${safeText(note.title||'ملاحظة')}</div><div class="note-date">🗓️ ${fmtDateTime(note.updatedAt||note.createdAt)}</div></div><div class="badge ${note.paper==='lined'?'bb':'bg'}">${note.paper==='lined'?'ورقة بخطوط':'صفحة سادة'}</div></div><div class="note-preview">${preview}${notePlainText(note.html).length>180?'...':''}</div><div class="note-card-actions"><button class="btn btn-gold" style="width:auto;padding:10px 14px" onclick="openNoteEditor('${note.id}')">📝 افتح</button><button class="btn btn-ghost" style="width:auto;padding:10px 14px" onclick="openNoteEditor('${note.id}')">✏️ تعديل</button><button class="btn btn-red" style="width:auto;padding:10px 14px" onclick="deleteNote('${note.id}')">🗑️ حذف</button></div></div>`;
+  }).join('');
+  requestAnimationFrame(initInteractiveUI);
 }
 
 function togglePassVis(){
