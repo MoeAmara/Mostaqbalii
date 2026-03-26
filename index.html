@@ -116,10 +116,74 @@ body{font-family:'Tajawal',sans-serif;background:transparent;color:var(--text);m
 .firebase-warn{background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--red);text-align:center;line-height:1.6;display:none}
 
 /* APP */
-#app{display:none;padding-bottom:0}
+#app{display:none;padding-bottom:0;padding-top:78px}
+
+/* ONBOARDING */
+#onboarding-screen{position:fixed;inset:0;z-index:1200;display:none;background:
+  radial-gradient(circle at top right, rgba(94,174,255,.18), transparent 24%),
+  radial-gradient(circle at top left, rgba(245,200,66,.16), transparent 18%),
+  linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 55%,var(--bg-3) 100%);
+  overflow-y:auto;padding:22px 18px 34px}
+.onb-wrap{max-width:430px;margin:0 auto}
+.onb-hero{padding:22px;border-radius:28px;background:linear-gradient(180deg,rgba(18,27,49,.82),rgba(11,17,34,.76));border:1px solid var(--glass-border);box-shadow:0 24px 54px rgba(0,0,0,.28)}
+.onb-kicker{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-size:11px;font-weight:800}
+.onb-title{font-size:30px;font-weight:900;line-height:1.2;margin:14px 0 10px}
+.onb-sub{font-size:13px;color:var(--dim);line-height:1.9}
+.onb-grid{display:grid;gap:12px;margin-top:14px}
+.onb-card{padding:16px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border)}
+.onb-card strong{display:block;font-size:15px;margin-bottom:6px}
+.onb-step{display:none;margin-top:14px}
+.onb-step.active{display:block;animation:pgIn .28s ease}
+.onb-progress{display:flex;gap:8px;margin:16px 0}
+.onb-dot{flex:1;height:6px;border-radius:999px;background:rgba(255,255,255,.08)}
+.onb-dot.active{background:linear-gradient(90deg,var(--gold),var(--orange))}
+.seg-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.seg-btn{padding:12px;border-radius:16px;border:1px solid var(--glass-border);background:rgba(255,255,255,.04);color:var(--text);font-weight:800;cursor:pointer}
+.seg-btn.active{background:var(--gold-dim);border-color:rgba(245,200,66,.32);color:var(--gold)}
+.chip-grid{display:flex;flex-wrap:wrap;gap:8px}
+.module-chip{padding:9px 12px;border-radius:999px;border:1px solid var(--glass-border);background:rgba(255,255,255,.04);color:var(--dim);font-size:13px;font-weight:800;cursor:pointer}
+.module-chip.active{background:var(--gold-dim);border-color:rgba(245,200,66,.35);color:var(--gold)}
+.suggest-list{display:grid;gap:10px;margin-top:8px}
+.suggest-item{padding:12px 14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border)}
+.suggest-item b{display:block;font-size:14px;margin-bottom:3px}
+.custom-mini-card{padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border)}
+.onb-actions{display:flex;gap:10px;margin-top:16px}
+.onb-actions .btn{flex:1;justify-content:center}
+.onb-inputs{display:grid;gap:12px;margin-top:14px}
+.onb-field{display:grid;gap:6px}
+.onb-field label{font-size:12px;font-weight:800;color:var(--dim)}
+.onb-note{font-size:12px;color:var(--dim);line-height:1.8}
+.onb-inline{display:flex;gap:10px}
+.onb-inline .onb-field{flex:1}
+.onb-suggestions{display:grid;gap:10px;margin-top:14px}
+.onb-suggest-btn{padding:14px 15px;border-radius:18px;border:1px solid var(--glass-border);background:rgba(255,255,255,.04);color:var(--text);text-align:right;font-family:'Tajawal';cursor:pointer}
+.onb-suggest-btn strong{display:block;font-size:14px;margin-bottom:4px}
+.onb-suggest-btn span{display:block;font-size:12px;color:var(--dim);line-height:1.7}
+.onb-helper{margin-top:12px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border);font-size:12px;color:var(--dim);line-height:1.8}
+
+/* CUSTOM GOALS */
+.custom-card{background:var(--card);border:1px solid var(--glass-border);border-radius:22px;padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
+.custom-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
+.custom-icon{font-size:34px;line-height:1}
+.custom-name{font-size:16px;font-weight:900}
+.custom-desc{font-size:12px;color:var(--dim);margin-top:4px;line-height:1.7}
+.custom-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.custom-check{margin-top:12px;display:flex;gap:10px}
+.custom-check .btn{flex:1;justify-content:center}
+.custom-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.custom-points{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--gold)}
+.custom-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.custom-meta-box{padding:10px 8px;border-radius:14px;background:var(--surface2);border:1px solid var(--border);text-align:center}
+.custom-meta-box b{display:block;font-family:'Space Grotesk';font-size:18px}
+.custom-meta-box span{font-size:11px;color:var(--dim)}
+.custom-empty{padding:28px 18px;text-align:center;color:var(--dim)}
+.mini-switch{width:48px;height:26px;background:var(--surface);border-radius:999px;position:relative;border:1px solid var(--border);cursor:pointer;transition:all .2s}
+.mini-switch::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:all .2s}
+.mini-switch.on{background:var(--green);border-color:var(--green)}
+.mini-switch.on::after{transform:translateX(22px)}
 
 /* HAMBURGER FAB */
-#menu-fab{position:fixed;top:18px;left:16px;z-index:230;width:48px;height:48px;border-radius:16px;background:rgba(18,27,49,.78);border:1px solid var(--glass-border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 10px 30px rgba(0,0,0,.24);transition:all .2s;color:var(--text);backdrop-filter:blur(16px) saturate(160%)}
+#menu-fab{position:fixed;top:14px;left:12px;z-index:230;width:44px;height:44px;border-radius:15px;background:rgba(18,27,49,.78);border:1px solid var(--glass-border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 10px 30px rgba(0,0,0,.24);transition:all .2s;color:var(--text);backdrop-filter:blur(16px) saturate(160%)}
 #menu-fab:active{transform:scale(.93)}
 #menu-fab.open{background:rgba(255,107,107,.14);border-color:rgba(255,107,107,.35);box-shadow:0 10px 28px rgba(255,107,107,.18);color:var(--red)}
 
@@ -144,7 +208,7 @@ body{font-family:'Tajawal',sans-serif;background:transparent;color:var(--text);m
 .page{display:none;padding:0 16px 30px;animation:pgIn .32s cubic-bezier(.25,.86,.4,1)}
 .page.active{display:block}
 @keyframes pgIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.ph{padding:20px 0 14px;display:flex;align-items:center;justify-content:space-between}
+.ph{padding:20px 0 14px 54px;display:flex;align-items:center;justify-content:space-between}
 .pt{font-size:28px;font-weight:900;letter-spacing:-.5px;background:linear-gradient(135deg,var(--text),rgba(228,233,245,.7));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
 /* CARDS */
@@ -737,8 +801,10 @@ body::after{
   50%{transform:translateY(-3px) scale(1.005)}
 }
 @media (max-width:390px){
+  #app{padding-top:82px}
   .hero-title{font-size:26px}
-  .hero-actions{grid-template-columns:1fr}
+  .onb-title{font-size:26px}
+  .hero-actions{grid-template-columns:1fr 1fr}
   .hero-kpis{grid-template-columns:1fr}
 }
 </style>
@@ -867,6 +933,104 @@ body::after{
     </div>
 
     <button class="auth-guest" onclick="authGuest()">🚶 دخول بدون حساب</button>
+  </div>
+</div>
+
+<!-- ONBOARDING -->
+<div id="onboarding-screen">
+  <div class="onb-wrap">
+    <div class="onb-hero">
+      <div class="onb-kicker">✨ تجربة شخصية من أول دقيقة</div>
+      <div class="onb-progress">
+        <div class="onb-dot active" id="onb-dot-0"></div>
+        <div class="onb-dot" id="onb-dot-1"></div>
+        <div class="onb-dot" id="onb-dot-2"></div>
+      </div>
+
+      <div class="onb-step active" id="onb-step-0">
+        <div class="onb-title">خلّينا نجهز مستقبلي على مقاسك</div>
+        <div class="onb-sub">التطبيق ده معمول عشان يبقى صاحبك في الالتزام اليومي: يذكرك، يشجعك، يجمع تقدمك في مكان واحد، ويحوّل العادات والمهام لنظام واضح ومحبب.</div>
+        <div class="onb-grid">
+          <div class="onb-card">
+            <strong>لوحة واحدة لكل حاجة</strong>
+            تتابع الصلاة، الكورسات، الكلية، الشغل، التعافي، أو أي مسار جديد أنت تحدده بنفسك.
+          </div>
+          <div class="onb-card">
+            <strong>نقاط واستريك ومكافآت</strong>
+            كل تقدم له معنى، وكل يوم التزام يبان قدامك بشكل مشجع وواضح.
+          </div>
+          <div class="onb-card">
+            <strong>تنبيهات ذكية باسمك</strong>
+            التذكير يوصلك بصياغة شخصية، كأن التطبيق صاحبك فعلًا وبيفكرك في الوقت المناسب.
+          </div>
+        </div>
+        <div class="onb-actions">
+          <button class="btn btn-gold" onclick="setOnboardingStep(1)">يلا نبدأ</button>
+        </div>
+      </div>
+
+      <div class="onb-step" id="onb-step-1">
+        <div class="onb-title">قولّي عنك شوية</div>
+        <div class="onb-sub">البيانات دي هتساعدني أخاطبك بشكل ألطف، وأظبط لك الرسائل والتوصيات والتنبيهات بطريقة تناسبك.</div>
+        <div class="onb-inputs">
+          <div class="onb-field">
+            <label>اسمك</label>
+            <input type="text" id="onb-name" class="grade-input" placeholder="مثال: محمد">
+          </div>
+          <div class="onb-inline">
+            <div class="onb-field">
+              <label>السن</label>
+              <input type="number" id="onb-age" class="grade-input" min="10" max="99" placeholder="22">
+            </div>
+            <div class="onb-field">
+              <label>النوع</label>
+              <div class="seg-row">
+                <button class="seg-btn" id="gender-male" onclick="selectOnbGender('male')">ذكر</button>
+                <button class="seg-btn" id="gender-female" onclick="selectOnbGender('female')">أنثى</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="onb-note">تقدر تعدّل البيانات دي بعدين من الإعدادات، لكن خلّينا نبدأ بيها عشان التجربة تكون أهدى من أول مرة.</div>
+        <div class="onb-actions">
+          <button class="btn btn-ghost" onclick="setOnboardingStep(0)">رجوع</button>
+          <button class="btn btn-gold" onclick="setOnboardingStep(2)">التالي</button>
+        </div>
+      </div>
+
+      <div class="onb-step" id="onb-step-2">
+        <div class="onb-title">اختار المسارات اللي تهمك</div>
+        <div class="onb-sub">كل الأقسام الحالية هتفضل موجودة، لكن أنت تحدد إيه اللي يظهر لك من البداية. ولو محتاج مسار جديد للشغل أو مشروع خاص، ضيفه من دلوقتي أو لاحقًا.</div>
+        <div class="chip-grid" id="onb-modules"></div>
+
+        <div class="onb-suggestions">
+          <button class="onb-suggest-btn" onclick="applyOnboardingSuggestion('student')">
+            <strong>🎓 طالب جامعة</strong>
+            <span>الصلاة + الكلية + الكورسات + المكافآت + لو عايز الجيم أو التعافي.</span>
+          </button>
+          <button class="onb-suggest-btn" onclick="applyOnboardingSuggestion('worker')">
+            <strong>💼 شغل ومشاريع</strong>
+            <span>الكورسات + المسارات المرنة + المكافآت، من غير كلية أو جيم لو مش محتاجهم.</span>
+          </button>
+          <button class="onb-suggest-btn" onclick="applyOnboardingSuggestion('focus')">
+            <strong>🧠 تركيز وتعافي</strong>
+            <span>الصلاة + التعافي + مسار جديد للعادات اليومية والتركيز.</span>
+          </button>
+        </div>
+
+        <div class="custom-mini-card" style="margin-top:14px">
+          <div style="font-weight:900;margin-bottom:6px">مسار إضافي تحب تبدأ به؟</div>
+          <div class="onb-note">مثال: شغلي، اللغات، القراءة، البيع، التسويق، مشروع التخرج</div>
+          <input type="text" id="onb-custom-goal" class="grade-input" placeholder="اكتب اسم المسار اللي على مزاجك" style="margin-top:10px">
+        </div>
+
+        <div class="onb-helper">كل اللي بتختاره هنا هدفه يخفف الزحمة ويخلي الشاشة الرئيسية مناسبة لك من أول استخدام. تقدر بعدين تضيف أو تخفي أي مسار وقت ما تحب.</div>
+        <div class="onb-actions">
+          <button class="btn btn-ghost" onclick="setOnboardingStep(1)">رجوع</button>
+          <button class="btn btn-gold" onclick="finishOnboarding()">ابدأ رحلتك</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1147,6 +1311,43 @@ body::after{
   </div>
 </div>
 
+<!-- ADD CUSTOM GOAL DRAWER -->
+<div class="overlay" id="custom-overlay" onclick="closeOverlayIfBg(event,'custom-overlay')">
+  <div class="drawer">
+    <div class="drawer-handle"></div>
+    <div class="drawer-title" id="custom-drawer-title">🧩 إضافة مسار جديد</div>
+    <div class="field"><label>اسم المسار *</label><input type="text" id="f-xname" placeholder="مثال: الشغل / القراءة / مشروعي" maxlength="50"></div>
+    <div class="field"><label>وصف مختصر</label><input type="text" id="f-xdesc" placeholder="ماذا تريد تتبعه في هذا المسار؟" maxlength="90"></div>
+    <div class="field"><label>أيقونة</label>
+      <div class="emoji-pick" id="custom-emoji-pick">
+        <button class="ep-btn selected" onclick="pickEmoji('custom','🧩',this)">🧩</button>
+        <button class="ep-btn" onclick="pickEmoji('custom','💼',this)">💼</button>
+        <button class="ep-btn" onclick="pickEmoji('custom','📈',this)">📈</button>
+        <button class="ep-btn" onclick="pickEmoji('custom','🛠️',this)">🛠️</button>
+        <button class="ep-btn" onclick="pickEmoji('custom','📖',this)">📖</button>
+        <button class="ep-btn" onclick="pickEmoji('custom','🧠',this)">🧠</button>
+        <button class="ep-btn" onclick="pickEmoji('custom','🚀',this)">🚀</button>
+        <button class="ep-btn-plus" onclick="toggleCustomEmoji('custom')" title="أضف إيموجي من الكيبورد">+</button>
+      </div>
+      <div class="custom-emoji-row" id="custom-custom-row">
+        <input class="custom-emoji-input" id="custom-custom-input" type="text" placeholder="✍️ اكتب أو الصق إيموجي هنا" maxlength="4" oninput="applyCustomEmoji('custom',this.value)">
+      </div>
+    </div>
+    <div class="field"><label>نقاط كل إنجاز</label><input type="number" id="f-xpts" class="grade-input" min="1" max="500" placeholder="20"></div>
+    <div class="field">
+      <label>هل تريد استريك يومي؟</label>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:6px">
+        <div class="mini-switch on" id="custom-streak-tog" onclick="toggleCustomStreak()"></div>
+        <span id="custom-streak-lbl" style="font-size:13px;color:var(--dim)">مفعّل</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px;padding-bottom:16px">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeOverlay('custom-overlay')">إلغاء</button>
+      <button class="btn btn-gold" style="flex:2" onclick="saveCustomGoal()">💾 حفظ</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══════════════ APP ══════════════ -->
 <div id="app">
 
@@ -1331,6 +1532,18 @@ body::after{
   </div>
 </div>
 
+<!-- CUSTOM -->
+<div id="page-custom" class="page">
+  <div class="ph"><div class="pt">🧩 مساراتي</div><div class="badge bpu" id="custom-cnt">0 مسار</div></div>
+  <div class="card" style="border-color:rgba(185,142,248,.22);background:linear-gradient(135deg,var(--purple-dim),transparent);margin-bottom:14px">
+    <div style="font-size:13px;line-height:1.9;color:var(--dim)">هنا تقدر تعمل أي مسار على مزاجك: شغل، قراءة، مشروع، مبيعات، لغة، أو أي عادة تحب تتابعها بنقاط واستريك خاص بيها.</div>
+  </div>
+  <div id="custom-container"></div>
+  <div id="custom-fab" class="fab" style="display:none">
+    <button class="fab-btn" onclick="openCustomDrawer()">➕ إضافة مسار</button>
+  </div>
+</div>
+
 <!-- SETTINGS -->
 <div id="page-settings" class="page">
   <div class="ph"><div class="pt">⚙️ الإعدادات</div></div>
@@ -1343,6 +1556,10 @@ body::after{
   <div class="toggle-row">
     <div><div style="font-weight:700">🔒 تغيير الرقم السري</div><div style="font-size:12px;color:var(--dim)">4 أرقام</div></div>
     <button class="btn btn-ghost" style="font-size:13px;padding:8px 14px" onclick="changePin()">تغيير</button>
+  </div>
+  <div class="toggle-row">
+    <div><div style="font-weight:700">🪪 بياناتي ومساراتي</div><div style="font-size:12px;color:var(--dim)">الاسم والسن والموديولات الظاهرة</div></div>
+    <button class="btn btn-ghost" style="font-size:13px;padding:8px 14px" onclick="reopenOnboarding()">تعديل</button>
   </div>
   <div class="sl-label">التنبيهات</div>
   <div class="toggle-row">
@@ -1395,6 +1612,7 @@ body::after{
     <div class="nav-item" onclick="goTo('recovery')" id="nav-recovery"><span class="ni">🌱</span><span class="nl">التعافي</span></div>
     <div class="nav-divider"></div>
     <div class="nav-header-lbl">الأخرى</div>
+    <div class="nav-item" onclick="goTo('custom')" id="nav-custom"><span class="ni">🧩</span><span class="nl">مساراتي</span></div>
     <div class="nav-item" onclick="goTo('rewards')" id="nav-rewards"><span class="ni">🏆</span><span class="nl">مكافآتي</span></div>
     <div class="nav-item" onclick="goTo('settings')" id="nav-settings"><span class="ni">⚙️</span><span class="nl">الإعدادات</span></div>
   </div>
@@ -1412,6 +1630,9 @@ const DEF={
   recovery:{items:[]},
   rewards:[],
   courses:[],
+  customGoals:[],
+  profile:{name:'',age:'',gender:'',onboarded:false,dailyGreetingDate:'',dailyGreetingText:''},
+  modules:{prayer:true,courses:true,uni:true,gym:true,recovery:true,rewards:true,custom:true},
   prayerTimes:null,prayerTimesDate:null,
   location:{lat:null,lon:null,city:''},
   notif:false,
@@ -1440,13 +1661,31 @@ const REC_SUGGESTIONS=[
   {name:'التدخين',icon:'🚬'},
   {name:'المقاطع السيئة',icon:'🚫'},
 ];
+const MODULE_META={
+  prayer:{label:'الصلاة',icon:'🤲'},
+  courses:{label:'الكورسات',icon:'📚'},
+  uni:{label:'الكلية',icon:'🎓'},
+  gym:{label:'الجيم',icon:'💪'},
+  recovery:{label:'التعافي',icon:'🌱'},
+  rewards:{label:'المكافآت',icon:'🏆'},
+  custom:{label:'مساراتي',icon:'🧩'}
+};
+const GREETING_TEMPLATES=[
+  'صباح الإنجاز {name}',
+  'يوم مليان إشراق {name}',
+  'جاهز نبني يوم محترم {name}؟',
+  'النهارده يوم جديد للتقدم {name}',
+  'خطوة صغيرة النهارده تعمل فرق كبير {name}',
+  'خلّي اليوم يشهد لك {name}',
+  'يلا نكسب الجولة دي {name}'
+];
 
 let D={};
 let pinBuf='',pinStep=0,tmpPin='',gymVM=null;
 let countdownInterval=null,prayerTimersScheduled=false;
 let notificationHeartbeat=null;
-let editingCourseId=null,editingSubjId=null,editingRecId=null,editingRwdId=null;
-let picked={course:{emoji:'📚',color:'#5eaeff'},subj:{color:'#5eaeff'},rec:{emoji:'🚫'},rwd:{emoji:'🏆'}};
+let editingCourseId=null,editingSubjId=null,editingRecId=null,editingRwdId=null,editingCustomId=null;
+let picked={course:{emoji:'📚',color:'#5eaeff'},subj:{color:'#5eaeff'},rec:{emoji:'🚫'},rwd:{emoji:'🏆'},custom:{emoji:'🧩'}};
 let chipVals={midterm:0};
 let togStates={quiz:false,section:false,lab:false};
 let deferredInstallPrompt=null;
@@ -1455,6 +1694,9 @@ let db=null;
 let cloudSaveTimer=null;
 let cloudSyncInFlight=false;
 let openSubjIds=new Set();
+let onboardingStep=0;
+let onboardingGender='';
+let customStreakEnabled=true;
 
 // ═══════════════════════ STORAGE ═══════════════════════
 function getStorageKey(){
@@ -1472,8 +1714,11 @@ function normalizeDataShape(data){
   if(!normalized.courses)normalized.courses=[];
   if(!normalized.recovery||!normalized.recovery.items)normalized.recovery={items:[]};
   if(!normalized.rewards)normalized.rewards=[];
+  if(!normalized.customGoals)normalized.customGoals=[];
   if(!normalized.uni)normalized.uni=deepClone(DEF.uni);
   if(!normalized.uni.subjects)normalized.uni.subjects=[];
+  if(!normalized.profile)normalized.profile=deepClone(DEF.profile);
+  if(!normalized.modules)normalized.modules=deepClone(DEF.modules);
   if(!normalized.gym)normalized.gym=deepClone(DEF.gym);
   if(!normalized.gym.daysPerWeek)normalized.gym.daysPerWeek=4;
   if(!normalized.gym.absLimit1)normalized.gym.absLimit1=5;
@@ -1612,10 +1857,7 @@ function initInteractiveUI(){
 function setHeroGreeting(){
   const el=document.getElementById('hero-greeting');
   if(!el)return;
-  const h=new Date().getHours();
-  if(h<12)el.textContent='صباح الإنجاز';
-  else if(h<18)el.textContent='كمل بقوة';
-  else el.textContent='اقفل يومك بفوز';
+  el.textContent=getDailyGreeting();
 }
 function setupRevealMotion(){
   const els=[...document.querySelectorAll('.reveal,.card,.scard,.course-card,.reward-card,.subj-card,.rec-item,.toggle-row,.prayer-item,.next-prayer-banner,.chart-wrap')];
@@ -1693,6 +1935,10 @@ async function fireSmartNotification(title,body,tag){
     try{new Notification(title,opts);return true;}catch(__){return false;}
   }
 }
+function withFriendTone(message){
+  const name=directName();
+  return `${name}، ${message}`;
+}
 async function runNotificationChecks(){
   checkNewDay();
   checkNewRecoveryDay();
@@ -1708,7 +1954,7 @@ async function runNotificationChecks(){
       const notifyMinute=parseTime12(prayerTime)-10;
       const tag=`pray-${i}-10m`;
       if(minuteMatch(notifyMinute,now)&&!D.prayers.today[i]&&!hasSentNotification(tag,today)){
-        const sent=await fireSmartNotification(`🕌 ${prayerName} بعد 10 دقايق`,`استعد لـ ${prayerName} — الوقت ${formatTime(prayerTime)}`,tag);
+        const sent=await fireSmartNotification(`🕌 ${directName()} — ${prayerName} بعد 10 دقايق`,withFriendTone(`استعد لـ ${prayerName}، الوقت ${formatTime(prayerTime)}.`),tag);
         if(sent)markNotificationSent(tag,today);
       }
     }
@@ -1716,17 +1962,17 @@ async function runNotificationChecks(){
 
   if(D.prayers.streak>0&&doneCount<5){
     if(minuteMatch(20*60,now)&&!hasSentNotification('streak-evening',today)){
-      const sent=await fireSmartNotification('⚠️ حافظ على الاستريك',`استريكك ${D.prayers.streak} يوم، ولسه باقي ${5-doneCount} صلوات النهارده.`, 'streak-evening');
+      const sent=await fireSmartNotification(`⚠️ ${directName()} حافظ على الاستريك`,withFriendTone(`استريكك ${D.prayers.streak} يوم ولسه باقي ${5-doneCount} صلوات النهارده.`), 'streak-evening');
       if(sent)markNotificationSent('streak-evening',today);
     }
     if(minuteMatch((23*60)+30,now)&&!hasSentNotification('streak-late',today)){
-      const sent=await fireSmartNotification('⏳ آخر فرصة الليلة',`فاضل ${5-doneCount} صلوات ولو نمت دلوقتي ممكن الاستريك يضيع.`, 'streak-late');
+      const sent=await fireSmartNotification(`⏳ ${directName()} آخر فرصة الليلة`,withFriendTone(`فاضل ${5-doneCount} صلوات، ولو سيبت اليوم يعدّي ممكن الاستريك يضيع.`), 'streak-late');
       if(sent)markNotificationSent('streak-late',today);
     }
   }
 
   if(D.prayers.streak>0&&minuteMatch(0,now)&&!hasSentNotification('midnight-reminder',today)){
-    const sent=await fireSmartNotification('🌙 يوم جديد بدأ',`استريكك الحالي ${D.prayers.streak} يوم. ابدأ يومك بدري وحافظ عليه.`, 'midnight-reminder');
+    const sent=await fireSmartNotification(`🌙 يوم جديد ${directName()}`,withFriendTone(`استريكك الحالي ${D.prayers.streak} يوم. خلّي اليوم الجديد يكمل اللي بنيته.`), 'midnight-reminder');
     if(sent)markNotificationSent('midnight-reminder',today);
   }
 }
@@ -1763,12 +2009,14 @@ function initApp(){
   const sess=getSession();
   const si=document.getElementById('session-info');
   if(si&&sess){
-    si.textContent=sess.isGuest?'وضع الزائر — بياناتك محفوظة محليًا 👤':'مسجّل بـ: '+sess.email+' ✓';
+    const who=D.profile?.name||sess.email||'حسابك';
+    si.textContent=sess.isGuest?'وضع الزائر — بياناتك محفوظة محليًا 👤':'مسجّل بـ: '+who+' ✓';
   }
   checkNewDay();
   checkNewRecoveryDay();
   gymVM={y:new Date().getFullYear(),m:new Date().getMonth()};
-  renderPrayers();renderCourses();renderSubjects();renderGym();renderRecovery();renderRewards();
+  renderPrayers();renderCourses();renderSubjects();renderGym();renderRecovery();renderCustomGoals();renderRewards();
+  updateModuleVisibility();
   syncAll();updDate();
   if(D.notif)document.getElementById('notif-tog').classList.add('on');
   getPrayerTimes(false);
@@ -1785,6 +2033,23 @@ function todayKey(){const n=new Date();return`${n.getFullYear()}-${p2(n.getMonth
 function yestKey(){const n=new Date();n.setDate(n.getDate()-1);return`${n.getFullYear()}-${p2(n.getMonth()+1)}-${p2(n.getDate())}`}
 function p2(x){return String(x).padStart(2,'0')}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,5)}
+function displayName(){
+  const n=(D.profile?.name||'').trim();
+  if(n)return n;
+  const sess=getSession();
+  return sess?.name&&sess.name!=='مستخدم'&&sess.name!=='زائر'?sess.name.split(' ')[0]:'يا بطل';
+}
+function directName(){const n=displayName();return n==='يا بطل'?'يا بطل':'يا '+n}
+function getDailyGreeting(){
+  const t=todayKey();
+  if(D.profile.dailyGreetingDate!==t||!D.profile.dailyGreetingText){
+    const seed=(new Date().getDate()+displayName().length)%GREETING_TEMPLATES.length;
+    D.profile.dailyGreetingDate=t;
+    D.profile.dailyGreetingText=GREETING_TEMPLATES[seed].replace('{name}',directName());
+    save();
+  }
+  return D.profile.dailyGreetingText;
+}
 
 function checkNewDay(){
   const t=todayKey();
@@ -1799,6 +2064,10 @@ function checkNewRecoveryDay(){
   const t=todayKey();
   (D.recovery.items||[]).forEach(item=>{
     if(item.todayDate!==t){item.todayDate=t;item.todayClean=null;}
+  });
+  (D.customGoals||[]).forEach(item=>{
+    if(item.todayDate!==t)item.todayDone=false;
+    item.todayDate=t;
   });
   save();
 }
@@ -1826,16 +2095,113 @@ function goTo(pg){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+pg).classList.add('active');
   document.getElementById('nav-'+pg).classList.add('active');
-  const fabs=['courses-fab','uni-fab','rec-fab','rwd-fab'];
+  const fabs=['courses-fab','uni-fab','rec-fab','custom-fab','rwd-fab'];
   fabs.forEach(f=>{const el=document.getElementById(f);if(el)el.style.display='none';});
   if(pg==='courses'){const el=document.getElementById('courses-fab');if(el)el.style.display='block';renderCourses();}
   if(pg==='uni'){const el=document.getElementById('uni-fab');if(el)el.style.display='block';renderSubjects();}
   if(pg==='gym')renderGym();
   if(pg==='recovery'){const el=document.getElementById('rec-fab');if(el)el.style.display='block';renderRecovery();}
+  if(pg==='custom'){const el=document.getElementById('custom-fab');if(el)el.style.display='block';renderCustomGoals();}
   if(pg==='rewards'){const el=document.getElementById('rwd-fab');if(el)el.style.display='block';checkAllRewards();renderRewards();}
   if(pg==='home'){updHome();drawProgressChart();}
   if(pg==='prayer')renderCommitGrid();
   requestAnimationFrame(initInteractiveUI);
+}
+
+// ═══════════════════════ ONBOARDING / MODULES ═══════════════════════
+function renderOnboardingModules(){
+  const wrap=document.getElementById('onb-modules');if(!wrap)return;
+  wrap.innerHTML=Object.keys(MODULE_META).map(key=>`<button class="module-chip${D.modules[key]?' active':''}" onclick="toggleOnbModule('${key}')" id="onb-module-${key}">${MODULE_META[key].icon} ${MODULE_META[key].label}</button>`).join('');
+}
+function setOnboardingStep(step){
+  onboardingStep=Math.max(0,Math.min(2,step));
+  document.querySelectorAll('.onb-step').forEach((el,i)=>el.classList.toggle('active',i===onboardingStep));
+  document.querySelectorAll('.onb-dot').forEach((el,i)=>el.classList.toggle('active',i<=onboardingStep));
+  if(onboardingStep===2)renderOnboardingModules();
+}
+function selectOnbGender(gender){
+  onboardingGender=gender;
+  document.getElementById('gender-male').classList.toggle('active',gender==='male');
+  document.getElementById('gender-female').classList.toggle('active',gender==='female');
+}
+function toggleOnbModule(key){
+  D.modules[key]=!D.modules[key];
+  const el=document.getElementById('onb-module-'+key);
+  if(el)el.classList.toggle('active',D.modules[key]);
+}
+function applyOnboardingSuggestion(type){
+  const presets={
+    student:{prayer:true,courses:true,uni:true,gym:false,recovery:false,rewards:true,custom:true},
+    worker:{prayer:true,courses:true,uni:false,gym:false,recovery:false,rewards:true,custom:true},
+    focus:{prayer:true,courses:false,uni:false,gym:false,recovery:true,rewards:true,custom:true}
+  };
+  D.modules={...D.modules,...presets[type]};
+  renderOnboardingModules();
+  if(type==='worker'&&!document.getElementById('onb-custom-goal').value.trim())document.getElementById('onb-custom-goal').value='الشغل';
+  if(type==='focus'&&!document.getElementById('onb-custom-goal').value.trim())document.getElementById('onb-custom-goal').value='التركيز';
+}
+function showOnboarding(fromApp){
+  document.getElementById('onboarding-screen').dataset.returnTo=fromApp?'app':'pin';
+  const sess=getSession();
+  if(!D.profile.name&&sess?.name&&sess.name!=='مستخدم'&&sess.name!=='زائر')D.profile.name=sess.name.split(' ')[0];
+  document.getElementById('auth-screen').style.display='none';
+  document.getElementById('pin-screen').style.display='none';
+  document.getElementById('app').style.display='none';
+  document.getElementById('onboarding-screen').style.display='block';
+  document.getElementById('onb-name').value=D.profile.name||'';
+  document.getElementById('onb-age').value=D.profile.age||'';
+  document.getElementById('onb-custom-goal').value='';
+  selectOnbGender(D.profile.gender||'');
+  setOnboardingStep(0);
+}
+function hideOnboarding(){document.getElementById('onboarding-screen').style.display='none'}
+function reopenOnboarding(){closeNav();showOnboarding(true);setOnboardingStep(1);}
+function maybeCreateStarterCustomGoal(label){
+  const name=label.trim();
+  if(!name)return;
+  if((D.customGoals||[]).some(g=>g.name===name))return;
+  D.customGoals.push({id:uid(),name,desc:'مسار مرن بدأت به من أول استخدام',icon:'🧩',points:20,streakEnabled:true,streak:0,best:0,lastDone:null,todayDone:false,todayDate:todayKey()});
+}
+function finishOnboarding(){
+  const returnTo=document.getElementById('onboarding-screen').dataset.returnTo||'pin';
+  const name=document.getElementById('onb-name').value.trim();
+  const age=document.getElementById('onb-age').value.trim();
+  if(!name){alert('اكتب اسمك الأول عشان نخاطبك بشكل شخصي.');return;}
+  D.profile.name=name;
+  D.profile.age=age;
+  D.profile.gender=onboardingGender||D.profile.gender||'';
+  D.profile.onboarded=true;
+  D.profile.dailyGreetingDate='';
+  maybeCreateStarterCustomGoal(document.getElementById('onb-custom-goal').value||'');
+  save();
+  hideOnboarding();
+  if(returnTo==='app'){
+    document.getElementById('app').style.display='block';
+    syncAll();updHomeGrid();renderCustomGoals();
+  }else{
+    document.getElementById('pin-screen').style.display='flex';
+  }
+}
+function updateModuleVisibility(){
+  Object.keys(MODULE_META).forEach(key=>{
+    const page=document.getElementById('page-'+key);
+    const nav=document.getElementById('nav-'+key);
+    if(page)page.dataset.enabled=D.modules[key]?'1':'0';
+    if(nav)nav.style.display=D.modules[key]?'flex':'none';
+  });
+  const actionPrayer=document.querySelector('.hero-actions button:nth-child(1)');
+  const actionCourses=document.querySelector('.hero-actions button:nth-child(2)');
+  const actionRewards=document.querySelector('.hero-actions button:nth-child(3)');
+  const heroActions=document.querySelector('.hero-actions');
+  if(actionPrayer)actionPrayer.style.display=D.modules.prayer===false?'none':'flex';
+  if(actionCourses)actionCourses.style.display=D.modules.courses===false?'none':'flex';
+  if(actionRewards)actionRewards.style.display=D.modules.rewards===false?'none':'flex';
+  if(heroActions){
+    const visible=[actionPrayer,actionCourses,actionRewards].filter(el=>el&&el.style.display!=='none').length||1;
+    heroActions.style.gridTemplateColumns=`repeat(${Math.min(visible,3)},1fr)`;
+  }
+  const anyPageActive=document.querySelector('.page.active');
+  if(anyPageActive&&anyPageActive.dataset.enabled==='0')goTo('home');
 }
 
 // ═══════════════════════ CUSTOM EMOJI ═══════════════════════
@@ -2345,6 +2711,121 @@ function renderRecCard(r){
   return`<div class="rec-item"><div class="rec-header"><div class="rec-icon">${r.icon||'🚫'}</div><div style="flex:1"><div class="rec-name">${r.name}</div><div class="rec-streak">استريك: 🔥 ${streak} يوم | أفضل: ${r.best||0} يوم</div>${r.desc?`<div class="rec-streak">${r.desc}</div>`:''}</div><div style="display:flex;gap:6px"><button class="course-act-btn" onclick="openRecDrawer('${r.id}')">✏️</button><button class="course-act-btn" onclick="deleteRec('${r.id}')">🗑️</button></div></div><div class="sl-label" style="margin-top:4px;margin-bottom:8px">سجّل اليوم</div><div style="display:flex;gap:10px;margin-bottom:14px"><button class="rec-check-btn${clean===true?' clean':' pending'}" onclick="togRec('${r.id}',true)">✅ نظيف اليوم</button><button class="rec-check-btn${clean===false?' failed':' pending'}" onclick="togRec('${r.id}',false)">❌ وقعت فيه</button></div><div style="display:grid;grid-template-columns:repeat(14,1fr);gap:3px">${gridHtml}</div></div>`;
 }
 
+// ═══════════════════════ CUSTOM GOALS ═══════════════════════
+function openCustomDrawer(customId){
+  editingCustomId=customId||null;
+  const title=document.getElementById('custom-drawer-title');
+  customStreakEnabled=true;
+  if(customId){
+    const item=(D.customGoals||[]).find(x=>x.id===customId);if(!item)return;
+    title.textContent='✏️ تعديل المسار';
+    document.getElementById('f-xname').value=item.name||'';
+    document.getElementById('f-xdesc').value=item.desc||'';
+    document.getElementById('f-xpts').value=item.points||20;
+    picked.custom={emoji:item.icon||'🧩'};
+    customStreakEnabled=item.streakEnabled!==false;
+  }else{
+    title.textContent='🧩 إضافة مسار جديد';
+    ['f-xname','f-xdesc','f-xpts'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('f-xpts').value='20';
+    picked.custom={emoji:'🧩'};
+    customStreakEnabled=true;
+  }
+  document.querySelectorAll('#custom-emoji-pick .ep-btn').forEach(b=>b.classList.toggle('selected',b.textContent.trim()===picked.custom.emoji));
+  updateCustomStreakUI();
+  openOverlay('custom-overlay');
+}
+function toggleCustomStreak(){customStreakEnabled=!customStreakEnabled;updateCustomStreakUI();}
+function updateCustomStreakUI(){
+  const tog=document.getElementById('custom-streak-tog'),lbl=document.getElementById('custom-streak-lbl');
+  if(tog)tog.classList.toggle('on',customStreakEnabled);
+  if(lbl)lbl.textContent=customStreakEnabled?'مفعّل':'بدون استريك';
+}
+function saveCustomGoal(){
+  const name=document.getElementById('f-xname').value.trim();
+  if(!name){alert('اكتب اسم المسار.');return;}
+  const item={
+    id:editingCustomId||uid(),
+    name,
+    desc:document.getElementById('f-xdesc').value.trim(),
+    icon:picked.custom.emoji||'🧩',
+    points:Math.max(1,parseInt(document.getElementById('f-xpts').value)||20),
+    streakEnabled:customStreakEnabled,
+    streak:0,best:0,lastDone:null,todayDone:false,todayDate:todayKey()
+  };
+  if(editingCustomId){
+    const prev=D.customGoals.find(x=>x.id===editingCustomId);
+    if(prev){item.streak=prev.streak||0;item.best=prev.best||0;item.lastDone=prev.lastDone||null;item.todayDone=prev.todayDone||false;item.todayDate=prev.todayDate||todayKey();}
+    const idx=D.customGoals.findIndex(x=>x.id===editingCustomId);if(idx!==-1)D.customGoals[idx]=item;
+  }else{
+    D.customGoals.push(item);
+  }
+  save();closeOverlay('custom-overlay');renderCustomGoals();updHomeGrid();
+}
+function deleteCustomGoal(id){if(!confirm('تمسح المسار ده؟'))return;D.customGoals=D.customGoals.filter(x=>x.id!==id);save();renderCustomGoals();updHomeGrid();}
+function normalizeCustomDaily(item){
+  const t=todayKey();
+  if(item.todayDate!==t){item.todayDate=t;item.todayDone=false;}
+}
+function toggleCustomGoalDone(id){
+  const item=D.customGoals.find(x=>x.id===id);if(!item)return;
+  normalizeCustomDaily(item);
+  if(item.todayDone){
+    item.todayDone=false;
+  }else{
+    item.todayDone=true;
+    D.points+=item.points||20;
+    if(item.streakEnabled){
+      const y=yestKey();
+      if(item.lastDone===y)item.streak=(item.streak||0)+1;
+      else if(item.lastDone!==todayKey())item.streak=1;
+      item.lastDone=todayKey();
+      if(item.streak>(item.best||0))item.best=item.streak;
+    }
+    showFP(`+${item.points||20} ${item.icon||'🧩'}`,document.getElementById('custom-container'));
+  }
+  save();renderCustomGoals();updHome();
+}
+function renderCustomGoals(){
+  const container=document.getElementById('custom-container');if(!container)return;
+  const list=D.customGoals||[];
+  const cnt=document.getElementById('custom-cnt');if(cnt)cnt.textContent=`${list.length} مسار`;
+  list.forEach(normalizeCustomDaily);
+  if(!list.length){
+    container.innerHTML=`<div class="custom-empty"><div class="empty-ico">🧩</div><div class="empty-txt">لسه ما فيش مسارات خاصة</div><div class="empty-sub">أضف مسار لشغلك أو مشروعك أو أي عادة عايز تركز عليها</div></div><div style="height:80px"></div>`;
+    return;
+  }
+  container.innerHTML=list.map(item=>`<div class="custom-card reveal">
+    <div class="custom-top">
+      <div class="custom-head" style="margin-bottom:0">
+        <div class="custom-icon">${item.icon||'🧩'}</div>
+        <div>
+          <div class="custom-name">${item.name}</div>
+          <div class="custom-desc">${item.desc||'مسار مرن تصممه بطريقتك.'}</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button class="course-act-btn" onclick="openCustomDrawer('${item.id}')">✏️</button>
+        <button class="course-act-btn" onclick="deleteCustomGoal('${item.id}')">🗑️</button>
+      </div>
+    </div>
+    <div class="custom-badges">
+      <span class="badge bpu">⚡ +${item.points||20} نقطة</span>
+      <span class="badge ${item.streakEnabled?'br':'bb'}">${item.streakEnabled?`🔥 ${item.streak||0} يوم`:'بدون استريك'}</span>
+      <span class="badge bb">🏅 أفضل ${item.best||0}</span>
+    </div>
+    <div class="custom-meta">
+      <div class="custom-meta-box"><b>${item.todayDone?'✓':'—'}</b><span>اليوم</span></div>
+      <div class="custom-meta-box"><b>${item.streak||0}</b><span>الحالي</span></div>
+      <div class="custom-meta-box"><b>${item.points||20}</b><span>لكل إنجاز</span></div>
+    </div>
+    <div class="custom-check">
+      <button class="btn ${item.todayDone?'btn-ghost':'btn-gold'}" onclick="toggleCustomGoalDone('${item.id}')">${item.todayDone?'↩️ إلغاء إنجاز اليوم':'✅ سجل إنجاز اليوم'}</button>
+    </div>
+  </div>`).join('')+'<div style="height:80px"></div>';
+  requestAnimationFrame(initInteractiveUI);
+}
+
 // ═══════════════════════ REWARDS ═══════════════════════
 function openRwdDrawer(rwdId){
   editingRwdId=rwdId||null;
@@ -2511,6 +2992,7 @@ function updHome(){
   const ptsEl=document.getElementById('h-pts');if(ptsEl)ptsEl.textContent=D.points.toLocaleString('ar-EG');
   const stEl=document.getElementById('h-streak');if(stEl)stEl.textContent=D.prayers.streak;
   const stEl2=document.getElementById('h-streak2');if(stEl2)stEl2.textContent=D.prayers.streak;
+  const hg=document.getElementById('hero-greeting');if(hg)hg.textContent=getDailyGreeting();
   const pc=D.prayers.today.filter(Boolean).length;
   const hf=document.getElementById('hero-focus');if(hf)hf.textContent=pc+'/5';
   const hsP=document.getElementById('hs-pray');if(hsP)hsP.textContent=pc+'/5';
@@ -2520,9 +3002,17 @@ function updHome(){
 }
 function updHomeGrid(){
   const grid=document.getElementById('home-stats-grid');if(!grid)return;
-  let extra='';
-  (D.courses||[]).slice(0,2).forEach(c=>{const pct=Math.round(c.done/c.total*100);extra+=`<div class="scard"><div class="sv" style="color:${c.color||'var(--blue)'}">${pct}%</div><div class="sl">${c.icon||'📚'} ${c.name.slice(0,10)}${c.name.length>10?'..':''}</div></div>`;});
-  grid.innerHTML=`<div class="scard"><div class="sv" style="color:var(--green)" id="hs-pray">0/5</div><div class="sl">الصلاة 🤲</div></div><div class="scard"><div class="sv" style="color:var(--orange)" id="hs-gym">—</div><div class="sl">الجيم 💪</div></div>${extra}`;
+  const cards=[];
+  if(D.modules.prayer!==false)cards.push(`<div class="scard"><div class="sv" style="color:var(--green)" id="hs-pray">0/5</div><div class="sl">الصلاة 🤲</div></div>`);
+  if(D.modules.gym!==false)cards.push(`<div class="scard"><div class="sv" style="color:var(--orange)" id="hs-gym">—</div><div class="sl">الجيم 💪</div></div>`);
+  if(D.modules.custom!==false&&(D.customGoals||[]).length){
+    const cg=D.customGoals[0];
+    cards.push(`<div class="scard"><div class="sv" style="color:var(--purple)">${cg.todayDone?'✓':cg.streak||0}</div><div class="sl">${cg.icon||'🧩'} ${cg.name.slice(0,10)}${cg.name.length>10?'..':''}</div></div>`);
+  }
+  if(D.modules.courses!==false){
+    (D.courses||[]).slice(0,2).forEach(c=>{const pct=Math.round(c.done/c.total*100);cards.push(`<div class="scard"><div class="sv" style="color:${c.color||'var(--blue)'}">${pct}%</div><div class="sl">${c.icon||'📚'} ${c.name.slice(0,10)}${c.name.length>10?'..':''}</div></div>`);});
+  }
+  grid.innerHTML=cards.join('');
   updHome();
 }
 function updNextReward(){
@@ -2534,7 +3024,7 @@ function updNextReward(){
 }
 
 // ═══════════════════════ SYNC ═══════════════════════
-function syncAll(){updHome();updPrayUI();if(D.uni&&D.uni.gpa!==null&&D.uni.gpa!==undefined){const gi=document.getElementById('gpa-in');if(gi)gi.value=D.uni.gpa;upGPA(D.uni.gpa);}}
+function syncAll(){updateModuleVisibility();updHome();updPrayUI();if(D.uni&&D.uni.gpa!==null&&D.uni.gpa!==undefined){const gi=document.getElementById('gpa-in');if(gi)gi.value=D.uni.gpa;upGPA(D.uni.gpa);}}
 
 // ═══════════════════════ NOTIFICATIONS ═══════════════════════
 function toggleNotif(){
@@ -2547,7 +3037,7 @@ function toggleNotif(){
         save();
         prayerTimersScheduled=false;
         startNotificationEngine();
-        await fireSmartNotification('🔥 مستقبلي','تم تفعيل التنبيهات الذكية للصلاة والاستريك ✨','notif-enabled');
+        await fireSmartNotification(`🔥 جاهزين ${directName()}`,'تم تفعيل التنبيهات الذكية للصلاة والاستريك ✨','notif-enabled');
       }else alert('السماح بالإشعارات من إعدادات المتصفح');
     });
   }
@@ -2828,6 +3318,10 @@ async function afterAuth(){
   load();
   if(canUseCloudSync())await hydrateFromCloud();
   applyTheme(D.theme||'dark');
+  if(!D.profile?.onboarded){
+    showOnboarding();
+    return;
+  }
   if(!D.pin){
     document.getElementById('pin-title').textContent='حط رقمك السري';
     document.getElementById('pin-sub').textContent='اختر رقم سري من 4 أرقام 🔐';
