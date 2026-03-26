@@ -10,60 +10,111 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <style>
 :root{
-  --bg:#07111f;--bg2:#0d1830;--card:rgba(18,27,49,.86);--line:rgba(255,255,255,.08);
-  --text:#eef4ff;--dim:#8e9abb;--gold:#f5c842;--green:#3dd68c;--blue:#5eaeff;--red:#ff6b6b;
+  --bg:#07111f;
+  --bg2:#0d1830;
+  --card:rgba(18,27,49,.86);
+  --soft:rgba(255,255,255,.04);
+  --line:rgba(255,255,255,.08);
+  --text:#eef4ff;
+  --dim:#8e9abb;
+  --gold:#f5c842;
+  --green:#3dd68c;
+  --blue:#5eaeff;
+  --red:#ff6b6b;
+  --orange:#fb923c;
 }
 *{box-sizing:border-box}
+html,body{min-height:100%}
 body{
-  margin:0;font-family:'Tajawal',sans-serif;color:var(--text);
+  margin:0;
+  font-family:'Tajawal',sans-serif;
+  color:var(--text);
   background:
     radial-gradient(circle at top right, rgba(94,174,255,.18), transparent 20%),
     radial-gradient(circle at top left, rgba(245,200,66,.14), transparent 18%),
     linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);
-  min-height:100vh;
 }
-.wrap{max-width:1200px;margin:0 auto;padding:24px}
-.hero,.card{
-  background:var(--card);backdrop-filter:blur(18px) saturate(150%);
-  border:1px solid var(--line);border-radius:24px;box-shadow:0 20px 50px rgba(0,0,0,.25);
+button,input,select,textarea{font-family:'Tajawal',sans-serif}
+.wrap{max-width:1320px;margin:0 auto;padding:24px}
+.hero,.card,.panel,.drawer{
+  background:var(--card);
+  backdrop-filter:blur(18px) saturate(150%);
+  border:1px solid var(--line);
+  border-radius:24px;
+  box-shadow:0 20px 50px rgba(0,0,0,.25);
 }
 .hero{padding:24px;margin-bottom:18px}
 .title{font-size:34px;font-weight:900;margin:0 0 10px}
 .sub{color:var(--dim);line-height:1.8}
-.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.topbar,.toolbar,.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.topbar{justify-content:space-between}
 .btn{
-  border:none;border-radius:14px;padding:12px 18px;cursor:pointer;font-family:'Tajawal',sans-serif;
-  font-size:14px;font-weight:800
+  border:none;border-radius:14px;padding:12px 18px;cursor:pointer;
+  font-size:14px;font-weight:800;transition:.2s transform,.2s opacity,.2s box-shadow
 }
-.btn:disabled{opacity:.6;cursor:not-allowed}
+.btn:hover{transform:translateY(-1px)}
+.btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
 .btn-gold{background:linear-gradient(135deg,var(--gold),#ff9e43);color:#111}
 .btn-ghost{background:rgba(255,255,255,.05);color:var(--text);border:1px solid var(--line)}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.btn-red{background:rgba(255,107,107,.12);color:var(--red);border:1px solid rgba(255,107,107,.22)}
+.btn-blue{background:rgba(94,174,255,.12);color:var(--blue);border:1px solid rgba(94,174,255,.22)}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:18px 0}
 .stat{padding:18px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
 .stat .v{font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700}
 .stat .l{font-size:12px;color:var(--dim);margin-top:6px}
-.grid{display:grid;grid-template-columns:2fr 1fr;gap:16px}
-.card{padding:18px}
+.layout{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+.card,.panel{padding:18px}
 .section-title{font-size:18px;font-weight:900;margin:0 0 14px}
+.toolbar{margin-bottom:12px;justify-content:space-between}
+.toolbar-left,.toolbar-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:11px;color:var(--dim);font-weight:800}
+.field input,.field select,.field textarea{
+  min-width:0;
+  padding:12px 14px;border-radius:14px;border:1px solid var(--line);
+  background:rgba(255,255,255,.05);color:var(--text);outline:none
+}
+.field textarea{min-height:84px;resize:vertical}
+.search{min-width:240px}
 table{width:100%;border-collapse:collapse}
 th,td{padding:12px 10px;text-align:right;border-bottom:1px solid var(--line);font-size:13px;vertical-align:top}
 th{color:var(--dim);font-weight:800}
+tbody tr{cursor:pointer;transition:background-color .15s ease}
+tbody tr:hover{background:rgba(255,255,255,.04)}
+tbody tr.active{background:rgba(94,174,255,.09)}
 .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800}
 .ok{background:rgba(61,214,140,.12);color:var(--green)}
 .warn{background:rgba(255,107,107,.12);color:var(--red)}
 .info{background:rgba(94,174,255,.12);color:var(--blue)}
+.gold{background:rgba(245,200,66,.12);color:var(--gold)}
 .muted{color:var(--dim)}
+.mini{font-size:11px}
 .kv{display:grid;gap:10px}
-.kv div{padding:12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
-.login-box{max-width:420px;margin:60px auto;padding:24px}
-.field{margin-bottom:12px}
-.field label{display:block;font-size:12px;font-weight:800;color:var(--dim);margin-bottom:6px}
-.field input{width:100%;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--text);font-family:'Tajawal'}
+.kv-box{padding:14px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.list{display:grid;gap:10px}
+.list-item{padding:12px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.list-item strong{display:block;margin-bottom:4px}
+.login-box{max-width:430px;margin:60px auto;padding:24px}
 #app{display:none}
 #authError{min-height:20px;color:var(--red);font-size:13px}
 #authHint{min-height:20px;color:var(--blue);font-size:13px;margin-top:6px}
-@media (max-width:900px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
-@media (max-width:520px){.stats{grid-template-columns:1fr}.title{font-size:28px}}
+#globalMsg{min-height:20px;color:var(--orange);font-size:13px;margin-top:8px}
+.empty{padding:22px;text-align:center;color:var(--dim);border:1px dashed var(--line);border-radius:18px}
+.drawer-wrap{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);
+  display:none;align-items:flex-end;justify-content:center;padding:12px;z-index:30
+}
+.drawer-wrap.show{display:flex}
+.drawer{width:min(720px,100%);padding:18px;max-height:92vh;overflow:auto;border-radius:28px}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.drawer-title{font-size:20px;font-weight:900;margin:0}
+.badge-row{display:flex;gap:8px;flex-wrap:wrap}
+.action-row{display:flex;gap:10px;flex-wrap:wrap}
+.spacer{flex:1}
+@media (max-width:1050px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:720px){.stats{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
+@media (max-width:520px){.stats{grid-template-columns:1fr}.title{font-size:28px}.toolbar{align-items:stretch}.toolbar-left,.toolbar-right{width:100%}.search{min-width:100%}}
 </style>
 </head>
 <body>
@@ -72,11 +123,11 @@ th{color:var(--dim);font-weight:800}
     <p class="sub">سجّل بحساب الأدمن فقط. بعد أول مرة، أضف `uid` الخاص بك داخل مجموعة `admins` في Firestore.</p>
     <div class="field">
       <label>البريد الإلكتروني</label>
-      <input id="email" type="email" placeholder="admin@email.com" dir="ltr">
+      <input id="email" type="email" placeholder="admin@email.com" dir="ltr" autocomplete="email">
     </div>
     <div class="field">
       <label>كلمة السر</label>
-      <input id="password" type="password" placeholder="******" dir="ltr">
+      <input id="password" type="password" placeholder="******" dir="ltr" autocomplete="current-password">
     </div>
     <div id="authError"></div>
     <div id="authHint"></div>
@@ -88,9 +139,10 @@ th{color:var(--dim);font-weight:800}
       <div class="topbar">
         <div>
           <h1 class="title">Admin Dashboard</h1>
-          <div class="sub">متابعة المستخدمين، التسجيلات، وتحديثات البيانات من Firestore.</div>
+          <div class="sub">تحكم كامل في المستخدمين والبيانات داخل Firestore مع عرض تفصيلي وإجراءات إدارية مباشرة.</div>
         </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <div class="row">
+          <span id="adminRolePill" class="pill info">صلاحيتك: ...</span>
           <button class="btn btn-ghost" onclick="loadDashboard()">تحديث</button>
           <button class="btn btn-gold" onclick="logout()">تسجيل خروج</button>
         </div>
@@ -99,14 +151,43 @@ th{color:var(--dim);font-weight:800}
       <div class="stats">
         <div class="stat"><div class="v" id="usersCount">0</div><div class="l">إجمالي المستخدمين</div></div>
         <div class="stat"><div class="v" id="activeUsers">0</div><div class="l">نشطون هذا الأسبوع</div></div>
+        <div class="stat"><div class="v" id="realUsers">0</div><div class="l">حسابات حقيقية</div></div>
         <div class="stat"><div class="v" id="totalPoints">0</div><div class="l">إجمالي النقاط</div></div>
         <div class="stat"><div class="v" id="avgPrayer">0%</div><div class="l">متوسط التزام الصلاة</div></div>
       </div>
+      <div id="globalMsg"></div>
     </div>
 
-    <div class="grid">
+    <div class="layout">
       <div class="card">
-        <h2 class="section-title">المستخدمون</h2>
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <div class="field search">
+              <label>بحث</label>
+              <input id="searchInput" type="text" placeholder="ابحث بالاسم أو الإيميل أو uid" oninput="renderUsersTable()">
+            </div>
+            <div class="field">
+              <label>نوع الحساب</label>
+              <select id="accountFilter" onchange="renderUsersTable()">
+                <option value="all">الكل</option>
+                <option value="real">حسابات حقيقية</option>
+                <option value="guest">الزوار</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>النشاط</label>
+              <select id="activityFilter" onchange="renderUsersTable()">
+                <option value="all">الكل</option>
+                <option value="active">نشط آخر 7 أيام</option>
+                <option value="inactive">غير نشط آخر 7 أيام</option>
+              </select>
+            </div>
+          </div>
+          <div class="toolbar-right">
+            <button class="btn btn-blue" onclick="exportUsers()">تصدير JSON</button>
+          </div>
+        </div>
+
         <div style="overflow:auto">
           <table>
             <thead>
@@ -114,7 +195,8 @@ th{color:var(--dim);font-weight:800}
                 <th>المستخدم</th>
                 <th>الحساب</th>
                 <th>النقاط</th>
-                <th>استريك الصلاة</th>
+                <th>الصلاة</th>
+                <th>النشاط</th>
                 <th>آخر تحديث</th>
               </tr>
             </thead>
@@ -123,9 +205,72 @@ th{color:var(--dim);font-weight:800}
         </div>
       </div>
 
-      <div class="card">
+      <div class="panel">
         <h2 class="section-title">ملخص سريع</h2>
         <div class="kv" id="quickSummary"></div>
+        <div style="height:14px"></div>
+        <h2 class="section-title">المستخدم المحدد</h2>
+        <div id="selectedUserPanel" class="empty">اختر مستخدمًا من الجدول لعرض التفاصيل والتحكم.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="drawerWrap" class="drawer-wrap" onclick="closeDrawer(event)">
+    <div class="drawer">
+      <div class="drawer-head">
+        <div>
+          <h3 class="drawer-title" id="drawerTitle">تفاصيل المستخدم</h3>
+          <div class="muted mini" id="drawerSub">—</div>
+        </div>
+        <button class="btn btn-ghost" onclick="closeDrawer()">إغلاق</button>
+      </div>
+      <div class="badge-row" id="drawerBadges"></div>
+      <div style="height:14px"></div>
+      <div class="grid2">
+        <div class="kv-box">
+          <div class="section-title" style="font-size:15px">إجراءات سريعة</div>
+          <div class="field">
+            <label>تعديل النقاط</label>
+            <input id="pointsInput" type="number" min="0" placeholder="مثال: 1500">
+          </div>
+          <div class="action-row">
+            <button class="btn btn-gold" onclick="savePoints()">حفظ النقاط</button>
+            <button class="btn btn-blue" onclick="resetPrayerStreak()">تصفير استريك الصلاة</button>
+          </div>
+          <div style="height:10px"></div>
+          <div class="action-row">
+            <button class="btn btn-red" id="deleteUserBtn" onclick="deleteUserDoc()">حذف بيانات المستخدم</button>
+          </div>
+        </div>
+
+        <div class="kv-box">
+          <div class="section-title" style="font-size:15px">ملخص الحساب</div>
+          <div class="list" id="accountSummary"></div>
+        </div>
+      </div>
+
+      <div style="height:14px"></div>
+      <div class="grid2">
+        <div class="kv-box">
+          <div class="section-title" style="font-size:15px">الكورسات</div>
+          <div class="list" id="coursesList"></div>
+        </div>
+        <div class="kv-box">
+          <div class="section-title" style="font-size:15px">مواد الكلية</div>
+          <div class="list" id="subjectsList"></div>
+        </div>
+      </div>
+
+      <div style="height:14px"></div>
+      <div class="grid2">
+        <div class="kv-box">
+          <div class="section-title" style="font-size:15px">التعافي</div>
+          <div class="list" id="recoveryList"></div>
+        </div>
+        <div class="kv-box">
+          <div class="section-title" style="font-size:15px">المكافآت</div>
+          <div class="list" id="rewardsList"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -146,6 +291,12 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});
 
+let allUsers = [];
+let filteredUsers = [];
+let selectedUserId = null;
+let selectedUserData = null;
+let adminRole = 'admin';
+
 function fmtDate(value){
   try{
     if(!value) return '—';
@@ -153,14 +304,51 @@ function fmtDate(value){
     return date.toLocaleString('ar-EG');
   }catch(_){ return '—'; }
 }
-
 function showError(msg){ document.getElementById('authError').textContent = msg || ''; }
 function showHint(msg){ document.getElementById('authHint').textContent = msg || ''; }
+function showGlobal(msg, color='var(--orange)'){
+  const el=document.getElementById('globalMsg');
+  el.textContent=msg||'';
+  el.style.color=color;
+}
 function setLoginLoading(isLoading){
   const btn=document.getElementById('loginBtn');
   if(!btn)return;
   btn.disabled=isLoading;
   btn.textContent=isLoading?'جاري تسجيل الدخول...':'دخول الأدمن';
+}
+function countDonePrayers(appData){
+  return appData?.prayers?.today?.filter(Boolean).length || 0;
+}
+function getUpdatedStamp(user){
+  return user.updatedAt?.toDate ? user.updatedAt.toDate().getTime() : 0;
+}
+function isRealAccount(user){
+  return !user.profile?.isAnonymous;
+}
+function isActiveUser(user){
+  const weekAgo = Date.now() - (7*24*60*60*1000);
+  return getUpdatedStamp(user) >= weekAgo;
+}
+function safeArray(val){
+  return Array.isArray(val) ? val : [];
+}
+function appDataOf(user){
+  return user.appData || {};
+}
+function userName(user){
+  return user.profile?.name || user.profile?.email || user.profile?.phone || 'مستخدم';
+}
+function getAccountLabel(user){
+  return user.profile?.email || user.profile?.phone || 'بدون بيانات';
+}
+function getRoleLabel(){
+  return adminRole === 'owner' ? 'owner' : 'admin';
+}
+function setRolePill(){
+  const pill=document.getElementById('adminRolePill');
+  pill.textContent=`صلاحيتك: ${getRoleLabel()}`;
+  pill.className=`pill ${adminRole === 'owner' ? 'gold' : 'info'}`;
 }
 
 async function adminLogin(){
@@ -168,80 +356,314 @@ async function adminLogin(){
   showHint('');
   const email=document.getElementById('email').value.trim();
   const password=document.getElementById('password').value;
-  if(!email || !password){ showError('اكتب البريد وكلمة السر'); return; }
+  if(!email || !password){
+    showError('اكتب البريد وكلمة السر');
+    return;
+  }
   setLoginLoading(true);
   try{
     await auth.signInWithEmailAndPassword(email,password);
-    showHint('تم تسجيل الدخول، جاري التحقق من صلاحية الأدمن...');
+    showHint('تم تسجيل الدخول، جاري فحص صلاحية الأدمن...');
   }catch(e){
-    showError('فشل تسجيل الدخول: '+(e.code||e.message));
+    console.error(e);
+    showError(`فشل تسجيل الدخول: ${e.code||e.message}`);
   }finally{
     setLoginLoading(false);
   }
 }
 
+async function getAdminDoc(uid){
+  return db.collection('admins').doc(uid).get();
+}
+
 async function ensureAdmin(uid){
-  const adminDoc = await db.collection('admins').doc(uid).get();
-  return adminDoc.exists;
+  const adminDoc = await getAdminDoc(uid);
+  return adminDoc.exists ? adminDoc.data() : null;
+}
+
+function applyFilters(users){
+  const q=document.getElementById('searchInput').value.trim().toLowerCase();
+  const accountFilter=document.getElementById('accountFilter').value;
+  const activityFilter=document.getElementById('activityFilter').value;
+  return users.filter(user=>{
+    const haystack=[userName(user), getAccountLabel(user), user.id].join(' ').toLowerCase();
+    if(q && !haystack.includes(q)) return false;
+    if(accountFilter==='real' && !isRealAccount(user)) return false;
+    if(accountFilter==='guest' && isRealAccount(user)) return false;
+    if(activityFilter==='active' && !isActiveUser(user)) return false;
+    if(activityFilter==='inactive' && isActiveUser(user)) return false;
+    return true;
+  });
+}
+
+function renderUsersTable(){
+  filteredUsers=applyFilters(allUsers);
+  const tbody=document.getElementById('usersTable');
+  tbody.innerHTML=filteredUsers.map(user=>{
+    const appData=appDataOf(user);
+    const points=appData.points||0;
+    const streak=appData.prayers?.streak||0;
+    const prayerPct=Math.round((countDonePrayers(appData)/5)*100);
+    const accountClass=isRealAccount(user)?'ok':'warn';
+    const accountText=isRealAccount(user)?'حساب حقيقي':'زائر';
+    const activeClass=isActiveUser(user)?'info':'warn';
+    const activeText=isActiveUser(user)?'نشط':'خامل';
+    return `<tr class="${selectedUserId===user.id?'active':''}" onclick="selectUser('${user.id}')">
+      <td>
+        <div style="font-weight:800">${userName(user)}</div>
+        <div class="muted mini">${user.id}</div>
+      </td>
+      <td>
+        <div>${getAccountLabel(user)}</div>
+        <div class="pill ${accountClass}" style="margin-top:6px">${accountText}</div>
+      </td>
+      <td>${points.toLocaleString('ar-EG')}</td>
+      <td>${streak} يوم <span class="muted mini">(${prayerPct}%)</span></td>
+      <td><span class="pill ${activeClass}">${activeText}</span></td>
+      <td>${fmtDate(user.updatedAt)}</td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="6" class="muted">لا يوجد مستخدمون مطابقون للفلاتر الحالية.</td></tr>';
+}
+
+function renderStats(){
+  const users=allUsers;
+  const real=users.filter(isRealAccount);
+  const active=users.filter(isActiveUser);
+  const totalPoints=users.reduce((sum,u)=>sum+(appDataOf(u).points||0),0);
+  const avgPrayer=users.length ? Math.round(users.reduce((sum,u)=>sum+Math.round((countDonePrayers(appDataOf(u))/5)*100),0)/users.length) : 0;
+
+  document.getElementById('usersCount').textContent=users.length.toLocaleString('ar-EG');
+  document.getElementById('activeUsers').textContent=active.length.toLocaleString('ar-EG');
+  document.getElementById('realUsers').textContent=real.length.toLocaleString('ar-EG');
+  document.getElementById('totalPoints').textContent=totalPoints.toLocaleString('ar-EG');
+  document.getElementById('avgPrayer').textContent=`${avgPrayer}%`;
+
+  const topPoints=Math.max(0,...users.map(u=>appDataOf(u).points||0));
+  const topStreak=Math.max(0,...users.map(u=>appDataOf(u).prayers?.streak||0));
+  const topCourses=Math.max(0,...users.map(u=>safeArray(appDataOf(u).courses).length));
+  const topRecovery=Math.max(0,...users.map(u=>safeArray(appDataOf(u).recovery?.items).length));
+  document.getElementById('quickSummary').innerHTML=[
+    `عدد الحسابات الحقيقية: ${real.length}`,
+    `عدد الزوار: ${users.length-real.length}`,
+    `أعلى نقاط: ${topPoints.toLocaleString('ar-EG')}`,
+    `أعلى استريك صلاة: ${topStreak} يوم`,
+    `أكبر عدد كورسات لدى مستخدم: ${topCourses}`,
+    `أكبر عدد عناصر تعافي: ${topRecovery}`
+  ].map(item=>`<div class="kv-box">${item}</div>`).join('');
 }
 
 async function loadDashboard(){
+  showGlobal('جاري تحميل البيانات...', 'var(--blue)');
   let snap;
   try{
-    snap = await db.collection('users').orderBy('updatedAt','desc').limit(100).get();
-  }catch(_){
-    snap = await db.collection('users').limit(100).get();
+    snap = await db.collection('users').orderBy('updatedAt','desc').limit(200).get();
+  }catch(e){
+    console.warn('orderBy failed, fallback to plain get', e);
+    snap = await db.collection('users').limit(200).get();
   }
-  const users = snap.docs.map(doc=>({id:doc.id,...doc.data()}));
-  const oneWeekAgo = Date.now() - (7*24*60*60*1000);
-
-  let totalPoints=0, totalPrayerPct=0, prayerUsers=0, activeUsers=0;
-  document.getElementById('usersTable').innerHTML = users.map(user=>{
-    const appData = user.appData || {};
-    const profile = user.profile || {};
-    const points = appData.points || 0;
-    const streak = appData.prayers?.streak || 0;
-    const prayerToday = appData.prayers?.today?.filter(Boolean).length || 0;
-    const prayerPct = Math.round((prayerToday/5)*100);
-    totalPoints += points;
-    totalPrayerPct += prayerPct;
-    prayerUsers++;
-    const updatedStamp = user.updatedAt?.toDate ? user.updatedAt.toDate().getTime() : 0;
-    if(updatedStamp && updatedStamp >= oneWeekAgo) activeUsers++;
-
-    const accountLabel = profile.email || profile.phone || 'بدون بيانات';
-    const statusClass = profile.isAnonymous ? 'warn' : 'ok';
-    const statusText = profile.isAnonymous ? 'زائر' : 'حساب حقيقي';
-
-    return `<tr>
-      <td>
-        <div style="font-weight:800">${profile.name || 'مستخدم'}</div>
-        <div class="muted" style="font-size:11px">${user.id}</div>
-      </td>
-      <td>
-        <div>${accountLabel}</div>
-        <div class="pill ${statusClass}" style="margin-top:6px">${statusText}</div>
-      </td>
-      <td>${points.toLocaleString('ar-EG')}</td>
-      <td>${streak} يوم</td>
-      <td>${fmtDate(user.updatedAt)}</td>
-    </tr>`;
-  }).join('') || '<tr><td colspan="5" class="muted">لا يوجد مستخدمون بعد</td></tr>';
-
-  document.getElementById('usersCount').textContent = users.length.toLocaleString('ar-EG');
-  document.getElementById('activeUsers').textContent = activeUsers.toLocaleString('ar-EG');
-  document.getElementById('totalPoints').textContent = totalPoints.toLocaleString('ar-EG');
-  document.getElementById('avgPrayer').textContent = prayerUsers ? `${Math.round(totalPrayerPct/prayerUsers)}%` : '0%';
-
-  document.getElementById('quickSummary').innerHTML = [
-    `عدد الحسابات الحقيقية: ${users.filter(u=>!u.profile?.isAnonymous).length}`,
-    `عدد الزوار: ${users.filter(u=>u.profile?.isAnonymous).length}`,
-    `أعلى نقاط: ${Math.max(0,...users.map(u=>u.appData?.points||0)).toLocaleString('ar-EG')}`,
-    `أعلى استريك صلاة: ${Math.max(0,...users.map(u=>u.appData?.prayers?.streak||0))} يوم`
-  ].map(line=>`<div>${line}</div>`).join('');
+  allUsers=snap.docs.map(doc=>({id:doc.id,...doc.data()}));
+  renderStats();
+  renderUsersTable();
+  if(selectedUserId){
+    const stillThere=allUsers.find(u=>u.id===selectedUserId);
+    if(stillThere){
+      selectedUserData=stillThere;
+      renderSelectedUser();
+    }else{
+      selectedUserId=null;
+      selectedUserData=null;
+      document.getElementById('selectedUserPanel').innerHTML='اختر مستخدمًا من الجدول لعرض التفاصيل والتحكم.';
+    }
+  }
+  showGlobal(`تم تحميل ${allUsers.length} مستخدم.`, 'var(--green)');
 }
 
-async function logout(){ await auth.signOut(); }
+function renderEmptyList(targetId, text){
+  document.getElementById(targetId).innerHTML=`<div class="empty">${text}</div>`;
+}
+
+function renderSelectedUser(){
+  const panel=document.getElementById('selectedUserPanel');
+  if(!selectedUserData){
+    panel.innerHTML='اختر مستخدمًا من الجدول لعرض التفاصيل والتحكم.';
+    return;
+  }
+  const u=selectedUserData;
+  const d=appDataOf(u);
+  const courses=safeArray(d.courses);
+  const rewards=safeArray(d.rewards);
+  const recovery=safeArray(d.recovery?.items);
+  const subjects=safeArray(d.uni?.subjects);
+  panel.innerHTML=`
+    <div class="kv">
+      <div class="kv-box">
+        <div style="font-weight:900;font-size:18px">${userName(u)}</div>
+        <div class="muted mini">${u.id}</div>
+      </div>
+      <div class="grid2">
+        <div class="kv-box">النقاط: ${(d.points||0).toLocaleString('ar-EG')}</div>
+        <div class="kv-box">استريك الصلاة: ${d.prayers?.streak||0} يوم</div>
+        <div class="kv-box">الكورسات: ${courses.length}</div>
+        <div class="kv-box">المواد: ${subjects.length}</div>
+      </div>
+      <div class="action-row">
+        <button class="btn btn-blue" onclick="openDrawer()">عرض التفاصيل والتحكم</button>
+      </div>
+    </div>
+  `;
+}
+
+function fillList(targetId, items, emptyText){
+  if(!items.length){
+    renderEmptyList(targetId, emptyText);
+    return;
+  }
+  document.getElementById(targetId).innerHTML=items.join('');
+}
+
+function openDrawer(){
+  if(!selectedUserData)return;
+  const u=selectedUserData;
+  const d=appDataOf(u);
+  document.getElementById('drawerWrap').classList.add('show');
+  document.getElementById('drawerTitle').textContent=userName(u);
+  document.getElementById('drawerSub').textContent=`${getAccountLabel(u)} — آخر تحديث: ${fmtDate(u.updatedAt)}`;
+  document.getElementById('drawerBadges').innerHTML=[
+    `<span class="pill ${isRealAccount(u)?'ok':'warn'}">${isRealAccount(u)?'حساب حقيقي':'زائر'}</span>`,
+    `<span class="pill info">استريك الصلاة: ${d.prayers?.streak||0}</span>`,
+    `<span class="pill gold">النقاط: ${(d.points||0).toLocaleString('ar-EG')}</span>`
+  ].join('');
+  document.getElementById('pointsInput').value=d.points||0;
+  document.getElementById('deleteUserBtn').disabled=adminRole!=='owner';
+
+  document.getElementById('accountSummary').innerHTML=[
+    `اسم المستخدم: ${userName(u)}`,
+    `الحساب: ${getAccountLabel(u)}`,
+    `أفضل استريك صلاة: ${d.prayers?.best||0}`,
+    `التزام صلاة اليوم: ${countDonePrayers(d)}/5`,
+    `عدد المكافآت: ${safeArray(d.rewards).length}`,
+    `عدد التعافي: ${safeArray(d.recovery?.items).length}`,
+    `GPA: ${d.uni?.gpa ?? '--'}`,
+    `آخر مزامنة محلية: ${fmtDate(d.meta?.lastCloudSync)}`
+  ].map(x=>`<div>${x}</div>`).join('');
+
+  fillList('coursesList', safeArray(d.courses).map(c=>{
+    const pct = c.total ? Math.round(((c.done||0)/c.total)*100) : 0;
+    return `<div class="list-item"><strong>${c.icon||'📚'} ${c.name||'كورس'}</strong><div class="muted">${c.done||0}/${c.total||0} — ${pct}%</div></div>`;
+  }), 'لا توجد كورسات.');
+
+  fillList('subjectsList', safeArray(d.uni?.subjects).map(s=>{
+    return `<div class="list-item"><strong>${s.nameAr||s.name||'مادة'}</strong><div class="muted">ميدترمات: ${s.midterms||0} | كويزات: ${s.quizzes||0} | سيكشن: ${s.sectionExams||0} | معمل: ${s.labExams||0}</div></div>`;
+  }), 'لا توجد مواد.');
+
+  fillList('recoveryList', safeArray(d.recovery?.items).map(r=>{
+    return `<div class="list-item"><strong>${r.icon||'🌱'} ${r.name||'تعافي'}</strong><div class="muted">استريك: ${r.streak||0} | أفضل: ${r.best||0}</div></div>`;
+  }), 'لا توجد عناصر تعافي.');
+
+  fillList('rewardsList', safeArray(d.rewards).map(r=>{
+    return `<div class="list-item"><strong>${r.icon||'🏆'} ${r.name||'مكافأة'}</strong><div class="muted">${r.achieved?'مفتوحة':'مقفولة'} — ${r.pts||0} نقطة</div></div>`;
+  }), 'لا توجد مكافآت.');
+}
+
+function closeDrawer(event){
+  if(event && event.target !== document.getElementById('drawerWrap')) return;
+  document.getElementById('drawerWrap').classList.remove('show');
+}
+
+function selectUser(uid){
+  selectedUserId=uid;
+  selectedUserData=allUsers.find(u=>u.id===uid)||null;
+  renderUsersTable();
+  renderSelectedUser();
+}
+
+async function savePoints(){
+  if(!selectedUserId) return;
+  const points=Math.max(0, parseInt(document.getElementById('pointsInput').value)||0);
+  try{
+    await db.collection('users').doc(selectedUserId).set({
+      appData:{
+        ...appDataOf(selectedUserData),
+        points,
+        meta:{
+          ...(appDataOf(selectedUserData).meta||{}),
+          updatedAt: Date.now()
+        }
+      },
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, {merge:true});
+    showGlobal('تم تحديث النقاط بنجاح.', 'var(--green)');
+    await loadDashboard();
+    selectUser(selectedUserId);
+    openDrawer();
+  }catch(e){
+    console.error(e);
+    showGlobal(`فشل تحديث النقاط: ${e.code||e.message}`, 'var(--red)');
+  }
+}
+
+async function resetPrayerStreak(){
+  if(!selectedUserId) return;
+  if(!confirm('تأكيد تصفير استريك الصلاة لهذا المستخدم؟')) return;
+  try{
+    const d=appDataOf(selectedUserData);
+    await db.collection('users').doc(selectedUserId).set({
+      appData:{
+        ...d,
+        prayers:{
+          ...(d.prayers||{}),
+          streak:0
+        },
+        meta:{
+          ...(d.meta||{}),
+          updatedAt: Date.now()
+        }
+      },
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, {merge:true});
+    showGlobal('تم تصفير استريك الصلاة.', 'var(--green)');
+    await loadDashboard();
+    selectUser(selectedUserId);
+    openDrawer();
+  }catch(e){
+    console.error(e);
+    showGlobal(`فشل تصفير الاستريك: ${e.code||e.message}`, 'var(--red)');
+  }
+}
+
+async function deleteUserDoc(){
+  if(adminRole!=='owner'){
+    showGlobal('حذف بيانات المستخدم متاح فقط لصلاحية owner.', 'var(--red)');
+    return;
+  }
+  if(!selectedUserId) return;
+  if(!confirm('سيتم حذف بيانات المستخدم من Firestore. هل أنت متأكد؟')) return;
+  try{
+    await db.collection('users').doc(selectedUserId).delete();
+    showGlobal('تم حذف بيانات المستخدم.', 'var(--green)');
+    selectedUserId=null;
+    selectedUserData=null;
+    closeDrawer();
+    await loadDashboard();
+    renderSelectedUser();
+  }catch(e){
+    console.error(e);
+    showGlobal(`فشل حذف المستخدم: ${e.code||e.message}`, 'var(--red)');
+  }
+}
+
+function exportUsers(){
+  const blob=new Blob([JSON.stringify(filteredUsers,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='mostaqbaly_users_export.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+async function logout(){
+  await auth.signOut();
+}
 
 document.getElementById('email').addEventListener('keydown',e=>{ if(e.key==='Enter') adminLogin(); });
 document.getElementById('password').addEventListener('keydown',e=>{ if(e.key==='Enter') adminLogin(); });
@@ -251,23 +673,27 @@ auth.onAuthStateChanged(async user=>{
     document.getElementById('authView').style.display='block';
     document.getElementById('app').style.display='none';
     showHint('سجّل دخولك بحساب الأدمن.');
+    showGlobal('');
     return;
   }
   try{
     showHint('جاري فحص صلاحية الأدمن...');
-    const ok = await ensureAdmin(user.uid);
-    if(!ok){
+    const adminData = await ensureAdmin(user.uid);
+    if(!adminData){
       showError('هذا الحساب ليس أدمن بعد. أضف uid الخاص بك داخل مجموعة admins في Firestore.');
       await auth.signOut();
       return;
     }
+    adminRole = adminData.role || 'admin';
+    setRolePill();
     document.getElementById('authView').style.display='none';
     document.getElementById('app').style.display='block';
     showHint('');
+    showError('');
     await loadDashboard();
   }catch(e){
     console.error(e);
-    showError('حدث خطأ أثناء تحميل لوحة الأدمن. راجع Firestore Rules أو البيانات.');
+    showError(`حدث خطأ أثناء تحميل لوحة الأدمن: ${e.code||e.message}`);
     await auth.signOut();
   }
 });
