@@ -9,8 +9,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="مستقبلي">
 <title>مستقبلي</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com https://www.google.com https://www.gstatic.com/recaptcha/ https://www.google.com/recaptcha/; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self' https://*.googleapis.com https://*.gstatic.com https://*.firebaseio.com https://*.firebaseapp.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://api.aladhan.com https://nominatim.openstreetmap.org; frame-src https://www.google.com https://www.gstatic.com; object-src 'none'; base-uri 'self'; form-action 'self' mailto:; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="manifest" href="./manifest.json">
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa+Ink:wght@400;700&family=Cairo:wght@300;400;500;700;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
@@ -29,25 +31,25 @@
   --modal-bg:rgba(0,0,0,.88);
 }
 [data-theme="light"]{
-  --bg:#f0f3ff;--surface:#e6eaf8;--surface2:#dde3f5;--card:#ffffff;
-  --gold:#d4a000;--gold-dim:rgba(212,160,0,.1);
-  --blue:#2a6dd9;--blue-dim:rgba(42,109,217,.1);
-  --green:#1a9e6a;--green-dim:rgba(26,158,106,.1);
-  --red:#d94040;--red-dim:rgba(217,64,64,.1);
-  --purple:#7c3aed;--purple-dim:rgba(124,58,237,.1);
-  --orange:#c2621a;
-  --text:#1a2040;--dim:#6b7a9a;--border:rgba(0,0,0,.08);
-  --shadow:0 4px 24px rgba(26,32,64,.12);
-  --modal-bg:rgba(240,243,255,.88);
+  --bg:#fff4ef;--surface:#ffe7dd;--surface2:#ffd6ca;--card:#ffffff;
+  --gold:#d98a00;--gold-dim:rgba(217,138,0,.14);
+  --blue:#1463ff;--blue-dim:rgba(20,99,255,.12);
+  --green:#0eaf74;--green-dim:rgba(14,175,116,.12);
+  --red:#e03b3b;--red-dim:rgba(224,59,59,.14);
+  --purple:#8b46ff;--purple-dim:rgba(139,70,255,.12);
+  --orange:#ff6a1f;
+  --text:#2d1730;--dim:#8b6675;--border:rgba(120,48,48,.12);
+  --shadow:0 10px 28px rgba(188,92,58,.14);
+  --modal-bg:rgba(255,244,239,.9);
 }
-[data-theme="light"] .hero{background:linear-gradient(135deg,#d8e0ff,#e8eeff,#dde3f5)}
-[data-theme="light"] .hero::before{background:radial-gradient(circle,rgba(212,160,0,.1),transparent 70%)}
+[data-theme="light"] .hero{background:linear-gradient(135deg,#fff6f1,#ffe3d6,#ffd4c7)}
+[data-theme="light"] .hero::before{background:radial-gradient(circle,rgba(255,106,31,.14),transparent 70%)}
 [data-theme="light"] .pts-val{background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;transition:background-color .25s,color .2s,border-color .2s}
 html,body{height:100%}
 html{background:var(--bg)}
-body{font-family:'Tajawal',sans-serif;background:transparent;color:var(--text);min-height:100vh;max-width:430px;margin:0 auto;overflow-x:hidden;position:relative;isolation:isolate}
+body{font-family:'Cairo',sans-serif;background:transparent;color:var(--text);min-height:100vh;max-width:430px;margin:0 auto;overflow-x:hidden;position:relative;isolation:isolate}
 
 /* SPLASH */
 #splash{position:fixed;inset:0;z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);transition:opacity .6s}
@@ -77,7 +79,7 @@ body{font-family:'Tajawal',sans-serif;background:transparent;color:var(--text);m
 .pin-error.shake{animation:shake .35s ease}
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
 .pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:260px}
-.pin-btn{background:var(--card);border:1px solid var(--border);border-radius:16px;height:66px;font-size:22px;font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--text);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;user-select:none}
+.pin-btn{background:var(--card);border:1px solid var(--border);border-radius:16px;height:66px;font-size:22px;font-family:'Cairo',sans-serif;font-weight:700;color:var(--text);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;user-select:none}
 .pin-btn:active{transform:scale(.9);background:var(--surface2);border-color:var(--gold);box-shadow:0 0 16px rgba(245,200,66,.3)}
 .pin-btn.empty{background:transparent;border:none;pointer-events:none}
 
@@ -85,24 +87,24 @@ body{font-family:'Tajawal',sans-serif;background:transparent;color:var(--text);m
 #auth-screen{position:fixed;inset:0;background:var(--bg);z-index:999;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto}
 .auth-title{font-size:22px;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;margin-bottom:18px}
 .auth-tabs{display:flex;gap:0;background:var(--surface2);border-radius:14px;padding:4px;margin-bottom:18px;width:100%;max-width:340px}
-.auth-tab{flex:1;border:none;background:transparent;color:var(--dim);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;padding:9px;border-radius:11px;cursor:pointer;transition:all .2s}
+.auth-tab{flex:1;border:none;background:transparent;color:var(--dim);font-family:'Cairo',sans-serif;font-weight:700;font-size:14px;padding:9px;border-radius:11px;cursor:pointer;transition:all .2s}
 .auth-tab.active{background:var(--gold);color:#000}
 .auth-box{width:100%;max-width:340px;display:flex;flex-direction:column;gap:12px}
 .auth-field{display:flex;flex-direction:column;gap:6px}
 .auth-field label{font-size:13px;font-weight:700;color:var(--dim)}
-.auth-field input{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:15px;outline:none;transition:border-color .2s;width:100%}
+.auth-field input{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;color:var(--text);font-family:'Cairo',sans-serif;font-size:15px;outline:none;transition:border-color .2s;width:100%}
 .auth-field input:focus{border-color:var(--gold)}
 .auth-err{color:var(--red);font-size:13px;text-align:center;min-height:18px}
 .auth-divider{display:flex;align-items:center;gap:10px;color:var(--dim);font-size:13px}
 .auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border)}
-.auth-social{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
+.auth-social{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;color:var(--text);font-family:'Cairo',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
 .auth-social:hover{border-color:var(--gold);background:var(--card)}
-.auth-guest{background:transparent;border:none;color:var(--dim);font-family:'Space Grotesk',sans-serif;font-size:13px;cursor:pointer;padding:6px;text-decoration:underline;text-underline-offset:3px}
+.auth-guest{background:transparent;border:none;color:var(--dim);font-family:'Cairo',sans-serif;font-size:13px;cursor:pointer;padding:6px;text-decoration:underline;text-underline-offset:3px}
 .w100{width:100%}
 .auth-user-badge{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);border-radius:40px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--dim);z-index:200;display:none;align-items:center;gap:6px;white-space:nowrap}
 .auth-section{display:flex;flex-direction:column;gap:12px;width:100%}
 .auth-phone-row{display:flex;gap:8px;align-items:stretch}
-.auth-phone-row select{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 10px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:14px;outline:none;cursor:pointer;flex-shrink:0;width:110px}
+.auth-phone-row select{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 10px;color:var(--text);font-family:'Cairo',sans-serif;font-size:14px;outline:none;cursor:pointer;flex-shrink:0;width:110px}
 .auth-phone-row input{flex:1;min-width:0}
 .auth-social.auth-google{background:#fff;color:#222;border-color:#ddd}
 .auth-social.auth-google:hover{background:#f5f5f5;border-color:#bbb}
@@ -156,7 +158,7 @@ body{font-family:'Tajawal',sans-serif;background:transparent;color:var(--text);m
 .onb-inline{display:flex;gap:10px}
 .onb-inline .onb-field{flex:1}
 .onb-suggestions{display:grid;gap:10px;margin-top:14px}
-.onb-suggest-btn{padding:14px 15px;border-radius:18px;border:1px solid var(--glass-border);background:rgba(255,255,255,.04);color:var(--text);text-align:right;font-family:'Tajawal';cursor:pointer}
+.onb-suggest-btn{padding:14px 15px;border-radius:18px;border:1px solid var(--glass-border);background:rgba(255,255,255,.04);color:var(--text);text-align:right;font-family:'Cairo';cursor:pointer}
 .onb-suggest-btn strong{display:block;font-size:14px;margin-bottom:4px}
 .onb-suggest-btn span{display:block;font-size:12px;color:var(--dim);line-height:1.7}
 .onb-helper{margin-top:12px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border);font-size:12px;color:var(--dim);line-height:1.8}
@@ -171,10 +173,10 @@ body{font-family:'Tajawal',sans-serif;background:transparent;color:var(--text);m
 .custom-check{margin-top:12px;display:flex;gap:10px}
 .custom-check .btn{flex:1;justify-content:center}
 .custom-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.custom-points{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--gold)}
+.custom-points{font-family:'Cairo',sans-serif;font-size:22px;font-weight:700;color:var(--gold)}
 .custom-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
 .custom-meta-box{padding:10px 8px;border-radius:14px;background:var(--surface2);border:1px solid var(--border);text-align:center}
-.custom-meta-box b{display:block;font-family:'Space Grotesk';font-size:18px}
+.custom-meta-box b{display:block;font-family:'Cairo';font-size:18px}
 .custom-meta-box span{font-size:11px;color:var(--dim)}
 .custom-empty{padding:28px 18px;text-align:center;color:var(--dim)}
 .mini-switch{width:48px;height:26px;background:var(--surface);border-radius:999px;position:relative;border:1px solid var(--border);cursor:pointer;transition:all .2s}
@@ -238,11 +240,11 @@ body{font-family:'Tajawal',sans-serif;background:transparent;color:var(--text);m
 /* STATS GRID */
 .sgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .scard{background:var(--surface2);border-radius:16px;padding:14px;text-align:center;border:1px solid var(--border)}
-.sv{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700}
+.sv{font-family:'Cairo',sans-serif;font-size:26px;font-weight:700}
 .sl{font-size:11px;color:var(--dim);margin-top:3px}
 
 /* BUTTONS */
-.btn{border:none;border-radius:14px;padding:12px 20px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn{border:none;border-radius:14px;padding:12px 20px;font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
 .btn:active{transform:scale(.95)}
 .btn-gold{background:linear-gradient(135deg,var(--gold),var(--orange));color:#000;width:100%;justify-content:center}
 .btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
@@ -259,7 +261,7 @@ body{font-family:'Tajawal',sans-serif;background:transparent;color:var(--text);m
 .pi{display:flex;align-items:center;gap:12px}
 .picon{font-size:24px}
 .pname{font-size:15px;font-weight:700}
-.ptime{font-size:12px;color:var(--gold);font-family:'Space Grotesk';font-weight:600;margin-top:2px}
+.ptime{font-size:12px;color:var(--gold);font-family:'Cairo';font-weight:600;margin-top:2px}
 .pcheck{width:28px;height:28px;border-radius:50%;border:2px solid var(--dim);display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;flex-shrink:0}
 .prayer-item.done .pcheck{background:var(--green);border-color:var(--green);color:#fff}
 
@@ -268,7 +270,7 @@ body{font-family:'Tajawal',sans-serif;background:transparent;color:var(--text);m
 .npb-label{font-size:11px;color:var(--dim);font-weight:700;letter-spacing:1px;text-transform:uppercase}
 .npb-name{font-size:19px;font-weight:900;color:var(--gold);margin-top:2px}
 .npb-time{font-size:12px;color:var(--dim);margin-top:2px}
-.npb-countdown{font-family:'Space Grotesk';font-size:26px;font-weight:700;color:var(--text);text-align:center}
+.npb-countdown{font-family:'Cairo';font-size:26px;font-weight:700;color:var(--text);text-align:center}
 .npb-countdown-lbl{font-size:10px;color:var(--dim);text-align:center}
 
 /* MILESTONE */
@@ -280,7 +282,7 @@ body{font-family:'Tajawal',sans-serif;background:transparent;color:var(--text);m
 .ms-desc{font-size:12px;color:var(--dim)}
 
 /* GRADE */
-.grade-input{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:16px;width:100%;outline:none;transition:border-color .2s;text-align:center}
+.grade-input{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;color:var(--text);font-family:'Cairo',sans-serif;font-size:16px;width:100%;outline:none;transition:border-color .2s;text-align:center}
 .grade-input:focus{border-color:var(--gold)}
 .grade-badge{padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700;min-width:56px;text-align:center}
 
@@ -308,7 +310,7 @@ body{font-family:'Tajawal',sans-serif;background:transparent;color:var(--text);m
 }
 
 /* GYM CALENDAR */
-.gym-day{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;cursor:pointer;transition:all .15s;border:1px solid var(--border);background:var(--surface2);color:var(--dim);font-family:'Space Grotesk',sans-serif;user-select:none}
+.gym-day{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;cursor:pointer;transition:all .15s;border:1px solid var(--border);background:var(--surface2);color:var(--dim);font-family:'Cairo',sans-serif;user-select:none}
 .gym-day:active{transform:scale(.88)}
 .gym-day.attended{background:var(--green-dim);border-color:var(--green);color:var(--green)}
 .gym-day.absent{background:var(--red-dim);border-color:var(--red);color:var(--red)}
@@ -337,7 +339,7 @@ body{font-family:'Tajawal',sans-serif;background:transparent;color:var(--text);m
 .pts-val{font-family:'Space Grotesk',sans-serif;font-size:52px;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--orange),#ff6b35);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
 .pts-lbl{color:var(--dim);font-size:16px;font-weight:600}
 .streak-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,107,107,.14);border:1px solid rgba(255,107,107,.3);border-radius:100px;padding:6px 14px;margin-top:12px}
-.streak-num{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--red)}
+.streak-num{font-family:'Cairo',sans-serif;font-size:18px;font-weight:700;color:var(--red)}
 .fire-anim{animation:fireBounce 1.2s ease-in-out infinite}
 @keyframes fireBounce{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-4px) scale(1.15)}}
 
@@ -359,11 +361,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 @keyframes celBounce{0%{transform:scale(1) rotate(-5deg)}100%{transform:scale(1.15) rotate(5deg)}}
 .cel-title{font-size:24px;font-weight:900;color:var(--gold)}
 .cel-desc{font-size:14px;color:#aaa;max-width:280px}
-.cel-pts{font-family:'Space Grotesk';font-size:48px;font-weight:700;color:#3dd68c;animation:ptsAnim .6s ease-out}
+.cel-pts{font-family:'Cairo';font-size:48px;font-weight:700;color:#3dd68c;animation:ptsAnim .6s ease-out}
 @keyframes ptsAnim{0%{transform:scale(0) translateY(20px);opacity:0}70%{transform:scale(1.2) translateY(-5px)}100%{transform:scale(1) translateY(0);opacity:1}}
 
 /* FLOAT PTS */
-.float-pts{position:fixed;font-family:'Space Grotesk';font-weight:700;font-size:20px;color:var(--gold);pointer-events:none;z-index:99998;animation:floatUp 1.4s ease-out forwards}
+.float-pts{position:fixed;font-family:'Cairo';font-weight:700;font-size:20px;color:var(--gold);pointer-events:none;z-index:99998;animation:floatUp 1.4s ease-out forwards}
 @keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-80px) scale(1.3)}}
 
 /* CONFETTI */
@@ -376,7 +378,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 
 /* COMMIT GRID */
 .commit-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:10px}
-.commit-day{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:'Space Grotesk'}
+.commit-day{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:'Cairo'}
 .commit-day.full{background:var(--green);color:#fff}
 .commit-day.partial{background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold)}
 .commit-day.none{background:var(--surface);color:var(--dim);border:1px solid var(--border)}
@@ -387,7 +389,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 .streak-warn.show{display:flex}
 
 /* THEME BTN */
-.theme-btn{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:7px 12px;cursor:pointer;color:var(--text);display:flex;align-items:center;gap:5px;font-family:'Tajawal';font-size:12px;font-weight:700;transition:all .2s}
+.theme-btn{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:7px 12px;cursor:pointer;color:var(--text);display:flex;align-items:center;gap:5px;font-family:'Cairo';font-size:12px;font-weight:700;transition:all .2s}
 .theme-btn:active{transform:scale(.93)}
 
 /* COURSE */
@@ -402,7 +404,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 .course-act-btn:active{transform:scale(.88)}
 .course-milestone{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:12px;background:var(--surface2);margin-top:8px;border:1px solid var(--border)}
 .course-milestone.reached{background:var(--gold-dim);border-color:rgba(245,200,66,.3)}
-.cml-pct{font-family:'Space Grotesk';font-size:13px;font-weight:700;min-width:36px;text-align:center;padding:3px 7px;border-radius:8px;background:var(--surface)}
+.cml-pct{font-family:'Cairo';font-size:13px;font-weight:700;min-width:36px;text-align:center;padding:3px 7px;border-radius:8px;background:var(--surface)}
 .cml-reward{font-size:13px;flex:1}
 .cml-check{font-size:15px;flex-shrink:0}
 
@@ -412,7 +414,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 .rec-icon{font-size:34px;flex-shrink:0}
 .rec-name{font-size:16px;font-weight:800}
 .rec-streak{font-size:12px;color:var(--dim);margin-top:2px}
-.rec-check-btn{flex:1;padding:12px;border-radius:14px;border:none;font-family:'Tajawal';font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.rec-check-btn{flex:1;padding:12px;border-radius:14px;border:none;font-family:'Cairo';font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
 .rec-check-btn.clean{background:var(--green-dim);color:var(--green);border:2px solid var(--green)}
 .rec-check-btn.failed{background:var(--red-dim);color:var(--red);border:2px solid var(--red)}
 .rec-check-btn.pending{background:var(--surface2);color:var(--text);border:2px solid var(--border)}
@@ -429,7 +431,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 /* FIELDS */
 .field{margin-bottom:14px}
 .field label{display:block;font-size:13px;font-weight:700;color:var(--dim);margin-bottom:6px}
-.field input,.field textarea,.field select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:11px 13px;color:var(--text);font-family:'Tajawal';font-size:15px;outline:none;transition:border-color .2s}
+.field input,.field textarea,.field select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:11px 13px;color:var(--text);font-family:'Cairo';font-size:15px;outline:none;transition:border-color .2s}
 .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold)}
 .field select option{background:var(--card);color:var(--text)}
 .field input[type=number]{-moz-appearance:textfield}
@@ -454,8 +456,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 .empty-sub{font-size:13px;margin-top:5px}
 
 /* FAB */
-.fab{position:sticky;bottom:0;left:auto;transform:none;width:100%;max-width:none;z-index:70;padding:14px 0 6px;margin-top:14px;background:linear-gradient(180deg,rgba(6,11,23,0),rgba(6,11,23,.9) 30%,rgba(6,11,23,.98))}
-.fab-btn{width:100%;background:linear-gradient(135deg,var(--gold),var(--orange));color:#000;border:none;border-radius:18px;padding:15px 18px;font-family:'Tajawal';font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 24px rgba(245,200,66,.28),0 2px 8px rgba(0,0,0,.24);transition:all .2s}
+.fab{position:sticky;bottom:0;left:auto;transform:none;width:100%;max-width:none;z-index:70;padding:10px 0 4px;margin-top:14px;background:transparent}
+.fab::before{display:none}
+.fab-btn{position:relative;width:100%;background:linear-gradient(135deg,#f7d35d 0%,#f5c842 52%,#fb923c 100%);color:#08101f;border:1px solid rgba(255,255,255,.24);border-radius:20px;padding:15px 18px;font-family:'Cairo';font-size:16px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 12px 30px rgba(245,200,66,.24),0 0 0 1px rgba(255,255,255,.08) inset;transition:all .2s}
 .fab-btn:active{transform:scale(.97);box-shadow:0 3px 12px rgba(245,200,66,.3)}
 
 /* SETTINGS CARD */
@@ -467,7 +470,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 
 /* DAYS SELECTOR */
 .days-selector{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
-.day-chip{padding:7px 12px;border-radius:100px;font-size:13px;font-weight:700;border:2px solid var(--border);background:var(--surface2);color:var(--dim);cursor:pointer;transition:all .2s;font-family:'Tajawal'}
+.day-chip{padding:7px 12px;border-radius:100px;font-size:13px;font-weight:700;border:2px solid var(--border);background:var(--surface2);color:var(--dim);cursor:pointer;transition:all .2s;font-family:'Cairo'}
 .day-chip.selected{border-color:var(--gold);background:var(--gold-dim);color:var(--gold)}
 
 /* GYM REST DAY LEGEND */
@@ -484,12 +487,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
   --hero-ring:rgba(255,255,255,.08);
 }
 [data-theme="light"]{
-  --bg-2:#e8eeff;
-  --bg-3:#dbe4ff;
-  --surface-strong:rgba(255,255,255,.82);
-  --surface-soft:rgba(42,109,217,.06);
-  --glass-border:rgba(26,32,64,.1);
-  --hero-ring:rgba(42,109,217,.1);
+  --bg-2:#ffe9dd;
+  --bg-3:#ffd0c6;
+  --surface-strong:rgba(255,255,255,.9);
+  --surface-soft:rgba(255,106,31,.08);
+  --glass-border:rgba(173,70,33,.16);
+  --hero-ring:rgba(224,59,59,.14);
 }
 body{
   background:none;
@@ -587,7 +590,132 @@ body::after{
   padding:22px 0 16px;
 }
 .pt{
-  font-size:30px;
+  font-size:36px;
+  line-height:1.12;
+  background:linear-gradient(135deg,#ff5a5f 0%,#e03b3b 46%,#ff8b2d 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.pt,.drawer-title,.section-title,.hero-title,.pin-title,.auth-title,.onb-title{
+  font-family:'Aref Ruqaa Ink',serif;
+  text-shadow:0 8px 24px rgba(0,0,0,.18);
+}
+.ph-stack{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:10px;
+}
+.ph-sub{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+}
+.ph-sub:empty{
+  display:none;
+}
+.page:not(#page-home) .ph{
+  display:block;
+  padding-left:54px;
+}
+.page:not(#page-home) .pt{
+  display:block;
+}
+.subtle-action{
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:9px 12px;
+  color:var(--text);
+  font-size:13px;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.undo-card,.notes-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:18px;
+  margin-bottom:14px;
+  box-shadow:var(--shadow);
+}
+.undo-meta{
+  font-size:12px;
+  color:var(--dim);
+  line-height:1.8;
+  margin-top:6px;
+}
+.note-composer{
+  display:grid;
+  gap:12px;
+}
+.note-textarea{
+  width:100%;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px;
+  color:var(--text);
+  font-family:'Cairo',sans-serif;
+  font-size:15px;
+  outline:none;
+  min-height:150px;
+  resize:vertical;
+  line-height:1.9;
+  text-align:right;
+}
+.note-tools{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.note-item{
+  position:relative;
+  padding:16px 16px 14px;
+  border-radius:20px;
+  background:linear-gradient(180deg,rgba(245,200,66,.08),rgba(255,255,255,.02));
+  border:1px solid rgba(245,200,66,.15);
+  margin-bottom:12px;
+}
+.note-head{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+  margin-bottom:10px;
+}
+.note-date{
+  font-size:12px;
+  color:var(--dim);
+  line-height:1.7;
+}
+.note-body{
+  font-size:14px;
+  line-height:2;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+.note-empty{
+  padding:26px 16px;
+  text-align:center;
+  color:var(--dim);
+}
+.mention{
+  display:inline-flex;
+  align-items:center;
+  padding:2px 8px;
+  border-radius:999px;
+  background:var(--blue-dim);
+  color:var(--blue);
+  font-weight:700;
+  margin:0 2px;
+}
+.feedback-box{
+  display:grid;
+  gap:10px;
 }
 .sl-label,.section-divider{
   color:rgba(232,238,255,.52);
@@ -636,9 +764,9 @@ body::after{
 }
 [data-theme="light"] .hero{
   background:
-    radial-gradient(circle at 85% 14%, rgba(212,160,0,.16), transparent 24%),
-    radial-gradient(circle at 18% 88%, rgba(42,109,217,.12), transparent 24%),
-    linear-gradient(145deg, rgba(255,255,255,.98), rgba(238,243,255,.94));
+    radial-gradient(circle at 85% 14%, rgba(255,106,31,.24), transparent 24%),
+    radial-gradient(circle at 18% 88%, rgba(20,99,255,.15), transparent 24%),
+    linear-gradient(145deg, rgba(255,255,255,.98), rgba(255,236,227,.95));
 }
 .hero::after{
   width:220px;
@@ -665,7 +793,7 @@ body::after{
   color:var(--text);
 }
 .hero-title{
-  font-size:30px;
+  font-size:36px;
   font-weight:900;
   line-height:1.15;
   letter-spacing:-.6px;
@@ -679,7 +807,7 @@ body::after{
   max-width:290px;
 }
 [data-theme="light"] .hero-sub{
-  color:rgba(26,32,64,.72);
+  color:rgba(77,36,38,.74);
 }
 .hero-kpis{
   display:grid;
@@ -700,7 +828,7 @@ body::after{
   margin-bottom:7px;
 }
 .hero-kpi .hk-value{
-  font-family:'Space Grotesk',sans-serif;
+  font-family:'Cairo',sans-serif;
   font-size:24px;
   font-weight:700;
 }
@@ -722,7 +850,7 @@ body::after{
   align-items:center;
   justify-content:center;
   gap:4px;
-  font-family:'Tajawal',sans-serif;
+  font-family:'Cairo',sans-serif;
   font-size:11px;
   font-weight:800;
   cursor:pointer;
@@ -738,9 +866,32 @@ body::after{
   margin:18px 0 10px;
 }
 .section-title{
-  font-size:13px;
+  font-size:18px;
   font-weight:900;
   letter-spacing:.3px;
+  background:linear-gradient(135deg,#ff5a5f 0%,#e03b3b 46%,#ff8b2d 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.home-section-title{
+  font-size:24px;
+  line-height:1.2;
+}
+.drawer-title{
+  font-size:28px;
+  line-height:1.15;
+  background:linear-gradient(135deg,#ff5a5f 0%,#e03b3b 46%,#ff8b2d 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.course-name,.custom-name,.reward-title,.rec-name,.subj-title{
+  font-size:19px;
+  font-weight:900;
+  line-height:1.3;
+}
+.course-desc,.custom-desc,.reward-cond,.rec-streak{
+  font-size:13px;
+  line-height:1.8;
 }
 .section-caption{
   font-size:11px;
@@ -780,6 +931,8 @@ body::after{
 .fab-btn{
   min-height:58px;
   border-radius:20px;
+  font-size:17px;
+  letter-spacing:.2px;
 }
 .drawer{
   border-radius:30px 30px 0 0;
@@ -807,8 +960,10 @@ body::after{
 }
 @media (max-width:390px){
   #app{padding-top:18px}
-  .hero-title{font-size:26px}
-  .onb-title{font-size:26px}
+  .hero-title{font-size:31px}
+  .onb-title{font-size:29px}
+  .pt{font-size:31px}
+  .drawer-title{font-size:24px}
   .hero-actions{grid-template-columns:1fr 1fr}
   .hero-kpis{grid-template-columns:1fr}
   .ph{padding-top:18px;padding-left:50px}
@@ -1121,6 +1276,23 @@ body::after{
   </div>
 </div>
 
+<!-- COURSE DAILY LOG DRAWER -->
+<div class="overlay" id="course-log-overlay" onclick="closeOverlayIfBg(event,'course-log-overlay')">
+  <div class="drawer">
+    <div class="drawer-handle"></div>
+    <div class="drawer-title" id="course-log-title">🎬 سجل مشاهدة اليوم</div>
+    <div style="font-size:13px;color:var(--dim);line-height:1.9;margin-bottom:14px" id="course-log-sub">اكتب عدد الفيديوهات التي شاهدتها اليوم، وسنضيفها تلقائيًا على الإجمالي السابق.</div>
+    <div class="field">
+      <label>عدد الفيديوهات اليوم</label>
+      <input type="number" id="f-course-today" placeholder="مثال: 3" min="0" max="9999">
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px;padding-bottom:16px">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeOverlay('course-log-overlay')">إلغاء</button>
+      <button class="btn btn-gold" style="flex:2" onclick="submitCourseToday()">✅ إضافة للمجموع</button>
+    </div>
+  </div>
+</div>
+
 <!-- ADD SUBJECT DRAWER -->
 <div class="overlay" id="subj-overlay" onclick="closeOverlayIfBg(event,'subj-overlay')">
   <div class="drawer">
@@ -1365,7 +1537,7 @@ body::after{
   </div>
 
   <div class="section-head">
-    <div class="section-title">إنجازات اليوم</div>
+    <div class="section-title home-section-title">إنجازات اليوم</div>
     <div class="section-caption">لمحة سريعة على إيقاعك</div>
   </div>
   <div class="sgrid" id="home-stats-grid">
@@ -1374,7 +1546,7 @@ body::after{
   </div>
 
   <div class="section-head">
-    <div class="section-title">أقرب مكافأة</div>
+    <div class="section-title home-section-title">أقرب مكافأة</div>
     <div class="section-caption">خلي الإنجاز له طعم</div>
   </div>
   <div class="card reveal" id="next-reward">
@@ -1382,7 +1554,7 @@ body::after{
   </div>
 
   <div class="section-head">
-    <div class="section-title">تقدمك الأسبوعي</div>
+    <div class="section-title home-section-title">تقدمك الأسبوعي</div>
     <div class="section-caption">استمر على نفس النفس</div>
   </div>
   <div class="chart-wrap reveal"><canvas id="progress-chart" height="140"></canvas></div>
@@ -1390,9 +1562,9 @@ body::after{
 
 <!-- PRAYER -->
 <div id="page-prayer" class="page">
-  <div class="ph">
+  <div class="ph ph-stack">
     <div class="pt">🤲 الصلاة</div>
-    <div class="badge br" id="pray-streak-badge">🔥 <span id="ps-num">0</span> يوم</div>
+    <div class="ph-sub"><div class="badge br" id="pray-streak-badge">🔥 <span id="ps-num">0</span> يوم</div></div>
   </div>
   <div class="next-prayer-banner">
     <div>
@@ -1428,7 +1600,7 @@ body::after{
 
 <!-- COURSES -->
 <div id="page-courses" class="page">
-  <div class="ph"><div class="pt">📚 الكورسات</div><div class="badge bb" id="courses-cnt">0 كورس</div></div>
+  <div class="ph ph-stack"><div class="pt">📚 الكورسات</div><div class="ph-sub"><div class="badge bb" id="courses-cnt">0 كورس</div></div></div>
   <div id="courses-container"></div>
   <div id="courses-fab" class="fab" style="display:none">
     <button class="fab-btn" onclick="openOverlay_course()">➕ إضافة كورس</button>
@@ -1437,14 +1609,14 @@ body::after{
 
 <!-- UNIVERSITY -->
 <div id="page-uni" class="page">
-  <div class="ph"><div class="pt">🎓 الكلية</div><div class="badge bg" id="gpa-badge">GPA: --</div></div>
+  <div class="ph ph-stack"><div class="pt">🎓 الكلية</div><div class="ph-sub"><div class="badge bg" id="gpa-badge">GPA: --</div></div></div>
   <div id="subjs-container"></div>
   <div class="sl-label">الـ GPA النهائي</div>
   <div class="card" style="border-color:rgba(245,200,66,.25)">
     <div class="ct" style="margin-bottom:12px">🎯 GPA الترم (من 4.0)</div>
     <div style="display:flex;gap:12px;align-items:center">
       <input type="number" min="0" max="4" step="0.01" id="gpa-in" class="grade-input" style="max-width:110px" placeholder="0.00" oninput="upGPA(this.value)">
-      <div><div id="gpa-disp" style="font-family:'Space Grotesk';font-size:26px;font-weight:700;color:var(--gold)">--</div><div id="gpa-stat" style="font-size:12px;color:var(--dim)">أدخل الـ GPA بعد الترم</div></div>
+      <div><div id="gpa-disp" style="font-family:'Cairo';font-size:26px;font-weight:700;color:var(--gold)">--</div><div id="gpa-stat" style="font-size:12px;color:var(--dim)">أدخل الـ GPA بعد الترم</div></div>
     </div>
   </div>
   <div id="uni-fab" class="fab" style="display:none">
@@ -1454,9 +1626,9 @@ body::after{
 
 <!-- GYM -->
 <div id="page-gym" class="page">
-  <div class="ph">
+  <div class="ph ph-stack">
     <div class="pt">💪 الجيم</div>
-    <button class="btn btn-ghost" style="padding:7px 12px;font-size:13px" onclick="openGymSettings()">⚙️ إعدادات</button>
+    <div class="ph-sub"><button class="btn btn-ghost" style="padding:7px 12px;font-size:13px" onclick="openGymSettings()">⚙️ إعدادات</button></div>
   </div>
   <div class="card" id="gym-stat"></div>
   <div class="mhdr">
@@ -1478,7 +1650,7 @@ body::after{
 
 <!-- RECOVERY -->
 <div id="page-recovery" class="page">
-  <div class="ph"><div class="pt">🌱 التعافي</div><div id="rec-badges"></div></div>
+  <div class="ph ph-stack"><div class="pt">🌱 التعافي</div><div class="ph-sub"><div id="rec-badges"></div></div></div>
   <div class="card" style="border-color:rgba(61,214,140,.2);background:linear-gradient(135deg,var(--green-dim),transparent);margin-bottom:14px">
     <div style="font-size:13px;line-height:1.8;color:var(--dim)">🌱 <strong style="color:var(--text)">رحلة التعافي</strong><br>كل يوم مش بتعمل الحاجة دي هو انتصار 💪<br>سجّل كل يوم وابني استريك قوي 🔥</div>
   </div>
@@ -1490,16 +1662,35 @@ body::after{
 
 <!-- REWARDS -->
 <div id="page-rewards" class="page">
-  <div class="ph"><div class="pt">🏆 مكافآتي</div><div class="badge bg" id="rwd-cnt">0/0</div></div>
+  <div class="ph ph-stack"><div class="pt">🏆 مكافآتي</div><div class="ph-sub"><div class="badge bg" id="rwd-cnt">0/0</div></div></div>
   <div id="rwd-container"></div>
   <div id="rwd-fab" class="fab" style="display:none">
     <button class="fab-btn" onclick="openRwdDrawer()">➕ إضافة مكافأة</button>
   </div>
 </div>
 
+<!-- NOTES -->
+<div id="page-notes" class="page">
+  <div class="ph ph-stack"><div class="pt">📝 النوت</div><div class="ph-sub"><div class="badge bb" id="notes-cnt">0 ملاحظة</div></div></div>
+  <div class="notes-card">
+    <div class="note-composer">
+      <div style="font-size:13px;color:var(--dim);line-height:1.9">اكتب يومك براحتك، والتطبيق هيحفظ التاريخ والوقت تلقائيًا. تقدر تعمل منشن لأي جزء بكتابة <b>@</b> أو من الأزرار السريعة.</div>
+      <textarea id="note-input" class="field note-textarea" placeholder="اكتب اللي حصل النهارده، أفكارك، ملاحظاتك، أو أي حاجة عايز ترجع لها بعدين..."></textarea>
+      <div class="note-tools" id="note-mentions"></div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-ghost" style="flex:1" onclick="clearNoteDraft()">مسح</button>
+        <button class="btn btn-gold" style="flex:2" onclick="saveNote()">💾 حفظ النوت</button>
+      </div>
+    </div>
+  </div>
+  <div id="notes-container"></div>
+</div>
+
 <!-- SETTINGS -->
 <div id="page-settings" class="page">
-  <div class="ph"><div class="pt">⚙️ الإعدادات</div></div>
+  <div class="ph ph-stack"><div class="pt">⚙️ الإعدادات</div><div class="ph-sub"></div></div>
+  <div class="sl-label">التراجع</div>
+  <div class="undo-card" id="undo-card"></div>
   <div class="sl-label">المظهر</div>
   <div class="toggle-row">
     <div><div style="font-weight:700" id="theme-label">🌙 الوضع الداكن</div><div style="font-size:12px;color:var(--dim)">تبديل بين الداكن والفاتح</div></div>
@@ -1523,6 +1714,25 @@ body::after{
     <div><div style="font-weight:700">📍 مواقيت الصلاة</div><div style="font-size:12px;color:var(--dim)" id="location-lbl">اضغط للتحديث</div></div>
     <button class="btn btn-ghost" style="font-size:13px;padding:8px 14px" onclick="getPrayerTimes(true)">تحديث</button>
   </div>
+  <div class="sl-label">الفيدباك</div>
+  <div class="notes-card">
+    <div class="feedback-box">
+      <div style="font-size:13px;color:var(--dim);line-height:1.9">لو عندك شكوى أو اقتراح، اكتبه هنا. التطبيق هيحفظه محليًا، وكمان هيجهز لك رسالة إرسال.</div>
+      <div class="field">
+        <label>نوع الرسالة</label>
+        <select id="feedback-type">
+          <option value="اقتراح">اقتراح</option>
+          <option value="شكوى">شكوى</option>
+          <option value="مشكلة تقنية">مشكلة تقنية</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>اكتب الفيدباك</label>
+        <textarea id="feedback-input" class="note-textarea" style="min-height:120px" placeholder="اكتب اقتراحك أو شكوتك هنا..."></textarea>
+      </div>
+      <button class="btn btn-gold" onclick="sendFeedback()">📨 إرسال الفيدباك</button>
+    </div>
+  </div>
   <div class="sl-label">البيانات</div>
   <div class="toggle-row">
     <div><div style="font-weight:700">📤 تصدير البيانات</div><div style="font-size:12px;color:var(--dim)">نسخة احتياطية JSON</div></div>
@@ -1536,7 +1746,7 @@ body::after{
     <img id="settings-logo" src="./logo-dark.png" alt="مستقبلي" style="width:80px;height:80px;object-fit:contain;margin-bottom:12px;filter:drop-shadow(0 4px 16px rgba(245,200,66,.3))">
     <div style="font-weight:900;font-size:20px;background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent">مستقبلي v1.31</div>
     <div style="color:var(--dim);font-size:13px;margin-top:6px">نظام تتبع الأهداف والمكافآت</div>
-    <div style="color:var(--dim);font-size:12px;margin-top:10px">المطور: <a href="https://www.instagram.com/mohamed.abdelmksod/" target="_blank" style="color:var(--blue);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(94,174,255,.3);padding-bottom:1px">Mohamed Abdelmaksoud 📷</a></div>
+    <div style="color:var(--dim);font-size:12px;margin-top:10px">المطور: <a href="https://www.instagram.com/mohamed.abdelmksod/" target="_blank" rel="noopener noreferrer" style="color:var(--blue);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(94,174,255,.3);padding-bottom:1px">Mohamed Abdelmaksoud 📷</a></div>
     <div style="color:var(--dim);font-size:11px;margin-top:6px" id="session-info">بياناتك محفوظة محليًا على جهازك ✓</div>
     <button class="btn btn-red" style="font-size:12px;padding:7px 18px;margin-top:12px" onclick="authLogout()" id="logout-btn">🚪 تسجيل الخروج</button>
   </div>
@@ -1566,6 +1776,7 @@ body::after{
     <div class="nav-divider"></div>
     <div class="nav-header-lbl">الأخرى</div>
     <div class="nav-item" onclick="goTo('rewards')" id="nav-rewards"><span class="ni">🏆</span><span class="nl">مكافآتي</span></div>
+    <div class="nav-item" onclick="goTo('notes')" id="nav-notes"><span class="ni">📝</span><span class="nl">النوت</span></div>
     <div class="nav-item" onclick="goTo('settings')" id="nav-settings"><span class="ni">⚙️</span><span class="nl">الإعدادات</span></div>
   </div>
 </div>
@@ -1583,6 +1794,9 @@ const DEF={
   rewards:[],
   courses:[],
   customGoals:[],
+  notes:[],
+  feedbackInbox:[],
+  undoStack:[],
   profile:{name:'',age:'',gender:'',onboarded:false,dailyGreetingDate:'',dailyGreetingText:''},
   modules:{prayer:true,courses:true,uni:true,gym:true,recovery:true,rewards:true,custom:true},
   prayerTimes:null,prayerTimesDate:null,
@@ -1648,6 +1862,8 @@ let openSubjIds=new Set();
 let onboardingStep=0;
 let onboardingGender='';
 let customStreakEnabled=true;
+let currentCourseLogId=null;
+const NOTE_MENTIONS=['الصلاة','الكورسات','الكلية','الجيم','التعافي','المكافآت','الإعدادات','الرئيسية','المسارات'];
 
 // ═══════════════════════ STORAGE ═══════════════════════
 function getStorageKey(){
@@ -1655,6 +1871,64 @@ function getStorageKey(){
   return sess?'mq_v3_'+sess.uid:'mq_v3';
 }
 function deepClone(v){return JSON.parse(JSON.stringify(v))}
+function toArabicDigits(val){return String(val??'').replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d])}
+function fmtNum(val){return toArabicDigits((Number(val)||0).toLocaleString('ar-EG'))}
+function fmtDateTime(dateLike){
+  const d=new Date(dateLike);
+  if(Number.isNaN(d.getTime()))return '';
+  return toArabicDigits(d.toLocaleString('ar-EG',{year:'numeric',month:'long',day:'numeric',hour:'numeric',minute:'2-digit'}));
+}
+function formatUndoTime(ts){
+  const d=new Date(ts||Date.now());
+  return toArabicDigits(d.toLocaleTimeString('ar-EG',{hour:'numeric',minute:'2-digit'}));
+}
+function snapshotForUndo(){
+  const copy=deepClone(D||DEF);
+  copy.undoStack=[];
+  return copy;
+}
+function rememberUndo(label){
+  if(!D.undoStack)D.undoStack=[];
+  D.undoStack.unshift({id:uid(),label,time:Date.now(),data:snapshotForUndo()});
+  D.undoStack=D.undoStack.slice(0,20);
+}
+function getLastUndo(){return(D.undoStack||[])[0]||null}
+function undoLastAction(){
+  const last=getLastUndo();
+  if(!last){showToast('لا يوجد إجراء للتراجع عنه الآن');return;}
+  if(!confirm(`هترجع آخر تعديل: ${last.label}\nهل أنت متأكد؟`))return;
+  const rest=(D.undoStack||[]).slice(1);
+  D=normalizeDataShape(last.data||{});
+  D.undoStack=rest;
+  save();
+  syncAll();
+  renderPrayers();renderCourses();renderSubjects();renderGym();renderRecovery();renderCustomGoals();renderRewards();renderNotes();renderUndoCard();
+  drawProgressChart();renderCommitGrid();updDate();checkStreakWarning();
+  showToast('تم التراجع بنجاح');
+}
+function localizeVisibleNumbers(root=document.body){
+  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{
+    acceptNode(node){
+      const parent=node.parentElement;
+      if(!parent)return NodeFilter.FILTER_REJECT;
+      const tag=parent.tagName;
+      if(['SCRIPT','STYLE','TEXTAREA','INPUT','OPTION'].includes(tag))return NodeFilter.FILTER_REJECT;
+      if(parent.closest('.pts-val'))return NodeFilter.FILTER_ACCEPT;
+      return /\d/.test(node.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_SKIP;
+    }
+  });
+  const nodes=[];
+  while(walker.nextNode())nodes.push(walker.currentNode);
+  nodes.forEach(node=>{node.nodeValue=toArabicDigits(node.nodeValue);});
+}
+function escapeHtml(str=''){return String(str).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function escapeAttr(str=''){return escapeHtml(str).replace(/`/g,'&#96;')}
+function safeText(val,fallback=''){return escapeHtml(val===null||val===undefined||val===''?fallback:val)}
+function safeColor(val,fallback='#5eaeff'){return /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(String(val||''))?String(val):fallback}
+function safeInt(val,fallback=0){const n=parseInt(val,10);return Number.isFinite(n)?n:fallback}
+function decorateNoteText(text=''){
+  return escapeHtml(text).replace(/@([^\s@#]+)/g,'<span class="mention">@$1</span>');
+}
 function normalizeDataShape(data){
   const normalized=deepClone(DEF);
   if(data&&typeof data==='object'){
@@ -1666,6 +1940,9 @@ function normalizeDataShape(data){
   if(!normalized.recovery||!normalized.recovery.items)normalized.recovery={items:[]};
   if(!normalized.rewards)normalized.rewards=[];
   if(!normalized.customGoals)normalized.customGoals=[];
+  if(!normalized.notes)normalized.notes=[];
+  if(!normalized.feedbackInbox)normalized.feedbackInbox=[];
+  if(!normalized.undoStack)normalized.undoStack=[];
   if(!normalized.uni)normalized.uni=deepClone(DEF.uni);
   if(!normalized.uni.subjects)normalized.uni.subjects=[];
   if(!normalized.profile)normalized.profile=deepClone(DEF.profile);
@@ -1804,6 +2081,7 @@ function initInteractiveUI(){
   setHeroGreeting();
   setupRevealMotion();
   bindMagneticHover();
+  localizeVisibleNumbers();
 }
 function setHeroGreeting(){
   const el=document.getElementById('hero-greeting');
@@ -1966,7 +2244,7 @@ function initApp(){
   checkNewDay();
   checkNewRecoveryDay();
   gymVM={y:new Date().getFullYear(),m:new Date().getMonth()};
-  renderPrayers();renderCourses();renderSubjects();renderGym();renderRecovery();renderRewards();
+  renderPrayers();renderCourses();renderSubjects();renderGym();renderRecovery();renderRewards();renderNotes();renderUndoCard();
   updateModuleVisibility();
   syncAll();updDate();
   if(D.notif)document.getElementById('notif-tog').classList.add('on');
@@ -2053,6 +2331,7 @@ function goTo(pg){
   if(pg==='gym')renderGym();
   if(pg==='recovery'){const el=document.getElementById('rec-fab');if(el)el.style.display='block';renderRecovery();}
   if(pg==='rewards'){const el=document.getElementById('rwd-fab');if(el)el.style.display='block';checkAllRewards();renderRewards();}
+  if(pg==='notes')renderNotes();
   if(pg==='home'){updHome();drawProgressChart();}
   if(pg==='prayer')renderCommitGrid();
   requestAnimationFrame(initInteractiveUI);
@@ -2157,7 +2436,7 @@ function applyCustomEmoji(type,val){
 
 // ═══════════════════════ OVERLAYS ═══════════════════════
 function openOverlay(id){document.getElementById(id).classList.add('show')}
-function closeOverlay(id){document.getElementById(id).classList.remove('show')}
+function closeOverlay(id){document.getElementById(id).classList.remove('show');if(id==='course-log-overlay')currentCourseLogId=null;}
 function closeOverlayIfBg(e,id){if(e.target===document.getElementById(id))closeOverlay(id)}
 function pickEmoji(type,em,el){picked[type]=picked[type]||{};picked[type].emoji=em;document.querySelectorAll('#'+type+'-emoji-pick .ep-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');}
 function pickColor(type,col,el){picked[type]=picked[type]||{};picked[type].color=col;document.querySelectorAll('#'+type+'-color-pick .cp-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');}
@@ -2224,6 +2503,8 @@ function renderPrayers(){
   requestAnimationFrame(initInteractiveUI);
 }
 function togPray(i){
+  if(D.prayers.today[i]){showToast('الصلاة دي متسجلة بالفعل. لو عايز ترجع استخدم زر التراجع.');return;}
+  rememberUndo(`التراجع عن تسجيل ${PRAY_NAMES[i]}`);
   D.prayers.today[i]=!D.prayers.today[i];
   const pts=D.prayers.today[i]?10:-10;D.points+=pts;if(D.points<0)D.points=0;
   if(D.prayers.today[i]){const el=document.getElementById('pray-item-'+i);if(el)showFP('+10',el);}
@@ -2234,7 +2515,7 @@ function togPray(i){
     if(!D.prayers.history)D.prayers.history={};D.prayers.history[t]=5;
   }
   if(!D.prayers.history)D.prayers.history={};D.prayers.history[t]=D.prayers.today.filter(Boolean).length;
-  save();renderPrayers();updHome();renderCommitGrid();checkAllRewards();
+  save();renderPrayers();updHome();renderCommitGrid();checkAllRewards();renderUndoCard();
 }
 function updPrayUI(){
   const cnt=D.prayers.today.filter(Boolean).length;
@@ -2309,22 +2590,55 @@ function saveCourse(){
     rewards:{r25:document.getElementById('f-cr25').value.trim(),r50:document.getElementById('f-cr50').value.trim(),r75:document.getElementById('f-cr75').value.trim(),r100},
     done:0
   };
-  if(editingCourseId){const idx=D.courses.findIndex(x=>x.id===editingCourseId);if(idx!==-1){course.done=D.courses[idx].done;D.courses[idx]=course;}}
-  else{D.courses.push(course);D.points+=20;showFP('+20 📚',document.getElementById('courses-container'));}
-  save();closeOverlay('course-overlay');renderCourses();checkAllRewards();renderRewards();updHome();
+  if(editingCourseId){
+    rememberUndo('التراجع عن تعديل بيانات كورس');
+    const idx=D.courses.findIndex(x=>x.id===editingCourseId);if(idx!==-1){course.done=D.courses[idx].done;D.courses[idx]=course;}
+  }else{
+    rememberUndo('التراجع عن إضافة كورس جديد');
+    D.courses.push(course);D.points+=20;showFP('+20 📚',document.getElementById('courses-container'));
+  }
+  save();closeOverlay('course-overlay');renderCourses();checkAllRewards();renderRewards();updHome();renderUndoCard();
 }
-function deleteCourse(id){if(!confirm('تمسح الكورس ده؟'))return;D.courses=D.courses.filter(c=>c.id!==id);save();renderCourses();renderRewards();updHome();}
-function upCourse(id,v){
+function deleteCourse(id){if(!confirm('تمسح الكورس ده؟'))return;rememberUndo('استرجاع الكورس المحذوف');D.courses=D.courses.filter(c=>c.id!==id);save();renderCourses();renderRewards();updHome();renderUndoCard();}
+function courseMilestonePoints(total,pct){
+  return Math.round(Math.max(1,safeInt(total,1))*pct/100)*4;
+}
+function askCourseToday(id){
   const c=D.courses.find(x=>x.id===id);if(!c)return;
-  v=Math.max(0,Math.min(c.total,parseInt(v)||0));const prev=c.done;c.done=v;
-  if(v>prev){const g=(v-prev)*4;D.points+=g;showFP(`+${g}`,document.getElementById(`c-num-${id}`));}
+  const total=Math.max(1,safeInt(c.total,1));
+  const done=Math.max(0,Math.min(total,safeInt(c.done,0)));
+  const remain=Math.max(0,total-done);
+  if(remain===0){showToast('الكورس ده مكتمل بالفعل ✨');return;}
+  currentCourseLogId=id;
+  const title=document.getElementById('course-log-title');
+  const sub=document.getElementById('course-log-sub');
+  const input=document.getElementById('f-course-today');
+  if(title)title.textContent=`🎬 سجل مشاهدة اليوم لـ ${c.name}`;
+  if(sub)sub.textContent=`المتبقي ${remain} فيديو من أصل ${total}. اكتب اللي اتشاف النهاردة وسنضيفه على الإجمالي الحالي (${done}).`;
+  if(input)input.value='';
+  openOverlay('course-log-overlay');
+  setTimeout(()=>{if(input){input.focus();input.select();}},60);
+}
+function submitCourseToday(){
+  const id=currentCourseLogId;
+  const c=D.courses.find(x=>x.id===id);if(!c)return;
+  const total=Math.max(1,safeInt(c.total,1));
+  const done=Math.max(0,Math.min(total,safeInt(c.done,0)));
+  const remain=Math.max(0,total-done);
+  const input=document.getElementById('f-course-today');
+  const watched=safeInt(input?.value,-1);
+  if(watched<0){alert('اكتب رقم صحيح.');return;}
+  if(watched===0){showToast('تمام، ما ضفناش أي فيديو النهاردة.');closeOverlay('course-log-overlay');return;}
+  const added=Math.min(remain,watched);
+  rememberUndo(`التراجع عن تحديث مشاهدة اليوم في كورس ${c.name}`);
+  c.done=done+added;
+  const gained=added*4;
+  D.points+=gained;
   save();
-  const pct=Math.round(v/c.total*100);
-  const upEl=(eid,val)=>{const el=document.getElementById(eid);if(el)el.textContent=val;};
-  const upVal=(eid,val)=>{const el=document.getElementById(eid);if(el)el.value=val;};
-  const upStyle=(eid,prop,val)=>{const el=document.getElementById(eid);if(el)el.style[prop]=val;};
-  upEl(`c-num-${id}`,v);upStyle(`c-pb-${id}`,'width',pct+'%');upEl(`c-pct-${id}`,pct+'%');upVal(`c-slider-${id}`,v);upVal(`c-inp-${id}`,v);
-  updCourseMilestones(c);checkAllRewards();updHome();renderRewards();
+  closeOverlay('course-log-overlay');
+  showFP(`+${gained} 📚`,document.getElementById(`c-num-${id}`));
+  if(watched>remain)showToast(`أضفت ${added} فيديو فقط لأن الكورس قرب يخلص.`);
+  renderCourses();checkAllRewards();updHome();renderRewards();renderUndoCard();
 }
 function updCourseMilestones(c){[25,50,75,100].forEach(pct=>{const el=document.getElementById(`cml-${c.id}-${pct}`);if(!el)return;const target=Math.round(c.total*pct/100);const reached=c.done>=target;el.classList.toggle('reached',reached);const chk=el.querySelector('.cml-check');if(chk)chk.textContent=reached?'✅':'🔒';});}
 function renderCourses(){
@@ -2336,11 +2650,17 @@ function renderCourses(){
   requestAnimationFrame(initInteractiveUI);
 }
 function renderCourseCard(c){
-  const pct=Math.round(c.done/c.total*100);
+  const total=Math.max(1,safeInt(c.total,1));
+  const done=Math.max(0,Math.min(total,safeInt(c.done,0)));
+  const pct=Math.round(done/total*100);
+  const color=safeColor(c.color,'#5eaeff');
+  const icon=safeText(c.icon||'📚');
+  const name=safeText(c.name,'كورس');
+  const desc=c.desc?safeText(c.desc):'';
   const hex2rgba=(h,a)=>{const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return`rgba(${r},${g},${b},${a})`};
-  const glow=hex2rgba(c.color||'#5eaeff','0.12');
-  const mils=[25,50,75,100].map(p=>{const rw=c.rewards?.[`r${p}`];if(!rw&&p!==100)return'';const tgt=Math.round(c.total*p/100);const reached=c.done>=tgt;return`<div class="course-milestone${reached?' reached':''}" id="cml-${c.id}-${p}"><div class="cml-pct" style="color:${c.color||'var(--blue)'}">${p}%</div><div class="cml-reward">${rw||'أتممت الكورس'} <span style="font-size:11px;color:var(--dim)">(${tgt})</span></div><div class="cml-check">${reached?'✅':'🔒'}</div></div>`;}).join('');
-  return`<div class="course-card" style="--c-glow:${glow}"><div class="course-header"><div class="course-icon">${c.icon||'📚'}</div><div style="flex:1"><div class="course-name">${c.name}</div>${c.desc?`<div class="course-desc">${c.desc}</div>`:''}</div><div class="course-actions"><button class="course-act-btn" onclick="openOverlay_course('${c.id}')">✏️</button><button class="course-act-btn" onclick="deleteCourse('${c.id}')">🗑️</button></div></div><div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px"><div style="display:flex;align-items:baseline;gap:4px"><span id="c-num-${c.id}" style="font-family:'Space Grotesk';font-size:30px;font-weight:700;color:${c.color||'var(--blue)'}">${c.done}</span><span style="color:var(--dim)">/${c.total} فيديو</span></div><span class="badge" id="c-pct-${c.id}" style="background:${glow};color:${c.color||'var(--blue)'}">${pct}%</span></div><div class="pb"><div class="pf" id="c-pb-${c.id}" style="width:${pct}%;background:linear-gradient(90deg,${c.color||'#5eaeff'},${c.color||'#5eaeff'}aa)"></div></div><input type="range" min="0" max="${c.total}" value="${c.done}" id="c-slider-${c.id}" oninput="upCourse('${c.id}',this.value)"><div style="display:flex;gap:10px;align-items:center;margin-top:6px"><input type="number" min="0" max="${c.total}" class="grade-input" style="max-width:85px" placeholder="0" value="${c.done||''}" id="c-inp-${c.id}" oninput="upCourse('${c.id}',this.value)"><span style="color:var(--dim);font-size:12px">أو اكتب</span></div><div style="margin-top:10px">${mils}</div></div>`;
+  const glow=hex2rgba(color,'0.12');
+  const mils=[25,50,75,100].map(p=>{const rw=c.rewards?.[`r${p}`];if(!rw&&p!==100)return'';const tgt=Math.round(total*p/100);const reached=done>=tgt;const pts=courseMilestonePoints(total,p);return`<div class="course-milestone${reached?' reached':''}" id="cml-${c.id}-${p}"><div class="cml-pct" style="color:${color}">${p}%</div><div class="cml-reward">${safeText(rw||'أتممت الكورس')} <span style="font-size:11px;color:var(--dim)">(${tgt} فيديو • +${pts} نقطة)</span></div><div class="cml-check">${reached?'✅':'🔒'}</div></div>`;}).join('');
+  return`<div class="course-card" style="--c-glow:${glow}"><div class="course-header"><div class="course-icon">${icon}</div><div style="flex:1"><div class="course-name">${name}</div>${desc?`<div class="course-desc">${desc}</div>`:''}</div><div class="course-actions"><button class="course-act-btn" onclick="openOverlay_course('${c.id}')">✏️</button><button class="course-act-btn" onclick="deleteCourse('${c.id}')">🗑️</button></div></div><div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px"><div style="display:flex;align-items:baseline;gap:4px"><span id="c-num-${c.id}" style="font-family:'Cairo';font-size:30px;font-weight:700;color:${color}">${done}</span><span style="color:var(--dim)">/${total} فيديو</span></div><span class="badge" id="c-pct-${c.id}" style="background:${glow};color:${color}">${pct}%</span></div><div class="pb"><div class="pf" id="c-pb-${c.id}" style="width:${pct}%;background:linear-gradient(90deg,${color},${color}aa)"></div></div><div style="display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:10px"><span style="color:var(--dim);font-size:12px">كل مرة هسجّل اللي اتشاف النهاردة وأضيفه على الإجمالي.</span><button class="btn btn-gold" style="width:auto;min-width:170px;padding:10px 16px" onclick="askCourseToday('${c.id}')">🎬 سجل مشاهدة اليوم</button></div><div style="margin-top:10px">${mils}</div></div>`;
 }
 
 // ═══════════════════════ UNIVERSITY ═══════════════════════
@@ -2392,11 +2712,11 @@ function saveSubject(){
     labExams:togStates.lab?(parseInt(document.getElementById('f-lab-cnt').value)||0):0,
     grades:{}
   };
-  if(editingSubjId){const idx=D.uni.subjects.findIndex(x=>x.id===editingSubjId);if(idx!==-1){subj.grades=D.uni.subjects[idx].grades||{};D.uni.subjects[idx]=subj;}}
-  else D.uni.subjects.push(subj);
-  save();closeOverlay('subj-overlay');renderSubjects();
+  if(editingSubjId){rememberUndo('التراجع عن تعديل مادة');const idx=D.uni.subjects.findIndex(x=>x.id===editingSubjId);if(idx!==-1){subj.grades=D.uni.subjects[idx].grades||{};D.uni.subjects[idx]=subj;}}
+  else{rememberUndo('التراجع عن إضافة مادة');D.uni.subjects.push(subj);}
+  save();closeOverlay('subj-overlay');renderSubjects();renderUndoCard();
 }
-function deleteSubject(id){if(!confirm('تمسح المادة دي؟'))return;D.uni.subjects=D.uni.subjects.filter(s=>s.id!==id);save();renderSubjects();}
+function deleteSubject(id){if(!confirm('تمسح المادة دي؟'))return;rememberUndo('استرجاع المادة المحذوفة');D.uni.subjects=D.uni.subjects.filter(s=>s.id!==id);save();renderSubjects();renderUndoCard();}
 function renderSubjects(){
   const container=document.getElementById('subjs-container');if(!container)return;
   if(!D.uni.subjects||D.uni.subjects.length===0){container.innerHTML=`<div class="empty-state"><div class="empty-ico">📖</div><div class="empty-txt">مفيش مواد لسه</div><div class="empty-sub">اضغط الزرار في الأسفل لتضيف موادك</div></div>`;requestAnimationFrame(initInteractiveUI);return;}
@@ -2467,7 +2787,7 @@ function renderSubjCard(s){
       </div>
     </div>`;
   }).join('');
-  return`<div class="subj-card"><div class="subj-hdr" onclick="togSubj('${s.id}')"><div style="display:flex;align-items:center;gap:10px;min-width:0"><div style="width:9px;height:9px;border-radius:50%;background:${s.color};flex-shrink:0"></div><div class="subj-title">${s.nameAr||s.name}</div></div><div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap"><span id="subj-avg-${sid}" style="font-family:'Space Grotesk';font-weight:700;color:${avg?gradeColor(avg):'var(--dim)'}">${avg?`${avg}%`:''}</span><span class="grade-badge" id="subj-badge-${sid}" style="background:${avg?gradeBg(avg):'var(--surface2)'};color:${avg?gradeColor(avg):'var(--dim)'}">${avg?gradeLabel(avg):'--'}</span><button class="course-act-btn" onclick="event.stopPropagation();openSubjDrawer('${s.id}')" style="font-size:12px;width:26px;height:26px">✏️</button><button class="course-act-btn" onclick="event.stopPropagation();deleteSubject('${s.id}')" style="font-size:12px;width:26px;height:26px">🗑️</button><span style="color:var(--dim);font-size:16px">›</span></div></div><div class="subj-body${isOpen?' open':''}" id="${subjDomId(s.id)}">${exams.length?examsHtml:'<div style="padding:12px 0;color:var(--dim);font-size:13px">لا توجد امتحانات مضافة</div>'}</div></div>`;
+  return`<div class="subj-card"><div class="subj-hdr" onclick="togSubj('${s.id}')"><div style="display:flex;align-items:center;gap:10px;min-width:0"><div style="width:9px;height:9px;border-radius:50%;background:${safeColor(s.color,'#5eaeff')};flex-shrink:0"></div><div class="subj-title">${safeText(s.nameAr||s.name,'مادة')}</div></div><div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap"><span id="subj-avg-${sid}" style="font-family:'Cairo';font-weight:700;color:${avg?gradeColor(avg):'var(--dim)'}">${avg?`${avg}%`:''}</span><span class="grade-badge" id="subj-badge-${sid}" style="background:${avg?gradeBg(avg):'var(--surface2)'};color:${avg?gradeColor(avg):'var(--dim)'}">${avg?gradeLabel(avg):'--'}</span><button class="course-act-btn" onclick="event.stopPropagation();openSubjDrawer('${s.id}')" style="font-size:12px;width:26px;height:26px">✏️</button><button class="course-act-btn" onclick="event.stopPropagation();deleteSubject('${s.id}')" style="font-size:12px;width:26px;height:26px">🗑️</button><span style="color:var(--dim);font-size:16px">›</span></div></div><div class="subj-body${isOpen?' open':''}" id="${subjDomId(s.id)}">${exams.length?examsHtml:'<div style="padding:12px 0;color:var(--dim);font-size:13px">لا توجد امتحانات مضافة</div>'}</div></div>`;
 }
 function togSubj(id){
   const body=document.getElementById(subjDomId(id));if(!body)return;
@@ -2482,6 +2802,8 @@ function upGrade(subjId,key,field,v){
   const next={...prev};
   next[field]=v===''?null:Math.max(0,parseFloat(v)||0);
   next.pct=(next.score!==null&&next.max&&next.max>0)?Math.max(0,Math.min(100,(next.score/next.max)*100)):null;
+  if(JSON.stringify(prev)===JSON.stringify(next))return;
+  rememberUndo(`التراجع عن تعديل درجة ${key}`);
   const newPoints=calcExamPoints(next.pct);
   const earnedBefore=Math.max(0,prev.pointsAwarded||0);
   const delta=Math.max(0,newPoints-earnedBefore);
@@ -2512,15 +2834,19 @@ function upGrade(subjId,key,field,v){
     avgBadge.style.background=avg!==null?gradeBg(avg):'var(--surface2)';
     avgBadge.style.color=avg!==null?gradeColor(avg):'var(--dim)';
   }
-  updHome();checkAllRewards();renderRewards();
+  updHome();checkAllRewards();renderRewards();renderUndoCard();
 }
 function upGPA(v){
-  v=v===''?null:Math.max(0,Math.min(4,parseFloat(v)));D.uni.gpa=v;
+  v=v===''?null:Math.max(0,Math.min(4,parseFloat(v)));
+  const changed=D.uni.gpa!==v;
+  if(changed)rememberUndo('التراجع عن تعديل GPA');
+  D.uni.gpa=v;
   const disp=document.getElementById('gpa-disp'),stat=document.getElementById('gpa-stat'),badge=document.getElementById('gpa-badge');
   if(v!==null){if(disp)disp.textContent=v.toFixed(2);if(badge)badge.textContent='GPA: '+v.toFixed(2);
     if(stat){if(v>=3.7){stat.textContent='🌟 ممتاز جداً!';stat.style.color='var(--gold)';}else{stat.textContent=(3.7-v).toFixed(2)+' نقطة للامتياز';stat.style.color='var(--dim)';}}}
   else{if(disp)disp.textContent='--';if(badge)badge.textContent='GPA: --';}
-  save();checkAllRewards();
+  if(changed)save();
+  checkAllRewards();renderUndoCard();
 }
 function gradeLabel(g){g=parseFloat(g);if(g>=85)return'ممتاز';if(g>=75)return'جيد جداً';if(g>=65)return'جيد';if(g>=50)return'مقبول';return'راسب'}
 function gradeColor(g){g=parseFloat(g);if(g>=85)return'var(--gold)';if(g>=75)return'var(--green)';if(g>=65)return'var(--blue)';if(g>=50)return'var(--orange)';return'var(--red)'}
@@ -2573,11 +2899,12 @@ function renderGym(){
 }
 function togGym(d){
   const mk=gymMK(gymVM.y,gymVM.m);if(!D.gym.months[mk])D.gym.months[mk]={days:{}};
+  rememberUndo(`التراجع عن تعديل يوم ${d} في الجيم`);
   const cur=D.gym.months[mk].days[d];
   if(!cur){D.gym.months[mk].days[d]='attended';D.points+=20;showFP('+20 💪',document.getElementById('gym-cal'));}
   else if(cur==='attended')D.gym.months[mk].days[d]='absent';
   else delete D.gym.months[mk].days[d];
-  save();renderGym();checkAllRewards();updHome();
+  save();renderGym();checkAllRewards();updHome();renderUndoCard();
 }
 function chMonth(d){gymVM.m+=d;if(gymVM.m>11){gymVM.m=0;gymVM.y++;}if(gymVM.m<0){gymVM.m=11;gymVM.y--;}renderGym();}
 
@@ -2613,27 +2940,26 @@ function saveRecovery(){
     id:editingRecId||uid(),name,icon:picked.rec.emoji||'🚫',desc:document.getElementById('f-rdesc').value.trim(),
     streak:0,best:0,lastClean:null,todayDate:todayKey(),todayClean:null,history:{}
   };
-  if(editingRecId){const idx=D.recovery.items.findIndex(x=>x.id===editingRecId);if(idx!==-1){item.streak=D.recovery.items[idx].streak;item.best=D.recovery.items[idx].best;item.lastClean=D.recovery.items[idx].lastClean;item.history=D.recovery.items[idx].history||{};item.todayClean=D.recovery.items[idx].todayClean;D.recovery.items[idx]=item;}}
-  else D.recovery.items.push(item);
-  save();closeOverlay('rec-overlay');renderRecovery();checkAllRewards();
+  if(editingRecId){rememberUndo('التراجع عن تعديل عنصر تعافي');const idx=D.recovery.items.findIndex(x=>x.id===editingRecId);if(idx!==-1){item.streak=D.recovery.items[idx].streak;item.best=D.recovery.items[idx].best;item.lastClean=D.recovery.items[idx].lastClean;item.history=D.recovery.items[idx].history||{};item.todayClean=D.recovery.items[idx].todayClean;D.recovery.items[idx]=item;}}
+  else{rememberUndo('التراجع عن إضافة عنصر تعافي');D.recovery.items.push(item);}
+  save();closeOverlay('rec-overlay');renderRecovery();checkAllRewards();renderUndoCard();
 }
-function deleteRec(id){if(!confirm('تمسح التعافي ده؟'))return;D.recovery.items=D.recovery.items.filter(r=>r.id!==id);save();renderRecovery();renderRewards();}
+function deleteRec(id){if(!confirm('تمسح التعافي ده؟'))return;rememberUndo('استرجاع عنصر التعافي المحذوف');D.recovery.items=D.recovery.items.filter(r=>r.id!==id);save();renderRecovery();renderRewards();renderUndoCard();}
 function togRec(id,clean){
   const item=D.recovery.items.find(x=>x.id===id);if(!item)return;
   const t=todayKey();item.todayDate=t;
-  if(item.todayClean===clean){item.todayClean=null;}
-  else{
-    item.todayClean=clean;item.history[t]=clean;
-    if(clean){
-      const y=yestKey();
-      if(item.lastClean===y){item.streak++;}
-      else if(item.lastClean!==t){item.streak=1;}
-      item.lastClean=t;
-      if(item.streak>item.best)item.best=item.streak;
-      D.points+=15;showFP('+15 🌱',document.getElementById('rec-container'));
-    }else{item.streak=0;}
-  }
-  save();renderRecovery();checkAllRewards();renderRewards();updHome();
+  if(item.todayClean===clean){showToast('تم تسجيل اختيار اليوم بالفعل. لو محتاج ترجع استخدم زر التراجع.');return;}
+  rememberUndo(`التراجع عن تسجيل التعافي: ${item.name}`);
+  item.todayClean=clean;item.history[t]=clean;
+  if(clean){
+    const y=yestKey();
+    if(item.lastClean===y){item.streak++;}
+    else if(item.lastClean!==t){item.streak=1;}
+    item.lastClean=t;
+    if(item.streak>item.best)item.best=item.streak;
+    D.points+=15;showFP('+15 🌱',document.getElementById('rec-container'));
+  }else{item.streak=0;}
+  save();renderRecovery();checkAllRewards();renderRewards();updHome();renderUndoCard();
 }
 function renderRecovery(){
   const container=document.getElementById('rec-container');if(!container)return;
@@ -2648,7 +2974,7 @@ function renderRecCard(r){
   const streak=r.streak||0;
   const hist=r.history||{};const last28=[];for(let i=27;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const k=`${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`;last28.push({k,v:hist[k]});}
   const gridHtml=last28.map(({v})=>`<div style="width:100%;aspect-ratio:1;border-radius:4px;background:${v===true?'var(--green)':v===false?'var(--red)':'var(--surface2)'};border:1px solid var(--border)"></div>`).join('');
-  return`<div class="rec-item"><div class="rec-header"><div class="rec-icon">${r.icon||'🚫'}</div><div style="flex:1"><div class="rec-name">${r.name}</div><div class="rec-streak">استريك: 🔥 ${streak} يوم | أفضل: ${r.best||0} يوم</div>${r.desc?`<div class="rec-streak">${r.desc}</div>`:''}</div><div style="display:flex;gap:6px"><button class="course-act-btn" onclick="openRecDrawer('${r.id}')">✏️</button><button class="course-act-btn" onclick="deleteRec('${r.id}')">🗑️</button></div></div><div class="sl-label" style="margin-top:4px;margin-bottom:8px">سجّل اليوم</div><div style="display:flex;gap:10px;margin-bottom:14px"><button class="rec-check-btn${clean===true?' clean':' pending'}" onclick="togRec('${r.id}',true)">✅ نظيف اليوم</button><button class="rec-check-btn${clean===false?' failed':' pending'}" onclick="togRec('${r.id}',false)">❌ وقعت فيه</button></div><div style="display:grid;grid-template-columns:repeat(14,1fr);gap:3px">${gridHtml}</div></div>`;
+  return`<div class="rec-item"><div class="rec-header"><div class="rec-icon">${safeText(r.icon||'🚫')}</div><div style="flex:1"><div class="rec-name">${safeText(r.name,'عادة')}</div><div class="rec-streak">استريك: 🔥 ${streak} يوم | أفضل: ${r.best||0} يوم</div>${r.desc?`<div class="rec-streak">${safeText(r.desc)}</div>`:''}</div><div style="display:flex;gap:6px"><button class="course-act-btn" onclick="openRecDrawer('${r.id}')">✏️</button><button class="course-act-btn" onclick="deleteRec('${r.id}')">🗑️</button></div></div><div class="sl-label" style="margin-top:4px;margin-bottom:8px">سجّل اليوم</div><div style="display:flex;gap:10px;margin-bottom:14px"><button class="rec-check-btn${clean===true?' clean':' pending'}" onclick="togRec('${r.id}',true)">✅ نظيف اليوم</button><button class="rec-check-btn${clean===false?' failed':' pending'}" onclick="togRec('${r.id}',false)">❌ وقعت فيه</button></div><div style="display:grid;grid-template-columns:repeat(14,1fr);gap:3px">${gridHtml}</div></div>`;
 }
 
 // ═══════════════════════ CUSTOM GOALS ═══════════════════════
@@ -2696,13 +3022,15 @@ function saveCustomGoal(){
   if(editingCustomId){
     const prev=D.customGoals.find(x=>x.id===editingCustomId);
     if(prev){item.streak=prev.streak||0;item.best=prev.best||0;item.lastDone=prev.lastDone||null;item.todayDone=prev.todayDone||false;item.todayDate=prev.todayDate||todayKey();}
+    rememberUndo('التراجع عن تعديل مسار');
     const idx=D.customGoals.findIndex(x=>x.id===editingCustomId);if(idx!==-1)D.customGoals[idx]=item;
   }else{
+    rememberUndo('التراجع عن إضافة مسار');
     D.customGoals.push(item);
   }
-  save();closeOverlay('custom-overlay');renderCustomGoals();updHomeGrid();
+  save();closeOverlay('custom-overlay');renderCustomGoals();updHomeGrid();renderUndoCard();
 }
-function deleteCustomGoal(id){if(!confirm('تمسح المسار ده؟'))return;D.customGoals=D.customGoals.filter(x=>x.id!==id);save();renderCustomGoals();updHomeGrid();}
+function deleteCustomGoal(id){if(!confirm('تمسح المسار ده؟'))return;rememberUndo('استرجاع المسار المحذوف');D.customGoals=D.customGoals.filter(x=>x.id!==id);save();renderCustomGoals();updHomeGrid();renderUndoCard();}
 function normalizeCustomDaily(item){
   const t=todayKey();
   if(item.todayDate!==t){item.todayDate=t;item.todayDone=false;}
@@ -2710,21 +3038,19 @@ function normalizeCustomDaily(item){
 function toggleCustomGoalDone(id){
   const item=D.customGoals.find(x=>x.id===id);if(!item)return;
   normalizeCustomDaily(item);
-  if(item.todayDone){
-    item.todayDone=false;
-  }else{
-    item.todayDone=true;
-    D.points+=item.points||20;
-    if(item.streakEnabled){
-      const y=yestKey();
-      if(item.lastDone===y)item.streak=(item.streak||0)+1;
-      else if(item.lastDone!==todayKey())item.streak=1;
-      item.lastDone=todayKey();
-      if(item.streak>(item.best||0))item.best=item.streak;
-    }
-    showFP(`+${item.points||20} ${item.icon||'🧩'}`,document.getElementById('custom-container'));
+  if(item.todayDone){showToast('تم تسجيل الإنجاز اليوم بالفعل. لو عايز ترجع استخدم زر التراجع.');return;}
+  rememberUndo(`التراجع عن إنجاز ${item.name}`);
+  item.todayDone=true;
+  D.points+=item.points||20;
+  if(item.streakEnabled){
+    const y=yestKey();
+    if(item.lastDone===y)item.streak=(item.streak||0)+1;
+    else if(item.lastDone!==todayKey())item.streak=1;
+    item.lastDone=todayKey();
+    if(item.streak>(item.best||0))item.best=item.streak;
   }
-  save();renderCustomGoals();updHome();
+  showFP(`+${item.points||20} ${item.icon||'🧩'}`,document.getElementById('custom-container'));
+  save();renderCustomGoals();updHome();renderUndoCard();
 }
 function renderCustomGoals(){
   const container=document.getElementById('custom-container');if(!container)return;
@@ -2738,10 +3064,10 @@ function renderCustomGoals(){
   container.innerHTML=list.map(item=>`<div class="custom-card reveal">
     <div class="custom-top">
       <div class="custom-head" style="margin-bottom:0">
-        <div class="custom-icon">${item.icon||'🧩'}</div>
+        <div class="custom-icon">${safeText(item.icon||'🧩')}</div>
         <div>
-          <div class="custom-name">${item.name}</div>
-          <div class="custom-desc">${item.desc||'مسار مرن تصممه بطريقتك.'}</div>
+          <div class="custom-name">${safeText(item.name,'مسار')}</div>
+          <div class="custom-desc">${safeText(item.desc||'مسار مرن تصممه بطريقتك.')}</div>
         </div>
       </div>
       <div style="display:flex;gap:6px">
@@ -2760,10 +3086,94 @@ function renderCustomGoals(){
       <div class="custom-meta-box"><b>${item.points||20}</b><span>لكل إنجاز</span></div>
     </div>
     <div class="custom-check">
-      <button class="btn ${item.todayDone?'btn-ghost':'btn-gold'}" onclick="toggleCustomGoalDone('${item.id}')">${item.todayDone?'↩️ إلغاء إنجاز اليوم':'✅ سجل إنجاز اليوم'}</button>
+      <button class="btn ${item.todayDone?'btn-ghost':'btn-gold'}" onclick="toggleCustomGoalDone('${item.id}')">${item.todayDone?'✅ تم تسجيله اليوم':'✅ سجل إنجاز اليوم'}</button>
     </div>
   </div>`).join('')+'<div style="height:80px"></div>';
   requestAnimationFrame(initInteractiveUI);
+}
+
+// ═══════════════════════ NOTES / FEEDBACK ═══════════════════════
+function renderNoteMentions(){
+  const wrap=document.getElementById('note-mentions');
+  if(!wrap)return;
+  wrap.innerHTML=NOTE_MENTIONS.map(label=>`<button class="day-chip" onclick="insertMention('${label}')">@${label}</button>`).join('');
+}
+function insertMention(label){
+  const input=document.getElementById('note-input');
+  if(!input)return;
+  const insert=`@${label} `;
+  const start=input.selectionStart??input.value.length;
+  const end=input.selectionEnd??input.value.length;
+  input.value=input.value.slice(0,start)+insert+input.value.slice(end);
+  input.focus();
+  const pos=start+insert.length;
+  input.setSelectionRange(pos,pos);
+}
+function clearNoteDraft(){
+  const input=document.getElementById('note-input');
+  if(input)input.value='';
+}
+function saveNote(){
+  const input=document.getElementById('note-input');
+  if(!input)return;
+  const text=input.value.trim();
+  if(!text){showToast('اكتب النوت الأول');return;}
+  rememberUndo('حذف آخر نوت محفوظة');
+  if(!D.notes)D.notes=[];
+  D.notes.unshift({id:uid(),text,createdAt:Date.now()});
+  save();
+  clearNoteDraft();
+  renderNotes();
+  renderUndoCard();
+  showToast('تم حفظ النوت');
+}
+function deleteNote(id){
+  const note=(D.notes||[]).find(x=>x.id===id);
+  if(!note)return;
+  rememberUndo('استرجاع النوت المحذوفة');
+  D.notes=(D.notes||[]).filter(x=>x.id!==id);
+  save();
+  renderNotes();
+  renderUndoCard();
+}
+function renderNotes(){
+  renderNoteMentions();
+  const container=document.getElementById('notes-container');
+  const cnt=document.getElementById('notes-cnt');
+  if(cnt)cnt.textContent=`${fmtNum((D.notes||[]).length)} ملاحظة`;
+  if(!container)return;
+  const notes=D.notes||[];
+  if(!notes.length){
+    container.innerHTML=`<div class="note-empty">لا توجد نوتات بعد. ابدأ أول ملاحظة ليومك الآن.</div>`;
+    requestAnimationFrame(initInteractiveUI);
+    return;
+  }
+  container.innerHTML=notes.map(note=>`<div class="note-item reveal"><div class="note-head"><div class="note-date">🗓️ ${fmtDateTime(note.createdAt)}</div><button class="course-act-btn" onclick="deleteNote('${note.id}')">🗑️</button></div><div class="note-body">${decorateNoteText(note.text)}</div></div>`).join('');
+  requestAnimationFrame(initInteractiveUI);
+}
+function renderUndoCard(){
+  const card=document.getElementById('undo-card');
+  if(!card)return;
+  const last=getLastUndo();
+  if(!last){
+    card.innerHTML=`<div style="font-weight:800">لا توجد تعديلات جاهزة للتراجع</div><div class="undo-meta">أول ما تسجل تقدم أو تضيف نوت أو تغير حالة، هتظهر هنا آخر خطوة مع زر التراجع.</div>`;
+    return;
+  }
+  card.innerHTML=`<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start"><div><div style="font-weight:800">آخر إجراء: ${safeText(last.label)}</div><div class="undo-meta">اتسجل الساعة ${formatUndoTime(last.time)}. التراجع عليه بيرجع النقاط والحالة زي ما كانت بعد رسالة تأكيد.</div></div><button class="btn btn-ghost" style="white-space:nowrap" onclick="undoLastAction()">↩️ تراجع</button></div>`;
+}
+function sendFeedback(){
+  const type=(document.getElementById('feedback-type')?.value||'اقتراح').trim();
+  const input=document.getElementById('feedback-input');
+  const text=input?.value.trim()||'';
+  if(!text){showToast('اكتب الفيدباك الأول');return;}
+  if(!D.feedbackInbox)D.feedbackInbox=[];
+  D.feedbackInbox.unshift({id:uid(),type,text,createdAt:Date.now()});
+  save();
+  const subject=encodeURIComponent(`فيدباك مستقبلي - ${type}`);
+  const body=encodeURIComponent(`${type}\n${text}\n\nالتاريخ: ${fmtDateTime(Date.now())}`);
+  try{window.location.href=`mailto:mohamed.abdelmksod@gmail.com?subject=${subject}&body=${body}`;}catch(_){}
+  if(input)input.value='';
+  showToast('تم حفظ الفيدباك وتجهيز رسالة الإرسال');
 }
 
 // ═══════════════════════ REWARDS ═══════════════════════
@@ -2804,8 +3214,8 @@ function updRwdCondUI(){
   extra.style.display=type&&type!=='manual'?'block':'none';
   if(!type||type==='manual'){valField.style.display='none';refField.style.display='none';return;}
   if(type==='pray_streak'){valField.style.display='block';valLbl.textContent='عدد الأيام المتتالية';refField.style.display='none';}
-  else if(type==='rec_streak'){valField.style.display='block';valLbl.textContent='عدد الأيام المتتالية';refField.style.display='block';refLbl.textContent='اختر العادة';refSel.innerHTML=`<option value="">اختر</option>${(D.recovery.items||[]).map(r=>`<option value="${r.id}">${r.icon} ${r.name}</option>`).join('')}`;}
-  else if(type==='course_pct'){valField.style.display='block';valLbl.textContent='النسبة المئوية (%)';refField.style.display='block';refLbl.textContent='اختر الكورس';refSel.innerHTML=`<option value="">اختر</option>${(D.courses||[]).map(c=>`<option value="${c.id}">${c.icon} ${c.name}</option>`).join('')}`;}
+  else if(type==='rec_streak'){valField.style.display='block';valLbl.textContent='عدد الأيام المتتالية';refField.style.display='block';refLbl.textContent='اختر العادة';refSel.innerHTML=`<option value="">اختر</option>${(D.recovery.items||[]).map(r=>`<option value="${escapeAttr(r.id)}">${safeText(r.icon||'🚫')} ${safeText(r.name,'عادة')}</option>`).join('')}`;}
+  else if(type==='course_pct'){valField.style.display='block';valLbl.textContent='النسبة المئوية (%)';refField.style.display='block';refLbl.textContent='اختر الكورس';refSel.innerHTML=`<option value="">اختر</option>${(D.courses||[]).map(c=>`<option value="${escapeAttr(c.id)}">${safeText(c.icon||'📚')} ${safeText(c.name,'كورس')}</option>`).join('')}`;}
   else if(type==='gym_attend'){valField.style.display='block';valLbl.textContent='عدد أيام الحضور في الشهر';refField.style.display='none';}
   else if(type==='points'){valField.style.display='block';valLbl.textContent='عدد النقاط';refField.style.display='none';}
 }
@@ -2854,7 +3264,7 @@ function renderRewards(){
       const rw=c.rewards?.[`r${pct}`];if(!rw)return;
       const target=Math.round(c.total*pct/100);
       const reached=c.done>=target;
-      courseRewards.push({courseName:c.name,courseIcon:c.icon||'📚',courseColor:c.color||'var(--blue)',pct,reward:rw,reached,target,done:c.done});
+      courseRewards.push({courseName:c.name,courseIcon:c.icon||'📚',courseColor:safeColor(c.color,'#5eaeff'),pct,reward:rw,reached,target,done:c.done,pts:courseMilestonePoints(c.total,pct)});
     });
   });
 
@@ -2865,11 +3275,11 @@ function renderRewards(){
       <div style="display:flex;align-items:center;gap:12px">
         <div style="font-size:36px;flex-shrink:0">${cr.reached?'✅':'🔒'}</div>
         <div style="flex:1">
-          <div class="reward-title">${cr.reward}</div>
-          <div class="reward-cond">${cr.courseIcon} ${cr.courseName} — عند ${cr.pct}% (${cr.done}/${cr.target})</div>
-          <div style="margin-top:4px;font-size:12px;color:${cr.reached?'var(--gold)':'var(--dim)'}">${cr.reached?'🎉 تم تحقيقها!':'🔒 لم تُفتح بعد'}</div>
+          <div class="reward-title">${safeText(cr.reward)}</div>
+          <div class="reward-cond">${safeText(cr.courseIcon)} ${safeText(cr.courseName,'كورس')} — عند ${cr.pct}% (${cr.done}/${cr.target})</div>
+          <div style="margin-top:4px;font-size:12px;color:${cr.reached?'var(--gold)':'var(--dim)'}">${cr.reached?'🎉 تم تحقيقها!':'🔒 لم تُفتح بعد'} • +${cr.pts} نقطة فعلية</div>
         </div>
-        <div style="background:${cr.courseColor}22;color:${cr.courseColor};border-radius:10px;padding:5px 10px;font-family:Space Grotesk;font-weight:700;font-size:13px;flex-shrink:0">${cr.pct}%</div>
+        <div style="background:${cr.courseColor}22;color:${cr.courseColor};border-radius:10px;padding:5px 10px;font-family:Cairo;font-weight:700;font-size:13px;flex-shrink:0">${cr.pct}%</div>
       </div></div>`).join('');
   }
 
@@ -2878,15 +3288,15 @@ function renderRewards(){
   let myRewardsSection='';
   if(sorted.length>0){
     myRewardsSection=`<div class="section-divider">مكافآتي الشخصية</div>`+
-    sorted.map(r=>`<div class="reward-card ${r.achieved?'unlocked':'locked'}"><div style="display:flex;align-items:center;gap:12px"><div class="reward-ico" style="margin:0;font-size:36px">${r.icon||'🏆'}</div><div style="flex:1"><div class="reward-title">${r.name}</div><div class="reward-cond">${getCondLabel(r)}</div><div style="margin-top:4px;font-size:12px;color:${r.achieved?'var(--gold)':'var(--dim)'}">${r.achieved?`🎉 +${r.pts||100} نقطة — مفتوح!`:`🔒 ${r.pts||100} نقطة عند الفتح`}</div></div></div><div class="reward-edit-btns"><button class="btn btn-ghost" style="flex:1;font-size:12px;padding:8px" onclick="openRwdDrawer('${r.id}')">✏️ تعديل</button><button class="btn btn-red" style="font-size:12px;padding:8px" onclick="deleteReward('${r.id}')">🗑️</button>${r.condType==='manual'&&!r.achieved?`<button class="btn btn-gold" style="flex:1;font-size:12px;padding:8px" onclick="unlockManual('${r.id}')">🏆 افتح!</button>`:''}</div></div>`).join('');
+    sorted.map(r=>`<div class="reward-card ${r.achieved?'unlocked':'locked'}"><div style="display:flex;align-items:center;gap:12px"><div class="reward-ico" style="margin:0;font-size:36px">${safeText(r.icon||'🏆')}</div><div style="flex:1"><div class="reward-title">${safeText(r.name,'مكافأة')}</div><div class="reward-cond">${getCondLabel(r)}</div><div style="margin-top:4px;font-size:12px;color:${r.achieved?'var(--gold)':'var(--dim)'}">${r.achieved?`🎉 +${r.pts||100} نقطة — مفتوح!`:`🔒 ${r.pts||100} نقطة عند الفتح`}</div></div></div><div class="reward-edit-btns"><button class="btn btn-ghost" style="flex:1;font-size:12px;padding:8px" onclick="openRwdDrawer('${r.id}')">✏️ تعديل</button><button class="btn btn-red" style="font-size:12px;padding:8px" onclick="deleteReward('${r.id}')">🗑️</button>${r.condType==='manual'&&!r.achieved?`<button class="btn btn-gold" style="flex:1;font-size:12px;padding:8px" onclick="unlockManual('${r.id}')">🏆 افتح!</button>`:''}</div></div>`).join('');
   }
   container.innerHTML=courseSection+myRewardsSection+'<div style="height:80px"></div>';
   requestAnimationFrame(initInteractiveUI);
 }
 function getCondLabel(r){
   if(r.condType==='pray_streak')return`🙏 استريك الصلاة ${r.condValue} يوم`;
-  if(r.condType==='rec_streak'){const item=(D.recovery.items||[]).find(x=>x.id===r.condRef);return`🌱 استريك التعافي${item?' — '+item.name:''} ${r.condValue} يوم`;}
-  if(r.condType==='course_pct'){const c=(D.courses||[]).find(x=>x.id===r.condRef);return`📚 إتمام${c?' — '+c.name:''} ${r.condValue}%`;}
+  if(r.condType==='rec_streak'){const item=(D.recovery.items||[]).find(x=>x.id===r.condRef);return`🌱 استريك التعافي${item?' — '+safeText(item.name,'عادة'):''} ${r.condValue} يوم`;}
+  if(r.condType==='course_pct'){const c=(D.courses||[]).find(x=>x.id===r.condRef);return`📚 إتمام${c?' — '+safeText(c.name,'كورس'):''} ${r.condValue}%`;}
   if(r.condType==='gym_attend')return`💪 حضور الجيم ${r.condValue} يوم في الشهر`;
   if(r.condType==='points')return`⭐ تجمع ${r.condValue} نقطة`;
   if(r.condType==='manual')return`🎯 يدوي — اضغط لتفتحه`;
@@ -2921,21 +3331,21 @@ function drawProgressChart(){
     ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+barW-r,y);ctx.quadraticCurveTo(x+barW,y,x+barW,y+r);ctx.lineTo(x+barW,pad.t+chartH);ctx.lineTo(x,pad.t+chartH);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();ctx.fill();
     if(isToday){ctx.strokeStyle=isLight?'#d4a000':'#f5c842';ctx.lineWidth=2;ctx.stroke();}
     ctx.fillStyle=isToday?(isLight?'#d4a000':'#f5c842'):(isLight?'rgba(107,122,154,0.9)':'rgba(90,101,128,0.9)');
-    ctx.font=`${isToday?700:400} 10px Tajawal,sans-serif`;ctx.textAlign='center';ctx.fillText(d.label,x+barW/2,pad.t+chartH+14);
-    if(d.prayers>0){ctx.fillStyle=d.prayers===5?'#3dd68c':(isLight?'#d4a000':'#f5c842');ctx.font='bold 9px Space Grotesk,sans-serif';ctx.textAlign='center';ctx.fillText(d.prayers+'/5',x+barW/2,y-4);}
+    ctx.font=`${isToday?700:400} 10px Cairo,sans-serif`;ctx.textAlign='center';ctx.fillText(d.label,x+barW/2,pad.t+chartH+14);
+    if(d.prayers>0){ctx.fillStyle=d.prayers===5?'#3dd68c':(isLight?'#d4a000':'#f5c842');ctx.font='bold 9px Cairo,sans-serif';ctx.textAlign='center';ctx.fillText(d.prayers+'/5',x+barW/2,y-4);}
   });
-  ctx.fillStyle=isLight?'rgba(107,122,154,0.7)':'rgba(90,101,128,0.8)';ctx.font='10px Tajawal';ctx.textAlign='right';ctx.fillText('صلوات آخر 7 أيام',w-pad.r,pad.t-6);
+  ctx.fillStyle=isLight?'rgba(107,122,154,0.7)':'rgba(90,101,128,0.8)';ctx.font='10px Cairo';ctx.textAlign='right';ctx.fillText('صلوات آخر 7 أيام',w-pad.r,pad.t-6);
 }
 
 // ═══════════════════════ HOME ═══════════════════════
 function updHome(){
-  const ptsEl=document.getElementById('h-pts');if(ptsEl)ptsEl.textContent=D.points.toLocaleString('ar-EG');
-  const stEl=document.getElementById('h-streak');if(stEl)stEl.textContent=D.prayers.streak;
-  const stEl2=document.getElementById('h-streak2');if(stEl2)stEl2.textContent=D.prayers.streak;
+  const ptsEl=document.getElementById('h-pts');if(ptsEl)ptsEl.textContent=fmtNum(D.points);
+  const stEl=document.getElementById('h-streak');if(stEl)stEl.textContent=fmtNum(D.prayers.streak);
+  const stEl2=document.getElementById('h-streak2');if(stEl2)stEl2.textContent=fmtNum(D.prayers.streak);
   const hg=document.getElementById('hero-greeting');if(hg)hg.textContent=getDailyGreeting();
   const pc=D.prayers.today.filter(Boolean).length;
-  const hf=document.getElementById('hero-focus');if(hf)hf.textContent=pc+'/5';
-  const hsP=document.getElementById('hs-pray');if(hsP)hsP.textContent=pc+'/5';
+  const hf=document.getElementById('hero-focus');if(hf)hf.textContent=`${toArabicDigits(pc)}/${toArabicDigits(5)}`;
+  const hsP=document.getElementById('hs-pray');if(hsP)hsP.textContent=`${toArabicDigits(pc)}/${toArabicDigits(5)}`;
   const now=new Date(),mk=gymMK(now.getFullYear(),now.getMonth()),tg=D.gym.months[mk]?.days[now.getDate()];
   const hsG=document.getElementById('hs-gym');if(hsG)hsG.textContent=tg==='attended'?'✅':tg==='absent'?'❌':'—';
   updNextReward();
@@ -2946,7 +3356,7 @@ function updHomeGrid(){
   if(D.modules.prayer!==false)cards.push(`<div class="scard"><div class="sv" style="color:var(--green)" id="hs-pray">0/5</div><div class="sl">الصلاة 🤲</div></div>`);
   if(D.modules.gym!==false)cards.push(`<div class="scard"><div class="sv" style="color:var(--orange)" id="hs-gym">—</div><div class="sl">الجيم 💪</div></div>`);
   if(D.modules.courses!==false){
-    (D.courses||[]).slice(0,2).forEach(c=>{const pct=Math.round(c.done/c.total*100);cards.push(`<div class="scard"><div class="sv" style="color:${c.color||'var(--blue)'}">${pct}%</div><div class="sl">${c.icon||'📚'} ${c.name.slice(0,10)}${c.name.length>10?'..':''}</div></div>`);});
+    (D.courses||[]).slice(0,2).forEach(c=>{const total=Math.max(1,safeInt(c.total,1));const done=Math.max(0,Math.min(total,safeInt(c.done,0)));const pct=Math.round(done/total*100);const shortName=String(c.name||'').slice(0,10);cards.push(`<div class="scard"><div class="sv" style="color:${safeColor(c.color,'#5eaeff')}">${pct}%</div><div class="sl">${safeText(c.icon||'📚')} ${safeText(shortName)}${String(c.name||'').length>10?'..':''}</div></div>`);});
   }
   grid.innerHTML=cards.join('');
   updHome();
@@ -2954,13 +3364,13 @@ function updHomeGrid(){
 function updNextReward(){
   const el=document.getElementById('next-reward');if(!el)return;
   const next=(D.rewards||[]).find(r=>!r.achieved);
-  if(next)el.innerHTML=`<div style="text-align:center;padding:4px 0"><div style="font-size:36px">${next.icon||'🏆'}</div><div style="font-weight:800;margin-top:8px;font-size:15px">${next.name}</div><div style="color:var(--dim);font-size:12px;margin-top:4px">${getCondLabel(next)}</div><div style="margin-top:8px;color:var(--gold);font-size:12px;font-weight:700">+${next.pts||100} نقطة عند الفتح 🏆</div></div>`;
+  if(next)el.innerHTML=`<div style="text-align:center;padding:4px 0"><div style="font-size:36px">${safeText(next.icon||'🏆')}</div><div style="font-weight:800;margin-top:8px;font-size:15px">${safeText(next.name,'مكافأة')}</div><div style="color:var(--dim);font-size:12px;margin-top:4px">${getCondLabel(next)}</div><div style="margin-top:8px;color:var(--gold);font-size:12px;font-weight:700">+${next.pts||100} نقطة عند الفتح 🏆</div></div>`;
   else if(D.rewards.length===0)el.innerHTML=`<div style="text-align:center;padding:4px 0"><div style="font-size:34px">🎯</div><div style="font-weight:700;margin-top:8px">أضف مكافآتك من صفحة مكافآتي!</div></div>`;
   else el.innerHTML=`<div style="text-align:center;padding:4px 0"><div style="font-size:34px">🏆</div><div style="font-weight:800;margin-top:8px">جمعت كل المكافآت! أسطورة 🎊</div></div>`;
 }
 
 // ═══════════════════════ SYNC ═══════════════════════
-function syncAll(){updateModuleVisibility();updHome();updPrayUI();if(D.uni&&D.uni.gpa!==null&&D.uni.gpa!==undefined){const gi=document.getElementById('gpa-in');if(gi)gi.value=D.uni.gpa;upGPA(D.uni.gpa);}}
+function syncAll(){updateModuleVisibility();updHome();updPrayUI();renderUndoCard();if(D.uni&&D.uni.gpa!==null&&D.uni.gpa!==undefined){const gi=document.getElementById('gpa-in');if(gi)gi.value=D.uni.gpa;upGPA(D.uni.gpa);}}
 
 // ═══════════════════════ NOTIFICATIONS ═══════════════════════
 function toggleNotif(){
