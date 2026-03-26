@@ -58,7 +58,7 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 .btn-ghost{background:rgba(255,255,255,.05);color:var(--text);border:1px solid var(--line)}
 .btn-red{background:rgba(255,107,107,.12);color:var(--red);border:1px solid rgba(255,107,107,.22)}
 .btn-blue{background:rgba(94,174,255,.12);color:var(--blue);border:1px solid rgba(94,174,255,.22)}
-.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:18px 0}
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin:18px 0}
 .stat{padding:18px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
 .stat .v{font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700}
 .stat .l{font-size:12px;color:var(--dim);margin-top:6px}
@@ -112,6 +112,7 @@ tbody tr.active{background:rgba(94,174,255,.09)}
 .badge-row{display:flex;gap:8px;flex-wrap:wrap}
 .action-row{display:flex;gap:10px;flex-wrap:wrap}
 .spacer{flex:1}
+pre.raw-json{margin:0;white-space:pre-wrap;word-break:break-word;font-size:12px;line-height:1.7;color:var(--text)}
 @media (max-width:1050px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}}
 @media (max-width:720px){.stats{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
 @media (max-width:520px){.stats{grid-template-columns:1fr}.title{font-size:28px}.toolbar{align-items:stretch}.toolbar-left,.toolbar-right{width:100%}.search{min-width:100%}}
@@ -154,6 +155,7 @@ tbody tr.active{background:rgba(94,174,255,.09)}
         <div class="stat"><div class="v" id="realUsers">0</div><div class="l">حسابات حقيقية</div></div>
         <div class="stat"><div class="v" id="totalPoints">0</div><div class="l">إجمالي النقاط</div></div>
         <div class="stat"><div class="v" id="avgPrayer">0%</div><div class="l">متوسط التزام الصلاة</div></div>
+        <div class="stat"><div class="v" id="feedbackCount">0</div><div class="l">رسائل الفيدباك</div></div>
       </div>
       <div id="globalMsg"></div>
     </div>
@@ -208,6 +210,9 @@ tbody tr.active{background:rgba(94,174,255,.09)}
       <div class="panel">
         <h2 class="section-title">ملخص سريع</h2>
         <div class="kv" id="quickSummary"></div>
+        <div style="height:14px"></div>
+        <h2 class="section-title">آخر الفيدباك</h2>
+        <div id="feedbackFeed" class="list"></div>
         <div style="height:14px"></div>
         <h2 class="section-title">المستخدم المحدد</h2>
         <div id="selectedUserPanel" class="empty">اختر مستخدمًا من الجدول لعرض التفاصيل والتحكم.</div>
@@ -272,6 +277,30 @@ tbody tr.active{background:rgba(94,174,255,.09)}
           <div class="list" id="rewardsList"></div>
         </div>
       </div>
+
+      <div style="height:14px"></div>
+      <div class="grid2">
+        <div class="kv-box">
+          <div class="section-title" style="font-size:15px">المسارات الخاصة</div>
+          <div class="list" id="customGoalsList"></div>
+        </div>
+        <div class="kv-box">
+          <div class="section-title" style="font-size:15px">النوتات</div>
+          <div class="list" id="notesList"></div>
+        </div>
+      </div>
+
+      <div style="height:14px"></div>
+      <div class="grid2">
+        <div class="kv-box">
+          <div class="section-title" style="font-size:15px">سجل الفيدباك</div>
+          <div class="list" id="feedbackList"></div>
+        </div>
+        <div class="kv-box">
+          <div class="section-title" style="font-size:15px">البيانات الخام</div>
+          <pre class="raw-json" id="rawJsonBox"></pre>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -296,6 +325,7 @@ let filteredUsers = [];
 let selectedUserId = null;
 let selectedUserData = null;
 let adminRole = 'admin';
+let allFeedback = [];
 
 function fmtDate(value){
   try{
@@ -332,6 +362,9 @@ function isActiveUser(user){
 }
 function safeArray(val){
   return Array.isArray(val) ? val : [];
+}
+function escapeHtml(str=''){
+  return String(str).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
 function appDataOf(user){
   return user.appData || {};
@@ -437,6 +470,7 @@ function renderStats(){
   document.getElementById('realUsers').textContent=real.length.toLocaleString('ar-EG');
   document.getElementById('totalPoints').textContent=totalPoints.toLocaleString('ar-EG');
   document.getElementById('avgPrayer').textContent=`${avgPrayer}%`;
+  document.getElementById('feedbackCount').textContent=allFeedback.length.toLocaleString('ar-EG');
 
   const topPoints=Math.max(0,...users.map(u=>appDataOf(u).points||0));
   const topStreak=Math.max(0,...users.map(u=>appDataOf(u).prayers?.streak||0));
@@ -452,18 +486,42 @@ function renderStats(){
   ].map(item=>`<div class="kv-box">${item}</div>`).join('');
 }
 
+function renderFeedbackFeed(){
+  const box=document.getElementById('feedbackFeed');
+  if(!box)return;
+  if(!allFeedback.length){
+    box.innerHTML='<div class="empty">لا توجد رسائل فيدباك بعد.</div>';
+    return;
+  }
+  box.innerHTML=allFeedback.slice(0,8).map(item=>`
+    <div class="list-item">
+      <strong>${escapeHtml(item.type||'فيدباك')}</strong>
+      <div class="mini muted">${escapeHtml(item.user?.name||item.user?.email||item.user?.uid||'مستخدم')} • ${fmtDate(item.createdAt||item.createdAtMs)}</div>
+      <div style="margin-top:6px;line-height:1.8">${escapeHtml(item.text||'')}</div>
+    </div>
+  `).join('');
+}
+
 async function loadDashboard(){
   showGlobal('جاري تحميل البيانات...', 'var(--blue)');
-  let snap;
+  let snap, feedbackSnap;
   try{
-    snap = await db.collection('users').orderBy('updatedAt','desc').limit(200).get();
+    snap = await db.collection('users').orderBy('updatedAt','desc').limit(1000).get();
   }catch(e){
     console.warn('orderBy failed, fallback to plain get', e);
-    snap = await db.collection('users').limit(200).get();
+    snap = await db.collection('users').limit(1000).get();
+  }
+  try{
+    feedbackSnap = await db.collection('feedback').orderBy('createdAt','desc').limit(400).get();
+  }catch(e){
+    console.warn('feedback orderBy failed, fallback to plain get', e);
+    feedbackSnap = await db.collection('feedback').limit(400).get();
   }
   allUsers=snap.docs.map(doc=>({id:doc.id,...doc.data()}));
+  allFeedback=feedbackSnap.docs.map(doc=>({id:doc.id,...doc.data()}));
   renderStats();
   renderUsersTable();
+  renderFeedbackFeed();
   if(selectedUserId){
     const stillThere=allUsers.find(u=>u.id===selectedUserId);
     if(stillThere){
@@ -494,6 +552,9 @@ function renderSelectedUser(){
   const rewards=safeArray(d.rewards);
   const recovery=safeArray(d.recovery?.items);
   const subjects=safeArray(d.uni?.subjects);
+  const notes=safeArray(d.notes);
+  const customGoals=safeArray(d.customGoals);
+  const feedbackItems=allFeedback.filter(item=>item.user?.uid===u.id || item.user?.email===u.profile?.email);
   panel.innerHTML=`
     <div class="kv">
       <div class="kv-box">
@@ -505,6 +566,10 @@ function renderSelectedUser(){
         <div class="kv-box">استريك الصلاة: ${d.prayers?.streak||0} يوم</div>
         <div class="kv-box">الكورسات: ${courses.length}</div>
         <div class="kv-box">المواد: ${subjects.length}</div>
+        <div class="kv-box">المسارات الخاصة: ${customGoals.length}</div>
+        <div class="kv-box">النوتات: ${notes.length}</div>
+        <div class="kv-box">الفيدباك: ${feedbackItems.length}</div>
+        <div class="kv-box">التعافي: ${recovery.length}</div>
       </div>
       <div class="action-row">
         <button class="btn btn-blue" onclick="openDrawer()">عرض التفاصيل والتحكم</button>
@@ -563,6 +628,17 @@ function openDrawer(){
   fillList('rewardsList', safeArray(d.rewards).map(r=>{
     return `<div class="list-item"><strong>${r.icon||'🏆'} ${r.name||'مكافأة'}</strong><div class="muted">${r.achieved?'مفتوحة':'مقفولة'} — ${r.pts||0} نقطة</div></div>`;
   }), 'لا توجد مكافآت.');
+  fillList('customGoalsList', safeArray(d.customGoals).map(g=>{
+    return `<div class="list-item"><strong>${g.icon||'🧩'} ${escapeHtml(g.name||'مسار')}</strong><div class="muted">استريك: ${g.streak||0} | نقاط: ${g.points||0}</div>${g.desc?`<div style="margin-top:4px">${escapeHtml(g.desc)}</div>`:''}</div>`;
+  }), 'لا توجد مسارات خاصة.');
+  fillList('notesList', safeArray(d.notes).slice(0,12).map(note=>{
+    return `<div class="list-item"><strong>${fmtDate(note.createdAt)}</strong><div style="margin-top:4px;line-height:1.8">${escapeHtml(note.text||'')}</div></div>`;
+  }), 'لا توجد نوتات.');
+  const feedbackItems=allFeedback.filter(item=>item.user?.uid===u.id || item.user?.email===u.profile?.email);
+  fillList('feedbackList', feedbackItems.slice(0,20).map(item=>{
+    return `<div class="list-item"><strong>${escapeHtml(item.type||'فيدباك')}</strong><div class="muted mini">${fmtDate(item.createdAt||item.createdAtMs)}</div><div style="margin-top:4px;line-height:1.8">${escapeHtml(item.text||'')}</div></div>`;
+  }), 'لا توجد رسائل فيدباك لهذا المستخدم.');
+  document.getElementById('rawJsonBox').textContent=JSON.stringify(u,null,2);
 }
 
 function closeDrawer(event){
