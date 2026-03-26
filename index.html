@@ -648,61 +648,43 @@ body::after{
   line-height:1.8;
   margin-top:6px;
 }
-.note-composer{
-  display:grid;
-  gap:12px;
-}
-.note-textarea{
-  width:100%;
-  background:var(--surface2);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:14px;
-  color:var(--text);
-  font-family:'Cairo',sans-serif;
-  font-size:15px;
-  outline:none;
-  min-height:150px;
-  resize:vertical;
-  line-height:1.9;
-  text-align:right;
-}
-.note-tools{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-}
-.note-item{
-  position:relative;
-  padding:16px 16px 14px;
-  border-radius:20px;
-  background:linear-gradient(180deg,rgba(245,200,66,.08),rgba(255,255,255,.02));
-  border:1px solid rgba(245,200,66,.15);
-  margin-bottom:12px;
-}
-.note-head{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  align-items:flex-start;
-  margin-bottom:10px;
-}
-.note-date{
-  font-size:12px;
-  color:var(--dim);
-  line-height:1.7;
-}
-.note-body{
-  font-size:14px;
-  line-height:2;
-  white-space:pre-wrap;
-  word-break:break-word;
-}
-.note-empty{
-  padding:26px 16px;
-  text-align:center;
-  color:var(--dim);
-}
+.notes-shell{display:grid;gap:14px}
+.notes-home-actions{display:flex;gap:10px;flex-wrap:wrap}
+.notes-grid{display:grid;gap:12px}
+.note-item{position:relative;padding:16px 16px 14px;border-radius:22px;background:linear-gradient(180deg,rgba(245,200,66,.08),rgba(255,255,255,.02));border:1px solid rgba(245,200,66,.15);margin-bottom:0;box-shadow:var(--shadow)}
+.note-item:hover{transform:translateY(-2px)}
+.note-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}
+.note-title{font-size:18px;font-weight:900;line-height:1.4;color:var(--text)}
+.note-date{font-size:12px;color:var(--dim);line-height:1.7}
+.note-body{font-size:14px;line-height:2;white-space:pre-wrap;word-break:break-word}
+.note-preview{color:var(--dim);line-height:1.9;font-size:13px;margin-top:8px}
+.note-card-actions{display:flex;gap:8px;margin-top:12px}
+.note-empty{padding:30px 18px;text-align:center;color:var(--dim);border:1px dashed var(--border);border-radius:22px;background:rgba(255,255,255,.02)}
+.note-editor-screen{display:none}
+.note-editor-screen.show{display:grid;gap:12px}
+.note-editor-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.note-editor-card{background:var(--card);border:1px solid var(--glass-border);border-radius:28px;padding:16px;box-shadow:var(--shadow)}
+.note-title-input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);padding:4px 0 14px;color:var(--text);font-family:'Aref Ruqaa Ink',serif;font-size:28px;font-weight:700;outline:none}
+.note-toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.note-toolbar .btn,.note-toolbar select{min-height:42px}
+.note-toolbar select{background:var(--surface2);border:1px solid var(--border);border-radius:14px;color:var(--text);padding:0 12px;font-family:'Cairo'}
+.note-toolbar .btn{width:auto;padding:10px 14px;justify-content:center}
+.note-mentions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.note-editor-area{min-height:52vh;border-radius:24px;border:1px solid var(--border);padding:22px 18px;outline:none;background:var(--surface2);line-height:2;text-align:right;font-size:16px;overflow:auto}
+.note-editor-area img{max-width:100%;border-radius:16px;display:block;margin:12px auto}
+.note-editor-area audio{width:100%;margin:12px 0}
+.note-editor-area.note-paper-lined{background:
+linear-gradient(transparent 0, transparent 31px, rgba(94,174,255,.16) 32px),
+linear-gradient(90deg, rgba(255,107,107,.18) 0, rgba(255,107,107,.18) 2px, transparent 2px),
+var(--surface2);
+background-size:100% 32px,100% 100%,auto;
+padding-right:24px}
+.note-editor-meta{display:flex;gap:10px;flex-wrap:wrap;color:var(--dim);font-size:12px}
+.note-rich{line-height:2}
+.note-rich img{max-width:100%;border-radius:16px;display:block;margin:12px auto}
+.note-rich audio{width:100%;margin:12px 0}
+.note-composer,.note-textarea,.note-tools{display:none}
+#page-notes > .notes-card{display:none}
 .mention{
   display:inline-flex;
   align-items:center;
@@ -3685,6 +3667,75 @@ async function authLogout(){
 }
 
 // ═══════════════════════ STARTUP ═══════════════════════
+async function pushFeedbackToAdmin(entry){
+  if(!firebaseReady||!db||!auth)return false;
+  if(!auth.currentUser){
+    try{
+      await auth.signInAnonymously();
+    }catch(_){
+      return false;
+    }
+  }
+  const user=auth.currentUser;
+  if(!user)return false;
+  const sess=getSession()||{};
+  await db.collection('feedback').doc(entry.id).set({
+    id:entry.id,
+    type:entry.type,
+    text:entry.text,
+    createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+    createdAtMs:entry.createdAt,
+    status:'new',
+    source:'in-app',
+    user:{
+      uid:user.uid,
+      name:user.displayName||sess.name||'مستخدم',
+      email:user.email||sess.email||'',
+      phone:user.phoneNumber||'',
+      isAnonymous:!!user.isAnonymous
+    }
+  },{merge:true});
+  return true;
+}
+
+async function sendFeedback(){
+  const type=(document.getElementById('feedback-type')?.value||'اقتراح').trim();
+  const input=document.getElementById('feedback-input');
+  const text=input?.value.trim()||'';
+  if(!text){showToast('اكتب الفيدباك الأول');return;}
+  if(!D.feedbackInbox)D.feedbackInbox=[];
+  const entry={id:uid(),type,text,createdAt:Date.now()};
+  D.feedbackInbox.unshift(entry);
+  save();
+  let delivered=false;
+  try{
+    delivered=await pushFeedbackToAdmin(entry);
+    if(delivered&&canUseCloudSync())await syncCloudData(true);
+  }catch(e){
+    console.error('Feedback delivery failed',e);
+  }
+  if(input)input.value='';
+  showToast(delivered?'تم استلام رسالتك بنجاح ✅':'تم حفظ رسالتك وسيتم رفعها عند توفر الاتصال ✅');
+}
+
+async function authGuest(){
+  if(firebaseReady&&auth){
+    try{
+      setAuthLoading(true);
+      const cred=await auth.signInAnonymously();
+      afterFirebaseAuth(cred.user);
+      return;
+    }catch(e){
+      console.error('Anonymous auth failed',e);
+    }finally{
+      setAuthLoading(false);
+    }
+  }
+  const guestUid='guest_'+Date.now();
+  setSession({uid:guestUid,email:'',name:'زائر',isGuest:true});
+  afterAuth();
+}
+
 window.addEventListener('load',()=>{
   applyTheme('dark');
   if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js?v=4').catch(()=>{});
