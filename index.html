@@ -1919,8 +1919,34 @@ function firebaseErrMsg(code){
   };
   return m[code]||('حدث خطأ: '+(code||'unknown'));
 }
+// ═══════════════════════ 1. FIREBASE CONFIG ═══════════════════════
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAKOScMMOQIavUOe70WFAAqLtdr-FAc2h0",
+  authDomain: "mostaqbaly-52957.firebaseapp.com",
+  projectId: "mostaqbaly-52957",
+  storageBucket: "mostaqbaly-52957.firebasestorage.app",
+  messagingSenderId: "731029211860",
+  appId: "1:731029211860:web:f58554a49e3525bbc64941",
+  measurementId: "G-JDCGRKYBMN"
+};
 
-// ═══════════════════════ AUTH UI ═══════════════════════
+// فحص الجاهزية
+const firebaseReady = typeof firebase !== 'undefined' && FIREBASE_CONFIG.apiKey !== '';
+
+let auth, db, recaptchaVerifier, confirmationResult;
+let authMode = 'login'; 
+
+if (firebaseReady) {
+  try {
+    firebase.initializeApp(FIREBASE_CONFIG);
+    auth = firebase.auth();
+    db = firebase.firestore();
+  } catch (e) {
+    console.error("Firebase Init Error:", e.message);
+  }
+}
+
+// ═══════════════════════ 2. AUTH UI FUNCTIONS ═══════════════════════
 function authTab(mode){
   authMode=mode;
   ['login','signup','phone'].forEach(m=>{
@@ -1946,10 +1972,12 @@ function showAuthErr(msg){
   const e=document.getElementById('auth-err');
   if(e){e.textContent=msg;setTimeout(()=>{e.textContent='';},4000);}
 }
+
 function showPhoneErr(msg){
   const e=document.getElementById('phone-err');
   if(e){e.textContent=msg;setTimeout(()=>{e.textContent='';},4000);}
 }
+
 function showOTPErr(msg){
   const e=document.getElementById('otp-err');
   if(e){e.textContent=msg;setTimeout(()=>{e.textContent='';},4000);}
@@ -1961,20 +1989,16 @@ function setAuthLoading(v){
   document.querySelectorAll('#auth-screen .btn,#auth-screen .auth-social').forEach(b=>b.disabled=v);
 }
 
-function showToast(msg){
-  let t=document.getElementById('mq-toast');
-  if(!t){t=document.createElement('div');t.id='mq-toast';t.style.cssText='position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);border-radius:14px;padding:10px 20px;font-size:14px;font-weight:700;color:var(--text);z-index:9999;max-width:90%;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.4);transition:opacity .3s;white-space:nowrap';document.body.appendChild(t);}
-  t.textContent=msg;t.style.opacity='1';clearTimeout(t._to);t._to=setTimeout(()=>{t.style.opacity='0'},2800);
-}
-
 function togglePassVis(){
   const inp=document.getElementById('auth-pass');
   const btn=document.getElementById('pass-eye');
+  if(!inp || !btn) return;
   inp.type=inp.type==='password'?'text':'password';
   btn.textContent=inp.type==='password'?'👁':'🙈';
 }
 
-// ═══════════════════════ EMAIL / PASSWORD ═══════════════════════
+// ═══════════════════════ 3. AUTH LOGIC ═══════════════════════
+
 async function authSubmit(){
   if(!firebaseReady){showAuthErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
   const email=document.getElementById('auth-email').value.trim().toLowerCase();
@@ -1993,11 +2017,10 @@ async function authSubmit(){
       cred=await auth.signInWithEmailAndPassword(email,pass);
     }
     afterFirebaseAuth(cred.user);
-  }catch(e){showAuthErr(firebaseErrMsg(e.code));}
+  }catch(e){showAuthErr(e.message);}
   finally{setAuthLoading(false);}
 }
 
-// ═══════════════════════ GOOGLE ═══════════════════════
 async function authGoogle(){
   if(!firebaseReady){showAuthErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
   setAuthLoading(true);
@@ -2006,11 +2029,10 @@ async function authGoogle(){
     provider.setCustomParameters({prompt:'select_account'});
     const cred=await auth.signInWithPopup(provider);
     afterFirebaseAuth(cred.user);
-  }catch(e){if(e.code!=='auth/cancelled-popup-request')showAuthErr(firebaseErrMsg(e.code));}
+  }catch(e){if(e.code!=='auth/cancelled-popup-request')showAuthErr(e.message);}
   finally{setAuthLoading(false);}
 }
 
-// ═══════════════════════ FACEBOOK ═══════════════════════
 async function authFacebook(){
   if(!firebaseReady){showAuthErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
   setAuthLoading(true);
@@ -2018,11 +2040,12 @@ async function authFacebook(){
     const provider=new firebase.auth.FacebookAuthProvider();
     const cred=await auth.signInWithPopup(provider);
     afterFirebaseAuth(cred.user);
-  }catch(e){if(e.code!=='auth/cancelled-popup-request')showAuthErr(firebaseErrMsg(e.code));}
+  }catch(e){if(e.code!=='auth/cancelled-popup-request')showAuthErr(e.message);}
   finally{setAuthLoading(false);}
 }
 
-// ═══════════════════════ PHONE / OTP ═══════════════════════
+// ═══════════════════════ 4. PHONE AUTH ═══════════════════════
+
 function initRecaptcha(){
   if(!firebaseReady)return;
   try{
@@ -2047,7 +2070,7 @@ async function sendOTP(){
     document.getElementById('phone-step-1').style.display='none';
     document.getElementById('phone-step-2').style.display='flex';
   }catch(e){
-    showPhoneErr(firebaseErrMsg(e.code));
+    showPhoneErr(e.message);
     try{recaptchaVerifier.clear();}catch(_){}
     recaptchaVerifier=null;
     setTimeout(initRecaptcha,500);
@@ -2063,9 +2086,29 @@ async function verifyOTP(){
   try{
     const cred=await confirmationResult.confirm(otp);
     afterFirebaseAuth(cred.user);
-  }catch(e){showOTPErr(firebaseErrMsg(e.code));}
+  }catch(e){showOTPErr(e.message);}
   finally{setAuthLoading(false);}
 }
+
+// ═══════════════════════ 5. APP INIT ═══════════════════════
+window.addEventListener('DOMContentLoaded',()=>{
+  setTimeout(()=>{
+    const splash = document.getElementById('splash');
+    if(splash) splash.style.display='none';
+    
+    if(firebaseReady){
+      auth.onAuthStateChanged(user=>{
+        if(user){
+          afterFirebaseAuth(user);
+        }else{
+          document.getElementById('auth-screen').style.display='flex';
+        }
+      });
+    } else {
+      document.getElementById('auth-screen').style.display='flex';
+    }
+  }, 2000);
+});
 
 // ═══════════════════════ GUEST ═══════════════════════
 function authGuest(){
