@@ -12,8 +12,10 @@
 <link rel="manifest" href="./manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-auth-compat.js"></script>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-analytics.js";
 <style>
 :root{
   --bg:#060b17;--surface:#0b1122;--surface2:#111828;--card:#141f38;
@@ -1852,8 +1854,8 @@ const FIREBASE_CONFIG = {
   appId: "1:731029211860:web:f58554a49e3525bbc64941",
   measurementId: "G-JDCGRKYBMN"
 };
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 // ═══════════════════════ AUTH STATE ═══════════════════════
 let firebaseReady = false;
 let auth = null;
