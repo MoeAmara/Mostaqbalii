@@ -116,7 +116,7 @@ body{font-family:'Tajawal',sans-serif;background:transparent;color:var(--text);m
 .firebase-warn{background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--red);text-align:center;line-height:1.6;display:none}
 
 /* APP */
-#app{display:none;padding-bottom:0;padding-top:78px}
+#app{display:none;padding-bottom:0;padding-top:18px}
 
 /* ONBOARDING */
 #onboarding-screen{position:fixed;inset:0;z-index:1200;display:none;background:
@@ -183,7 +183,7 @@ body{font-family:'Tajawal',sans-serif;background:transparent;color:var(--text);m
 .mini-switch.on::after{transform:translateX(22px)}
 
 /* HAMBURGER FAB */
-#menu-fab{position:fixed;top:14px;left:12px;z-index:230;width:44px;height:44px;border-radius:15px;background:rgba(18,27,49,.78);border:1px solid var(--glass-border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 10px 30px rgba(0,0,0,.24);transition:all .2s;color:var(--text);backdrop-filter:blur(16px) saturate(160%)}
+#menu-fab{position:fixed;top:20px;left:12px;z-index:230;width:44px;height:44px;border-radius:15px;background:rgba(18,27,49,.78);border:1px solid var(--glass-border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 10px 30px rgba(0,0,0,.24);transition:all .2s;color:var(--text);backdrop-filter:blur(16px) saturate(160%)}
 #menu-fab:active{transform:scale(.93)}
 #menu-fab.open{background:rgba(255,107,107,.14);border-color:rgba(255,107,107,.35);box-shadow:0 10px 28px rgba(255,107,107,.18);color:var(--red)}
 
@@ -201,14 +201,15 @@ body{font-family:'Tajawal',sans-serif;background:transparent;color:var(--text);m
 .nav-item.active{background:linear-gradient(135deg,var(--gold-dim),rgba(251,146,60,.06));border-color:rgba(245,200,66,.25);box-shadow:0 4px 16px rgba(245,200,66,.08)}
 .nav-item.active .nl{color:var(--gold)}
 .nav-item.active::before{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);width:4px;height:60%;background:linear-gradient(var(--gold),var(--orange));border-radius:4px 0 0 4px}
-.nav-divider{height:1px;background:var(--border);margin:8px 0}
-.nav-header-lbl{font-size:10px;font-weight:800;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;padding:4px 18px 2px}
+.nav-divider,.nav-header-lbl{display:none}
 
 /* PAGES */
 .page{display:none;padding:0 16px 30px;animation:pgIn .32s cubic-bezier(.25,.86,.4,1)}
 .page.active{display:block}
 @keyframes pgIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 .ph{padding:20px 0 14px 54px;display:flex;align-items:center;justify-content:space-between}
+.home-ph{position:relative;min-height:56px}
+.home-ph .home-streak-wrap{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center}
 .pt{font-size:28px;font-weight:900;letter-spacing:-.5px;background:linear-gradient(135deg,var(--text),rgba(228,233,245,.7));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
 /* CARDS */
@@ -282,24 +283,25 @@ body{font-family:'Tajawal',sans-serif;background:transparent;color:var(--text);m
 
 /* SUBJECT ACCORDION */
 .subj-card{background:var(--card);border:1px solid var(--border);border-radius:17px;margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow)}
-.subj-hdr{display:flex;align-items:center;justify-content:space-between;padding:15px;cursor:pointer;transition:background .2s;user-select:none}
+.subj-hdr{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px;cursor:pointer;transition:background .2s;user-select:none}
 .subj-hdr:active{background:var(--surface2)}
 .subj-title{font-size:14px;font-weight:700}
 .subj-body{display:none;padding:0 15px 15px;border-top:1px solid var(--border)}
 .subj-body.open{display:block}
-.exam-row{display:grid;grid-template-columns:minmax(120px,1fr) minmax(96px,112px) minmax(96px,112px);gap:12px;margin-top:12px;align-items:start;padding:14px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid var(--glass-border)}
+.exam-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;align-items:start;padding:12px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid var(--glass-border)}
 .exam-lbl{font-size:13px;color:var(--dim);font-weight:700}
 .exam-meta{display:flex;flex-direction:column;gap:4px}
 .exam-mini{font-size:10px;color:var(--dim);font-weight:700;letter-spacing:.4px}
 .exam-input-group{display:flex;flex-direction:column;gap:6px}
-.exam-input-label{font-size:10px;color:var(--dim);font-weight:800;text-align:center}
-.exam-status{grid-column:2/4;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.exam-input-group .grade-input{width:100%;max-width:none;min-width:0}
+.exam-input-label{font-size:10px;color:var(--dim);font-weight:800;text-align:right;padding-inline:2px}
+.exam-meta,.exam-status{grid-column:1/-1}
+.exam-status{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .exam-points{padding:5px 9px;border-radius:999px;background:var(--blue-dim);color:var(--blue);font-size:10px;font-weight:800;text-align:center;white-space:nowrap}
-@media (max-width:390px){
-  .exam-row{grid-template-columns:1fr 1fr;gap:8px}
-  .exam-meta{grid-column:1/-1}
-  .exam-status{grid-column:1/-1}
-  .exam-points{grid-column:1/-1}
+@media (max-width:430px){
+  .subj-body{padding:0 12px 12px}
+  .subj-hdr{padding:14px 12px}
+  .exam-row{gap:8px;padding:10px}
 }
 
 /* GYM CALENDAR */
@@ -801,11 +803,14 @@ body::after{
   50%{transform:translateY(-3px) scale(1.005)}
 }
 @media (max-width:390px){
-  #app{padding-top:82px}
+  #app{padding-top:18px}
   .hero-title{font-size:26px}
   .onb-title{font-size:26px}
   .hero-actions{grid-template-columns:1fr 1fr}
   .hero-kpis{grid-template-columns:1fr}
+  .ph{padding-left:50px}
+  .exam-row{gap:8px;padding:10px}
+  .subj-hdr{align-items:flex-start}
 }
 </style>
 </head>
@@ -1000,7 +1005,7 @@ body::after{
 
       <div class="onb-step" id="onb-step-2">
         <div class="onb-title">اختار المسارات اللي تهمك</div>
-        <div class="onb-sub">كل الأقسام الحالية هتفضل موجودة، لكن أنت تحدد إيه اللي يظهر لك من البداية. ولو محتاج مسار جديد للشغل أو مشروع خاص، ضيفه من دلوقتي أو لاحقًا.</div>
+        <div class="onb-sub">كل الأقسام الحالية هتفضل موجودة، لكن أنت تحدد إيه اللي يظهر لك من البداية حسب أسلوب حياتك الحالي.</div>
         <div class="chip-grid" id="onb-modules"></div>
 
         <div class="onb-suggestions">
@@ -1010,21 +1015,15 @@ body::after{
           </button>
           <button class="onb-suggest-btn" onclick="applyOnboardingSuggestion('worker')">
             <strong>💼 شغل ومشاريع</strong>
-            <span>الكورسات + المسارات المرنة + المكافآت، من غير كلية أو جيم لو مش محتاجهم.</span>
+            <span>الكورسات + المكافآت، من غير كلية أو جيم لو مش محتاجهم.</span>
           </button>
           <button class="onb-suggest-btn" onclick="applyOnboardingSuggestion('focus')">
             <strong>🧠 تركيز وتعافي</strong>
-            <span>الصلاة + التعافي + مسار جديد للعادات اليومية والتركيز.</span>
+            <span>الصلاة + التعافي + الكورسات لو حابب تبني روتين واضح.</span>
           </button>
         </div>
 
-        <div class="custom-mini-card" style="margin-top:14px">
-          <div style="font-weight:900;margin-bottom:6px">مسار إضافي تحب تبدأ به؟</div>
-          <div class="onb-note">مثال: شغلي، اللغات، القراءة، البيع، التسويق، مشروع التخرج</div>
-          <input type="text" id="onb-custom-goal" class="grade-input" placeholder="اكتب اسم المسار اللي على مزاجك" style="margin-top:10px">
-        </div>
-
-        <div class="onb-helper">كل اللي بتختاره هنا هدفه يخفف الزحمة ويخلي الشاشة الرئيسية مناسبة لك من أول استخدام. تقدر بعدين تضيف أو تخفي أي مسار وقت ما تحب.</div>
+        <div class="onb-helper">كل اللي بتختاره هنا هدفه يخفف الزحمة ويخلي الشاشة الرئيسية مناسبة لك من أول استخدام. وتقدر بعدين تعدّل اختيارك من الإعدادات في أي وقت.</div>
         <div class="onb-actions">
           <button class="btn btn-ghost" onclick="setOnboardingStep(1)">رجوع</button>
           <button class="btn btn-gold" onclick="finishOnboarding()">ابدأ رحلتك</button>
@@ -1311,52 +1310,14 @@ body::after{
   </div>
 </div>
 
-<!-- ADD CUSTOM GOAL DRAWER -->
-<div class="overlay" id="custom-overlay" onclick="closeOverlayIfBg(event,'custom-overlay')">
-  <div class="drawer">
-    <div class="drawer-handle"></div>
-    <div class="drawer-title" id="custom-drawer-title">🧩 إضافة مسار جديد</div>
-    <div class="field"><label>اسم المسار *</label><input type="text" id="f-xname" placeholder="مثال: الشغل / القراءة / مشروعي" maxlength="50"></div>
-    <div class="field"><label>وصف مختصر</label><input type="text" id="f-xdesc" placeholder="ماذا تريد تتبعه في هذا المسار؟" maxlength="90"></div>
-    <div class="field"><label>أيقونة</label>
-      <div class="emoji-pick" id="custom-emoji-pick">
-        <button class="ep-btn selected" onclick="pickEmoji('custom','🧩',this)">🧩</button>
-        <button class="ep-btn" onclick="pickEmoji('custom','💼',this)">💼</button>
-        <button class="ep-btn" onclick="pickEmoji('custom','📈',this)">📈</button>
-        <button class="ep-btn" onclick="pickEmoji('custom','🛠️',this)">🛠️</button>
-        <button class="ep-btn" onclick="pickEmoji('custom','📖',this)">📖</button>
-        <button class="ep-btn" onclick="pickEmoji('custom','🧠',this)">🧠</button>
-        <button class="ep-btn" onclick="pickEmoji('custom','🚀',this)">🚀</button>
-        <button class="ep-btn-plus" onclick="toggleCustomEmoji('custom')" title="أضف إيموجي من الكيبورد">+</button>
-      </div>
-      <div class="custom-emoji-row" id="custom-custom-row">
-        <input class="custom-emoji-input" id="custom-custom-input" type="text" placeholder="✍️ اكتب أو الصق إيموجي هنا" maxlength="4" oninput="applyCustomEmoji('custom',this.value)">
-      </div>
-    </div>
-    <div class="field"><label>نقاط كل إنجاز</label><input type="number" id="f-xpts" class="grade-input" min="1" max="500" placeholder="20"></div>
-    <div class="field">
-      <label>هل تريد استريك يومي؟</label>
-      <div style="display:flex;align-items:center;gap:10px;margin-top:6px">
-        <div class="mini-switch on" id="custom-streak-tog" onclick="toggleCustomStreak()"></div>
-        <span id="custom-streak-lbl" style="font-size:13px;color:var(--dim)">مفعّل</span>
-      </div>
-    </div>
-    <div style="display:flex;gap:10px;margin-top:8px;padding-bottom:16px">
-      <button class="btn btn-ghost" style="flex:1" onclick="closeOverlay('custom-overlay')">إلغاء</button>
-      <button class="btn btn-gold" style="flex:2" onclick="saveCustomGoal()">💾 حفظ</button>
-    </div>
-  </div>
-</div>
-
 <!-- ══════════════ APP ══════════════ -->
 <div id="app">
 
 <!-- HOME -->
 <div id="page-home" class="page active">
-  <div class="ph">
+  <div class="ph home-ph">
     <div><img id="home-logo" src="./logo-dark.png" alt="مستقبلي" style="height:52px;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(245,200,66,.25))"></div>
-    <div style="display:flex;align-items:center;gap:8px">
-      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">🌙 داكن</button>
+    <div class="home-streak-wrap">
       <div class="streak-pill"><span class="fire-anim">🔥</span><span class="streak-num" id="h-streak">0</span><span style="font-size:11px;color:var(--dim)">يوم</span></div>
     </div>
   </div>
@@ -1532,18 +1493,6 @@ body::after{
   </div>
 </div>
 
-<!-- CUSTOM -->
-<div id="page-custom" class="page">
-  <div class="ph"><div class="pt">🧩 مساراتي</div><div class="badge bpu" id="custom-cnt">0 مسار</div></div>
-  <div class="card" style="border-color:rgba(185,142,248,.22);background:linear-gradient(135deg,var(--purple-dim),transparent);margin-bottom:14px">
-    <div style="font-size:13px;line-height:1.9;color:var(--dim)">هنا تقدر تعمل أي مسار على مزاجك: شغل، قراءة، مشروع، مبيعات، لغة، أو أي عادة تحب تتابعها بنقاط واستريك خاص بيها.</div>
-  </div>
-  <div id="custom-container"></div>
-  <div id="custom-fab" class="fab" style="display:none">
-    <button class="fab-btn" onclick="openCustomDrawer()">➕ إضافة مسار</button>
-  </div>
-</div>
-
 <!-- SETTINGS -->
 <div id="page-settings" class="page">
   <div class="ph"><div class="pt">⚙️ الإعدادات</div></div>
@@ -1558,7 +1507,7 @@ body::after{
     <button class="btn btn-ghost" style="font-size:13px;padding:8px 14px" onclick="changePin()">تغيير</button>
   </div>
   <div class="toggle-row">
-    <div><div style="font-weight:700">🪪 بياناتي ومساراتي</div><div style="font-size:12px;color:var(--dim)">الاسم والسن والموديولات الظاهرة</div></div>
+    <div><div style="font-weight:700">🪪 بياناتي ومسارات التطبيق</div><div style="font-size:12px;color:var(--dim)">الاسم والسن والأقسام الظاهرة</div></div>
     <button class="btn btn-ghost" style="font-size:13px;padding:8px 14px" onclick="reopenOnboarding()">تعديل</button>
   </div>
   <div class="sl-label">التنبيهات</div>
@@ -1612,7 +1561,6 @@ body::after{
     <div class="nav-item" onclick="goTo('recovery')" id="nav-recovery"><span class="ni">🌱</span><span class="nl">التعافي</span></div>
     <div class="nav-divider"></div>
     <div class="nav-header-lbl">الأخرى</div>
-    <div class="nav-item" onclick="goTo('custom')" id="nav-custom"><span class="ni">🧩</span><span class="nl">مساراتي</span></div>
     <div class="nav-item" onclick="goTo('rewards')" id="nav-rewards"><span class="ni">🏆</span><span class="nl">مكافآتي</span></div>
     <div class="nav-item" onclick="goTo('settings')" id="nav-settings"><span class="ni">⚙️</span><span class="nl">الإعدادات</span></div>
   </div>
@@ -1667,8 +1615,7 @@ const MODULE_META={
   uni:{label:'الكلية',icon:'🎓'},
   gym:{label:'الجيم',icon:'💪'},
   recovery:{label:'التعافي',icon:'🌱'},
-  rewards:{label:'المكافآت',icon:'🏆'},
-  custom:{label:'مساراتي',icon:'🧩'}
+  rewards:{label:'المكافآت',icon:'🏆'}
 };
 const GREETING_TEMPLATES=[
   'صباح الإنجاز {name}',
@@ -2015,7 +1962,7 @@ function initApp(){
   checkNewDay();
   checkNewRecoveryDay();
   gymVM={y:new Date().getFullYear(),m:new Date().getMonth()};
-  renderPrayers();renderCourses();renderSubjects();renderGym();renderRecovery();renderCustomGoals();renderRewards();
+  renderPrayers();renderCourses();renderSubjects();renderGym();renderRecovery();renderRewards();
   updateModuleVisibility();
   syncAll();updDate();
   if(D.notif)document.getElementById('notif-tog').classList.add('on');
@@ -2095,13 +2042,12 @@ function goTo(pg){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+pg).classList.add('active');
   document.getElementById('nav-'+pg).classList.add('active');
-  const fabs=['courses-fab','uni-fab','rec-fab','custom-fab','rwd-fab'];
+  const fabs=['courses-fab','uni-fab','rec-fab','rwd-fab'];
   fabs.forEach(f=>{const el=document.getElementById(f);if(el)el.style.display='none';});
   if(pg==='courses'){const el=document.getElementById('courses-fab');if(el)el.style.display='block';renderCourses();}
   if(pg==='uni'){const el=document.getElementById('uni-fab');if(el)el.style.display='block';renderSubjects();}
   if(pg==='gym')renderGym();
   if(pg==='recovery'){const el=document.getElementById('rec-fab');if(el)el.style.display='block';renderRecovery();}
-  if(pg==='custom'){const el=document.getElementById('custom-fab');if(el)el.style.display='block';renderCustomGoals();}
   if(pg==='rewards'){const el=document.getElementById('rwd-fab');if(el)el.style.display='block';checkAllRewards();renderRewards();}
   if(pg==='home'){updHome();drawProgressChart();}
   if(pg==='prayer')renderCommitGrid();
@@ -2131,14 +2077,12 @@ function toggleOnbModule(key){
 }
 function applyOnboardingSuggestion(type){
   const presets={
-    student:{prayer:true,courses:true,uni:true,gym:false,recovery:false,rewards:true,custom:true},
-    worker:{prayer:true,courses:true,uni:false,gym:false,recovery:false,rewards:true,custom:true},
-    focus:{prayer:true,courses:false,uni:false,gym:false,recovery:true,rewards:true,custom:true}
+    student:{prayer:true,courses:true,uni:true,gym:false,recovery:false,rewards:true},
+    worker:{prayer:true,courses:true,uni:false,gym:false,recovery:false,rewards:true},
+    focus:{prayer:true,courses:false,uni:false,gym:false,recovery:true,rewards:true}
   };
   D.modules={...D.modules,...presets[type]};
   renderOnboardingModules();
-  if(type==='worker'&&!document.getElementById('onb-custom-goal').value.trim())document.getElementById('onb-custom-goal').value='الشغل';
-  if(type==='focus'&&!document.getElementById('onb-custom-goal').value.trim())document.getElementById('onb-custom-goal').value='التركيز';
 }
 function showOnboarding(fromApp){
   document.getElementById('onboarding-screen').dataset.returnTo=fromApp?'app':'pin';
@@ -2150,18 +2094,11 @@ function showOnboarding(fromApp){
   document.getElementById('onboarding-screen').style.display='block';
   document.getElementById('onb-name').value=D.profile.name||'';
   document.getElementById('onb-age').value=D.profile.age||'';
-  document.getElementById('onb-custom-goal').value='';
   selectOnbGender(D.profile.gender||'');
   setOnboardingStep(0);
 }
 function hideOnboarding(){document.getElementById('onboarding-screen').style.display='none'}
 function reopenOnboarding(){closeNav();showOnboarding(true);setOnboardingStep(1);}
-function maybeCreateStarterCustomGoal(label){
-  const name=label.trim();
-  if(!name)return;
-  if((D.customGoals||[]).some(g=>g.name===name))return;
-  D.customGoals.push({id:uid(),name,desc:'مسار مرن بدأت به من أول استخدام',icon:'🧩',points:20,streakEnabled:true,streak:0,best:0,lastDone:null,todayDone:false,todayDate:todayKey()});
-}
 function finishOnboarding(){
   const returnTo=document.getElementById('onboarding-screen').dataset.returnTo||'pin';
   const name=document.getElementById('onb-name').value.trim();
@@ -2172,12 +2109,11 @@ function finishOnboarding(){
   D.profile.gender=onboardingGender||D.profile.gender||'';
   D.profile.onboarded=true;
   D.profile.dailyGreetingDate='';
-  maybeCreateStarterCustomGoal(document.getElementById('onb-custom-goal').value||'');
   save();
   hideOnboarding();
   if(returnTo==='app'){
     document.getElementById('app').style.display='block';
-    syncAll();updHomeGrid();renderCustomGoals();
+    syncAll();updHomeGrid();
   }else{
     document.getElementById('pin-screen').style.display='flex';
   }
@@ -2515,11 +2451,11 @@ function renderSubjCard(s){
       </div>
       <div class="exam-input-group">
         <div class="exam-input-label">جبت كام</div>
-        <input type="number" min="0" class="grade-input" style="max-width:104px;padding:8px 10px" value="${g.score!==null&&g.score!==undefined?g.score:''}" oninput="upGrade('${s.id}','${e.k}','score',this.value)">
+        <input type="number" min="0" class="grade-input" style="padding:9px 10px" value="${g.score!==null&&g.score!==undefined?g.score:''}" oninput="upGrade('${s.id}','${e.k}','score',this.value)">
       </div>
       <div class="exam-input-group">
         <div class="exam-input-label">من كام</div>
-        <input type="number" min="1" class="grade-input" style="max-width:104px;padding:8px 10px" value="${g.max!==null&&g.max!==undefined?g.max:''}" oninput="upGrade('${s.id}','${e.k}','max',this.value)">
+        <input type="number" min="1" class="grade-input" style="padding:9px 10px" value="${g.max!==null&&g.max!==undefined?g.max:''}" oninput="upGrade('${s.id}','${e.k}','max',this.value)">
       </div>
       <div class="exam-status">
         <div class="grade-badge" id="exam-badge-${sid}-${ek}" style="background:${pct!==null?gradeBg(pct):'var(--surface2)'};color:${pct!==null?gradeColor(pct):'var(--dim)'}">${pct!==null?gradeLabel(pct):'--'}</div>
@@ -2527,7 +2463,7 @@ function renderSubjCard(s){
       </div>
     </div>`;
   }).join('');
-  return`<div class="subj-card"><div class="subj-hdr" onclick="togSubj('${s.id}')"><div style="display:flex;align-items:center;gap:10px"><div style="width:9px;height:9px;border-radius:50%;background:${s.color};flex-shrink:0"></div><div class="subj-title">${s.nameAr||s.name}</div></div><div style="display:flex;align-items:center;gap:8px"><span id="subj-avg-${sid}" style="font-family:'Space Grotesk';font-weight:700;color:${avg?gradeColor(avg):'var(--dim)'}">${avg?`${avg}%`:''}</span><span class="grade-badge" id="subj-badge-${sid}" style="background:${avg?gradeBg(avg):'var(--surface2)'};color:${avg?gradeColor(avg):'var(--dim)'}">${avg?gradeLabel(avg):'--'}</span><button class="course-act-btn" onclick="event.stopPropagation();openSubjDrawer('${s.id}')" style="font-size:12px;width:26px;height:26px">✏️</button><button class="course-act-btn" onclick="event.stopPropagation();deleteSubject('${s.id}')" style="font-size:12px;width:26px;height:26px">🗑️</button><span style="color:var(--dim);font-size:16px">›</span></div></div><div class="subj-body${isOpen?' open':''}" id="${subjDomId(s.id)}">${exams.length?examsHtml:'<div style="padding:12px 0;color:var(--dim);font-size:13px">لا توجد امتحانات مضافة</div>'}</div></div>`;
+  return`<div class="subj-card"><div class="subj-hdr" onclick="togSubj('${s.id}')"><div style="display:flex;align-items:center;gap:10px;min-width:0"><div style="width:9px;height:9px;border-radius:50%;background:${s.color};flex-shrink:0"></div><div class="subj-title">${s.nameAr||s.name}</div></div><div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap"><span id="subj-avg-${sid}" style="font-family:'Space Grotesk';font-weight:700;color:${avg?gradeColor(avg):'var(--dim)'}">${avg?`${avg}%`:''}</span><span class="grade-badge" id="subj-badge-${sid}" style="background:${avg?gradeBg(avg):'var(--surface2)'};color:${avg?gradeColor(avg):'var(--dim)'}">${avg?gradeLabel(avg):'--'}</span><button class="course-act-btn" onclick="event.stopPropagation();openSubjDrawer('${s.id}')" style="font-size:12px;width:26px;height:26px">✏️</button><button class="course-act-btn" onclick="event.stopPropagation();deleteSubject('${s.id}')" style="font-size:12px;width:26px;height:26px">🗑️</button><span style="color:var(--dim);font-size:16px">›</span></div></div><div class="subj-body${isOpen?' open':''}" id="${subjDomId(s.id)}">${exams.length?examsHtml:'<div style="padding:12px 0;color:var(--dim);font-size:13px">لا توجد امتحانات مضافة</div>'}</div></div>`;
 }
 function togSubj(id){
   const body=document.getElementById(subjDomId(id));if(!body)return;
@@ -3005,10 +2941,6 @@ function updHomeGrid(){
   const cards=[];
   if(D.modules.prayer!==false)cards.push(`<div class="scard"><div class="sv" style="color:var(--green)" id="hs-pray">0/5</div><div class="sl">الصلاة 🤲</div></div>`);
   if(D.modules.gym!==false)cards.push(`<div class="scard"><div class="sv" style="color:var(--orange)" id="hs-gym">—</div><div class="sl">الجيم 💪</div></div>`);
-  if(D.modules.custom!==false&&(D.customGoals||[]).length){
-    const cg=D.customGoals[0];
-    cards.push(`<div class="scard"><div class="sv" style="color:var(--purple)">${cg.todayDone?'✓':cg.streak||0}</div><div class="sl">${cg.icon||'🧩'} ${cg.name.slice(0,10)}${cg.name.length>10?'..':''}</div></div>`);
-  }
   if(D.modules.courses!==false){
     (D.courses||[]).slice(0,2).forEach(c=>{const pct=Math.round(c.done/c.total*100);cards.push(`<div class="scard"><div class="sv" style="color:${c.color||'var(--blue)'}">${pct}%</div><div class="sl">${c.icon||'📚'} ${c.name.slice(0,10)}${c.name.length>10?'..':''}</div></div>`);});
   }
