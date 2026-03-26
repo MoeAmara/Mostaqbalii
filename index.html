@@ -12,8 +12,8 @@
 <link rel="manifest" href="./manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <style>
 :root{
   --bg:#060b17;--surface:#0b1122;--surface2:#111828;--card:#141f38;
@@ -418,8 +418,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
   <div class="auth-box">
     <!-- Firebase config warning -->
     <div class="firebase-warn" id="firebase-warn">
-       Firebase Config <br>
-      <span style="font-size:11px;opacity:.8">FIREBASE_CONFIG في index.html </span>
+      ⚠️ أضف Firebase Config في الكود أولاً<br>
+      <span style="font-size:11px;opacity:.8">ابحث عن FIREBASE_CONFIG في index.html واستبدل القيم بقيم مشروعك</span>
     </div>
 
     <!-- Social buttons -->
@@ -1838,16 +1838,18 @@ function exportData(){const b=new Blob([JSON.stringify(D,null,2)],{type:'applica
 function resetAll(){if(confirm('أنت متأكد؟ كل بياناتك هتتمسح!\nلا يمكن التراجع!')){const k=getStorageKey();localStorage.removeItem(k);['mq_v3','mq_v2','mq_v1'].forEach(k=>localStorage.removeItem(k));location.reload();}}
 
 // ═══════════════════════ FIREBASE CONFIG ═══════════════════════
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// ⚠️  قم بتغيير هذه القيم بقيم مشروعك على Firebase
+// 1. اذهب إلى https://console.firebase.google.com/
+// 2. أنشئ مشروعاً جديداً أو افتح مشروعاً موجوداً
+// 3. Project Settings → Your apps → Add app (Web)
+// 4. انسخ الإعدادات والصقها هنا
 const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyAKOScMMOQIavUOe70WFAAqLtdr-FAc2h0",
-  authDomain: "mostaqbaly-52957.firebaseapp.com",
-  projectId: "mostaqbaly-52957",
-  storageBucket: "mostaqbaly-52957.firebasestorage.app",
-  messagingSenderId: "731029211860",
-  appId: "1:731029211860:web:f58554a49e3525bbc64941",
-  measurementId: "G-JDCGRKYBMN"
-};
+  apiKey:            "YOUR_API_KEY",
+  authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId:         "YOUR_PROJECT_ID",
+  storageBucket:     "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId:             "YOUR_APP_ID"
 };
 
 // ═══════════════════════ AUTH STATE ═══════════════════════
@@ -1973,7 +1975,7 @@ function togglePassVis(){
 
 // ═══════════════════════ EMAIL / PASSWORD ═══════════════════════
 async function authSubmit(){
-  if(!firebaseReady){showAuthErr(' Firebase Configاً ⚙️');return;}
+  if(!firebaseReady){showAuthErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
   const email=document.getElementById('auth-email').value.trim().toLowerCase();
   const pass=document.getElementById('auth-pass').value;
   const name=document.getElementById('auth-name').value.trim();
@@ -1996,7 +1998,7 @@ async function authSubmit(){
 
 // ═══════════════════════ GOOGLE ═══════════════════════
 async function authGoogle(){
-  if(!firebaseReady){showAuthErr(' Firebase Configاً ⚙️');return;}
+  if(!firebaseReady){showAuthErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
   setAuthLoading(true);
   try{
     const provider=new firebase.auth.GoogleAuthProvider();
@@ -2009,7 +2011,7 @@ async function authGoogle(){
 
 // ═══════════════════════ FACEBOOK ═══════════════════════
 async function authFacebook(){
-  if(!firebaseReady){showAuthErr(' Firebase Configاً ⚙️');return;}
+  if(!firebaseReady){showAuthErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
   setAuthLoading(true);
   try{
     const provider=new firebase.auth.FacebookAuthProvider();
@@ -2032,7 +2034,7 @@ function initRecaptcha(){
 }
 
 async function sendOTP(){
-  if(!firebaseReady){showPhoneErr(' Firebase Configاً ⚙️');return;}
+  if(!firebaseReady){showPhoneErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
   const code=document.getElementById('country-code').value;
   const num=document.getElementById('auth-phone').value.trim().replace(/^0/,'');
   const full=code+num;
