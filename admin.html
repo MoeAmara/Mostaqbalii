@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mostaqbaly Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<style>
+:root{
+  --bg:#07111f;--bg2:#0d1830;--card:rgba(18,27,49,.86);--line:rgba(255,255,255,.08);
+  --text:#eef4ff;--dim:#8e9abb;--gold:#f5c842;--green:#3dd68c;--blue:#5eaeff;--red:#ff6b6b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:'Tajawal',sans-serif;color:var(--text);
+  background:
+    radial-gradient(circle at top right, rgba(94,174,255,.18), transparent 20%),
+    radial-gradient(circle at top left, rgba(245,200,66,.14), transparent 18%),
+    linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);
+  min-height:100vh;
+}
+.wrap{max-width:1200px;margin:0 auto;padding:24px}
+.hero,.card{
+  background:var(--card);backdrop-filter:blur(18px) saturate(150%);
+  border:1px solid var(--line);border-radius:24px;box-shadow:0 20px 50px rgba(0,0,0,.25);
+}
+.hero{padding:24px;margin-bottom:18px}
+.title{font-size:34px;font-weight:900;margin:0 0 10px}
+.sub{color:var(--dim);line-height:1.8}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.btn{
+  border:none;border-radius:14px;padding:12px 18px;cursor:pointer;font-family:'Tajawal',sans-serif;
+  font-size:14px;font-weight:800
+}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#ff9e43);color:#111}
+.btn-ghost{background:rgba(255,255,255,.05);color:var(--text);border:1px solid var(--line)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.stat{padding:18px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.stat .v{font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700}
+.stat .l{font-size:12px;color:var(--dim);margin-top:6px}
+.grid{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+.card{padding:18px}
+.section-title{font-size:18px;font-weight:900;margin:0 0 14px}
+table{width:100%;border-collapse:collapse}
+th,td{padding:12px 10px;text-align:right;border-bottom:1px solid var(--line);font-size:13px;vertical-align:top}
+th{color:var(--dim);font-weight:800}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800}
+.ok{background:rgba(61,214,140,.12);color:var(--green)}
+.warn{background:rgba(255,107,107,.12);color:var(--red)}
+.info{background:rgba(94,174,255,.12);color:var(--blue)}
+.muted{color:var(--dim)}
+.kv{display:grid;gap:10px}
+.kv div{padding:12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.login-box{max-width:420px;margin:60px auto;padding:24px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12px;font-weight:800;color:var(--dim);margin-bottom:6px}
+.field input{width:100%;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--text);font-family:'Tajawal'}
+#app{display:none}
+#authError{min-height:20px;color:var(--red);font-size:13px}
+@media (max-width:900px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.stats{grid-template-columns:1fr}.title{font-size:28px}}
+</style>
+</head>
+<body>
+  <div id="authView" class="login-box hero">
+    <h1 class="title" style="font-size:28px">لوحة تحكم مستقبلي</h1>
+    <p class="sub">سجّل بحساب الأدمن فقط. بعد أول مرة، أضف `uid` الخاص بك داخل مجموعة `admins` في Firestore.</p>
+    <div class="field">
+      <label>البريد الإلكتروني</label>
+      <input id="email" type="email" placeholder="admin@email.com" dir="ltr">
+    </div>
+    <div class="field">
+      <label>كلمة السر</label>
+      <input id="password" type="password" placeholder="******" dir="ltr">
+    </div>
+    <div id="authError"></div>
+    <button class="btn btn-gold" style="width:100%" onclick="adminLogin()">دخول الأدمن</button>
+  </div>
+
+  <div id="app" class="wrap">
+    <div class="hero">
+      <div class="topbar">
+        <div>
+          <h1 class="title">Admin Dashboard</h1>
+          <div class="sub">متابعة المستخدمين، التسجيلات، وتحديثات البيانات من Firestore.</div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-ghost" onclick="loadDashboard()">تحديث</button>
+          <button class="btn btn-gold" onclick="logout()">تسجيل خروج</button>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="v" id="usersCount">0</div><div class="l">إجمالي المستخدمين</div></div>
+        <div class="stat"><div class="v" id="activeUsers">0</div><div class="l">نشطون هذا الأسبوع</div></div>
+        <div class="stat"><div class="v" id="totalPoints">0</div><div class="l">إجمالي النقاط</div></div>
+        <div class="stat"><div class="v" id="avgPrayer">0%</div><div class="l">متوسط التزام الصلاة</div></div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2 class="section-title">المستخدمون</h2>
+        <div style="overflow:auto">
+          <table>
+            <thead>
+              <tr>
+                <th>المستخدم</th>
+                <th>الحساب</th>
+                <th>النقاط</th>
+                <th>استريك الصلاة</th>
+                <th>آخر تحديث</th>
+              </tr>
+            </thead>
+            <tbody id="usersTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">ملخص سريع</h2>
+        <div class="kv" id="quickSummary"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAKOScMMOQIavUOe70WFAAqLtdr-FAc2h0",
+  authDomain: "mostaqbaly-52957.firebaseapp.com",
+  projectId: "mostaqbaly-52957",
+  storageBucket: "mostaqbaly-52957.firebasestorage.app",
+  messagingSenderId: "731029211860",
+  appId: "1:731029211860:web:3fe0372a6a7d934cc64941",
+  measurementId: "G-7TJX166FQL"
+};
+
+firebase.initializeApp(FIREBASE_CONFIG);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+function fmtDate(value){
+  try{
+    if(!value) return '—';
+    const date = value.toDate ? value.toDate() : new Date(value);
+    return date.toLocaleString('ar-EG');
+  }catch(_){ return '—'; }
+}
+
+function showError(msg){ document.getElementById('authError').textContent = msg || ''; }
+
+async function adminLogin(){
+  showError('');
+  const email=document.getElementById('email').value.trim();
+  const password=document.getElementById('password').value;
+  if(!email || !password){ showError('اكتب البريد وكلمة السر'); return; }
+  try{
+    await auth.signInWithEmailAndPassword(email,password);
+  }catch(e){
+    showError('فشل تسجيل الدخول: '+(e.code||e.message));
+  }
+}
+
+async function ensureAdmin(uid){
+  const adminDoc = await db.collection('admins').doc(uid).get();
+  return adminDoc.exists;
+}
+
+async function loadDashboard(){
+  const snap = await db.collection('users').orderBy('updatedAt','desc').limit(100).get();
+  const users = snap.docs.map(doc=>({id:doc.id,...doc.data()}));
+  const oneWeekAgo = Date.now() - (7*24*60*60*1000);
+
+  let totalPoints=0, totalPrayerPct=0, prayerUsers=0, activeUsers=0;
+  document.getElementById('usersTable').innerHTML = users.map(user=>{
+    const appData = user.appData || {};
+    const profile = user.profile || {};
+    const points = appData.points || 0;
+    const streak = appData.prayers?.streak || 0;
+    const prayerToday = appData.prayers?.today?.filter(Boolean).length || 0;
+    const prayerPct = Math.round((prayerToday/5)*100);
+    totalPoints += points;
+    totalPrayerPct += prayerPct;
+    prayerUsers++;
+    const updatedStamp = user.updatedAt?.toDate ? user.updatedAt.toDate().getTime() : 0;
+    if(updatedStamp && updatedStamp >= oneWeekAgo) activeUsers++;
+
+    const accountLabel = profile.email || profile.phone || 'بدون بيانات';
+    const statusClass = profile.isAnonymous ? 'warn' : 'ok';
+    const statusText = profile.isAnonymous ? 'زائر' : 'حساب حقيقي';
+
+    return `<tr>
+      <td>
+        <div style="font-weight:800">${profile.name || 'مستخدم'}</div>
+        <div class="muted" style="font-size:11px">${user.id}</div>
+      </td>
+      <td>
+        <div>${accountLabel}</div>
+        <div class="pill ${statusClass}" style="margin-top:6px">${statusText}</div>
+      </td>
+      <td>${points.toLocaleString('ar-EG')}</td>
+      <td>${streak} يوم</td>
+      <td>${fmtDate(user.updatedAt)}</td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="5" class="muted">لا يوجد مستخدمون بعد</td></tr>';
+
+  document.getElementById('usersCount').textContent = users.length.toLocaleString('ar-EG');
+  document.getElementById('activeUsers').textContent = activeUsers.toLocaleString('ar-EG');
+  document.getElementById('totalPoints').textContent = totalPoints.toLocaleString('ar-EG');
+  document.getElementById('avgPrayer').textContent = prayerUsers ? `${Math.round(totalPrayerPct/prayerUsers)}%` : '0%';
+
+  document.getElementById('quickSummary').innerHTML = [
+    `عدد الحسابات الحقيقية: ${users.filter(u=>!u.profile?.isAnonymous).length}`,
+    `عدد الزوار: ${users.filter(u=>u.profile?.isAnonymous).length}`,
+    `أعلى نقاط: ${Math.max(0,...users.map(u=>u.appData?.points||0)).toLocaleString('ar-EG')}`,
+    `أعلى استريك صلاة: ${Math.max(0,...users.map(u=>u.appData?.prayers?.streak||0))} يوم`
+  ].map(line=>`<div>${line}</div>`).join('');
+}
+
+async function logout(){ await auth.signOut(); }
+
+auth.onAuthStateChanged(async user=>{
+  if(!user){
+    document.getElementById('authView').style.display='block';
+    document.getElementById('app').style.display='none';
+    return;
+  }
+  const ok = await ensureAdmin(user.uid);
+  if(!ok){
+    showError('هذا الحساب ليس أدمن بعد. أضف uid داخل مجموعة admins في Firestore.');
+    await auth.signOut();
+    return;
+  }
+  document.getElementById('authView').style.display='none';
+  document.getElementById('app').style.display='block';
+  await loadDashboard();
+});
+</script>
+</body>
+</html>
