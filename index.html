@@ -11,6 +11,9 @@
 <title>مستقبلي</title>
 <link rel="manifest" href="./manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <style>
 :root{
   --bg:#060b17;--surface:#0b1122;--surface2:#111828;--card:#141f38;
@@ -95,6 +98,20 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
 .auth-guest{background:transparent;border:none;color:var(--dim);font-family:'Space Grotesk',sans-serif;font-size:13px;cursor:pointer;padding:6px;text-decoration:underline;text-underline-offset:3px}
 .w100{width:100%}
 .auth-user-badge{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);border-radius:40px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--dim);z-index:200;display:none;align-items:center;gap:6px;white-space:nowrap}
+.auth-section{display:flex;flex-direction:column;gap:12px;width:100%}
+.auth-phone-row{display:flex;gap:8px;align-items:stretch}
+.auth-phone-row select{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 10px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:14px;outline:none;cursor:pointer;flex-shrink:0;width:110px}
+.auth-phone-row input{flex:1;min-width:0}
+.auth-social.auth-google{background:#fff;color:#222;border-color:#ddd}
+.auth-social.auth-google:hover{background:#f5f5f5;border-color:#bbb}
+.auth-social.auth-facebook{background:#1877F2;color:#fff;border-color:#1877F2}
+.auth-social.auth-facebook:hover{background:#166FE5;border-color:#166FE5}
+.auth-spinner{width:22px;height:22px;border:3px solid rgba(245,200,66,.3);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.auth-loading-box{display:none;flex-direction:column;align-items:center;gap:8px;padding:10px;font-size:13px;color:var(--dim)}
+.otp-note{font-size:12px;color:var(--dim);text-align:center;line-height:1.5}
+#recaptcha-container{display:flex;justify-content:center}
+.firebase-warn{background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--red);text-align:center;line-height:1.6;display:none}
 
 /* APP */
 #app{display:none;padding-bottom:0}
@@ -395,33 +412,108 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 
 <!-- AUTH SCREEN -->
 <div id="auth-screen" style="display:none">
-  <img id="auth-logo" src="./logo-dark.png" alt="مستقبلي" style="height:72px;object-fit:contain;margin-bottom:18px;filter:drop-shadow(0 4px 18px rgba(245,200,66,.35))">
+  <img id="auth-logo" src="./logo-dark.png" alt="مستقبلي" style="height:66px;object-fit:contain;margin-bottom:14px;filter:drop-shadow(0 4px 18px rgba(245,200,66,.35))">
   <div class="auth-title">مرحبًا بك في مستقبلي 👋</div>
-  <div class="auth-tabs">
-    <button class="auth-tab active" id="tab-login" onclick="authTab('login')">دخول</button>
-    <button class="auth-tab" id="tab-signup" onclick="authTab('signup')">حساب جديد</button>
-  </div>
+
   <div class="auth-box">
-    <div class="auth-field" id="auth-name-field" style="display:none">
-      <label>الاسم</label>
-      <input type="text" id="auth-name" placeholder="اسمك هنا" autocomplete="name">
+    <!-- Firebase config warning -->
+    <div class="firebase-warn" id="firebase-warn">
+      ⚠️ أضف Firebase Config في الكود أولاً<br>
+      <span style="font-size:11px;opacity:.8">ابحث عن FIREBASE_CONFIG في index.html واستبدل القيم بقيم مشروعك</span>
     </div>
-    <div class="auth-field">
-      <label>البريد الإلكتروني</label>
-      <input type="email" id="auth-email" placeholder="email@example.com" autocomplete="email" dir="ltr">
+
+    <!-- Social buttons -->
+    <button class="auth-social auth-google" onclick="authGoogle()">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      الدخول بـ Google
+    </button>
+    <button class="auth-social auth-facebook" onclick="authFacebook()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M24 12.073C24 5.404 18.627 0 12 0S0 5.404 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97h-1.514c-1.491 0-1.956.93-1.956 1.886v2.264h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+      الدخول بـ Facebook
+    </button>
+
+    <div class="auth-divider"><span>أو</span></div>
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" onclick="authTab('login')">دخول</button>
+      <button class="auth-tab" id="tab-signup" onclick="authTab('signup')">تسجيل</button>
+      <button class="auth-tab" id="tab-phone" onclick="authTab('phone')">📱 هاتف</button>
     </div>
-    <div class="auth-field">
-      <label>كلمة السر</label>
-      <div style="position:relative">
-        <input type="password" id="auth-pass" placeholder="كلمة السر" autocomplete="current-password" dir="ltr">
-        <button onclick="togglePassVis()" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--dim);font-size:18px" id="pass-eye">👁</button>
+
+    <!-- Email / Password section -->
+    <div class="auth-section" id="auth-email-section">
+      <div class="auth-field" id="auth-name-field" style="display:none">
+        <label>الاسم</label>
+        <input type="text" id="auth-name" placeholder="اسمك هنا" autocomplete="name">
+      </div>
+      <div class="auth-field">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="auth-email" placeholder="email@example.com" autocomplete="email" dir="ltr">
+      </div>
+      <div class="auth-field">
+        <label>كلمة السر</label>
+        <div style="position:relative">
+          <input type="password" id="auth-pass" placeholder="6 أحرف على الأقل" autocomplete="current-password" dir="ltr">
+          <button onclick="togglePassVis()" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--dim);font-size:18px" id="pass-eye">👁</button>
+        </div>
+      </div>
+      <div class="auth-err" id="auth-err"></div>
+      <button class="btn btn-gold w100" id="auth-btn" onclick="authSubmit()">دخول</button>
+    </div>
+
+    <!-- Phone section -->
+    <div class="auth-section" id="auth-phone-section" style="display:none">
+      <!-- Step 1: Enter number -->
+      <div class="auth-section" id="phone-step-1">
+        <div class="auth-field">
+          <label>رقم الهاتف</label>
+          <div class="auth-phone-row">
+            <select id="country-code">
+              <option value="+20">🇪🇬 +20</option>
+              <option value="+966">🇸🇦 +966</option>
+              <option value="+971">🇦🇪 +971</option>
+              <option value="+965">🇰🇼 +965</option>
+              <option value="+974">🇶🇦 +974</option>
+              <option value="+973">🇧🇭 +973</option>
+              <option value="+968">🇴🇲 +968</option>
+              <option value="+962">🇯🇴 +962</option>
+              <option value="+961">🇱🇧 +961</option>
+              <option value="+963">🇸🇾 +963</option>
+              <option value="+964">🇮🇶 +964</option>
+              <option value="+218">🇱🇾 +218</option>
+              <option value="+216">🇹🇳 +216</option>
+              <option value="+213">🇩🇿 +213</option>
+              <option value="+212">🇲🇦 +212</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+44">🇬🇧 +44</option>
+            </select>
+            <input type="tel" id="auth-phone" placeholder="رقم هاتفك" dir="ltr" class="auth-field input">
+          </div>
+        </div>
+        <div id="recaptcha-container"></div>
+        <div class="auth-err" id="phone-err"></div>
+        <button class="btn btn-gold w100" onclick="sendOTP()">📨 إرسال كود التحقق</button>
+      </div>
+      <!-- Step 2: Enter OTP -->
+      <div class="auth-section" id="phone-step-2" style="display:none">
+        <div class="otp-note">📲 تم إرسال كود تحقق من 6 أرقام إلى رقمك</div>
+        <div class="auth-field">
+          <label>كود التحقق (OTP)</label>
+          <input type="text" id="auth-otp" placeholder="xxxxxx" maxlength="6" dir="ltr" style="letter-spacing:8px;font-size:22px;text-align:center">
+        </div>
+        <div class="auth-err" id="otp-err"></div>
+        <button class="btn btn-gold w100" onclick="verifyOTP()">✅ تحقق ودخول</button>
+        <button class="auth-guest" onclick="authTab('phone')">← تغيير الرقم</button>
       </div>
     </div>
-    <div class="auth-err" id="auth-err"></div>
-    <button class="btn btn-gold w100" id="auth-btn" onclick="authSubmit()">دخول</button>
-    <div class="auth-divider"><span>أو</span></div>
-    <button class="auth-social" onclick="authGoogle()"><span>🔵</span> الدخول بـ Google</button>
-    <button class="auth-social" onclick="authFacebook()"><span>🔷</span> الدخول بـ Facebook</button>
+
+    <!-- Loading indicator -->
+    <div class="auth-loading-box" id="auth-loading">
+      <div class="auth-spinner"></div>
+      <span>جاري التحقق...</span>
+    </div>
+
     <button class="auth-guest" onclick="authGuest()">🚶 دخول بدون حساب</button>
   </div>
 </div>
@@ -714,6 +806,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
       <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">🌙 داكن</button>
       <div class="streak-pill"><span class="fire-anim">🔥</span><span class="streak-num" id="h-streak">0</span><span style="font-size:11px;color:var(--dim)">يوم</span></div>
     </div>
+  </div>
+
+  <div id="install-banner">
+    <img src="./icon.png" style="width:36px;height:36px;border-radius:8px;object-fit:cover;flex-shrink:0">
+    <div style="flex:1"><div style="font-weight:700;font-size:13px">ثبّت مستقبلي على هاتفك!</div><div style="font-size:11px;color:var(--dim)">اضغط عشان تضيفه للشاشة الرئيسية 📱</div></div>
+    <button onclick="promptInstall()" class="btn btn-ghost" style="padding:8px 14px;font-size:13px;flex-shrink:0">تثبيت</button>
   </div>
 
   <div class="hero">
@@ -1739,74 +1837,270 @@ window.addEventListener('appinstalled',()=>{document.getElementById('install-ban
 function exportData(){const b=new Blob([JSON.stringify(D,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='mostaqbaly_backup.json';a.click();}
 function resetAll(){if(confirm('أنت متأكد؟ كل بياناتك هتتمسح!\nلا يمكن التراجع!')){const k=getStorageKey();localStorage.removeItem(k);['mq_v3','mq_v2','mq_v1'].forEach(k=>localStorage.removeItem(k));location.reload();}}
 
-// ═══════════════════════ AUTH ═══════════════════════
-let authMode='login';
-function getSession(){try{const s=localStorage.getItem('mq_session');return s?JSON.parse(s):null;}catch(e){return null;}}
-function setSession(sess){localStorage.setItem('mq_session',JSON.stringify(sess));}
-function clearSession(){localStorage.removeItem('mq_session');}
-function getUsers(){try{const u=localStorage.getItem('mq_users');return u?JSON.parse(u):{}}catch(e){return {}}}
-function saveUsers(u){localStorage.setItem('mq_users',JSON.stringify(u));}
-function hashPass(p){let h=0;for(let i=0;i<p.length;i++){h=((h<<5)-h)+p.charCodeAt(i);h|=0;}return h.toString(36);}
-function makeUID(){return Math.random().toString(36).slice(2)+Date.now().toString(36);}
-function showAuthErr(msg){const e=document.getElementById('auth-err');e.textContent=msg;setTimeout(()=>{e.textContent='';},3000);}
-function authTab(mode){
-  authMode=mode;
-  document.getElementById('tab-login').classList.toggle('active',mode==='login');
-  document.getElementById('tab-signup').classList.toggle('active',mode==='signup');
-  document.getElementById('auth-name-field').style.display=mode==='signup'?'flex':'none';
-  document.getElementById('auth-btn').textContent=mode==='login'?'دخول':'إنشاء حساب';
+// ═══════════════════════ FIREBASE CONFIG ═══════════════════════
+// ⚠️  قم بتغيير هذه القيم بقيم مشروعك على Firebase
+// 1. اذهب إلى https://console.firebase.google.com/
+// 2. أنشئ مشروعاً جديداً أو افتح مشروعاً موجوداً
+// 3. Project Settings → Your apps → Add app (Web)
+// 4. انسخ الإعدادات والصقها هنا
+const FIREBASE_CONFIG = {
+  apiKey:            "YOUR_API_KEY",
+  authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId:         "YOUR_PROJECT_ID",
+  storageBucket:     "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId:             "YOUR_APP_ID"
+};
+
+// ═══════════════════════ AUTH STATE ═══════════════════════
+let firebaseReady = false;
+let auth = null;
+let recaptchaVerifier = null;
+let confirmationResult = null;
+let authMode = 'login';
+let authStateHandled = false;
+
+function isFirebaseConfigured(){
+  return FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey !== 'YOUR_API_KEY';
 }
-function authSubmit(){
-  const email=document.getElementById('auth-email').value.trim().toLowerCase();
-  const pass=document.getElementById('auth-pass').value;
-  const name=document.getElementById('auth-name').value.trim();
-  if(!email||!email.includes('@')){showAuthErr('أدخل بريد إلكتروني صحيح');return;}
-  if(!pass||pass.length<4){showAuthErr('كلمة السر لازم تكون 4 أرقام على الأقل');return;}
-  const users=getUsers();
-  if(authMode==='signup'){
-    if(!name){showAuthErr('أدخل اسمك');return;}
-    if(users[email]){showAuthErr('الإيميل ده موجود بالفعل، ادخل بحساب موجود');return;}
-    const uid=makeUID();
-    users[email]={uid,name,passHash:hashPass(pass)};
-    saveUsers(users);
-    setSession({uid,email,name,isGuest:false});
-    afterAuth();
-  }else{
-    const u=users[email];
-    if(!u){showAuthErr('الإيميل ده مش موجود، سجّل حساب جديد');return;}
-    if(u.passHash!==hashPass(pass)){showAuthErr('كلمة السر غلط، حاول تاني 🚫');return;}
-    setSession({uid:u.uid,email,name:u.name,isGuest:false});
-    afterAuth();
+
+function initFirebase(){
+  if(!isFirebaseConfigured()){
+    document.getElementById('firebase-warn').style.display='block';
+    return;
+  }
+  try{
+    if(!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+    auth = firebase.auth();
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+    firebaseReady = true;
+  }catch(e){
+    console.error('Firebase init error:',e);
+    firebaseReady = false;
+    document.getElementById('firebase-warn').style.display='block';
   }
 }
+
+// Session helpers (localStorage cache for fast startup)
+function getSession(){
+  if(firebaseReady && auth && auth.currentUser){
+    const u=auth.currentUser;
+    return{uid:u.uid,email:u.email||'',name:u.displayName||u.email||u.phoneNumber||'مستخدم',isGuest:u.isAnonymous};
+  }
+  try{const s=localStorage.getItem('mq_session');return s?JSON.parse(s):null;}catch(e){return null;}
+}
+function setSession(sess){localStorage.setItem('mq_session',JSON.stringify(sess));}
+function clearSession(){localStorage.removeItem('mq_session');}
+
+// Firebase error messages in Arabic
+function firebaseErrMsg(code){
+  const m={
+    'auth/invalid-email':'البريد الإلكتروني غير صحيح',
+    'auth/user-not-found':'الحساب ده مش موجود، سجّل حساب جديد',
+    'auth/wrong-password':'كلمة السر غلط 🚫',
+    'auth/invalid-credential':'البريد أو كلمة السر غلط 🚫',
+    'auth/email-already-in-use':'الإيميل ده موجود بالفعل، ادخل بحساب موجود',
+    'auth/weak-password':'كلمة السر ضعيفة، استخدم 6 أحرف على الأقل',
+    'auth/popup-closed-by-user':'أُغلقت نافذة تسجيل الدخول',
+    'auth/cancelled-popup-request':'',
+    'auth/network-request-failed':'تحقق من اتصال الإنترنت 📶',
+    'auth/too-many-requests':'محاولات كثيرة، انتظر قليلاً ⏳',
+    'auth/invalid-phone-number':'رقم الهاتف غير صحيح',
+    'auth/invalid-verification-code':'كود التحقق غلط ❌',
+    'auth/code-expired':'انتهت صلاحية الكود، أعد الإرسال',
+    'auth/missing-phone-number':'أدخل رقم الهاتف',
+    'auth/quota-exceeded':'تم تجاوز الحد، حاول لاحقاً',
+    'auth/account-exists-with-different-credential':'الحساب موجود بطريقة دخول مختلفة',
+    'auth/operation-not-allowed':'هذه الطريقة غير مفعّلة — فعّلها في Firebase Console',
+    'auth/invalid-api-key':'Firebase API Key غير صحيح ⚙️',
+    'auth/configuration-not-found':'أضف Firebase Config الصحيح في الكود ⚙️',
+    'auth/app-not-authorized':'الدومين غير مصرّح به في Firebase Console',
+  };
+  return m[code]||('حدث خطأ: '+(code||'unknown'));
+}
+
+// ═══════════════════════ AUTH UI ═══════════════════════
+function authTab(mode){
+  authMode=mode;
+  ['login','signup','phone'].forEach(m=>{
+    const b=document.getElementById('tab-'+m);
+    if(b)b.classList.toggle('active',m===mode);
+  });
+  const isPhone=mode==='phone';
+  document.getElementById('auth-email-section').style.display=isPhone?'none':'flex';
+  document.getElementById('auth-phone-section').style.display=isPhone?'flex':'none';
+  document.getElementById('auth-name-field').style.display=mode==='signup'?'flex':'none';
+  const btn=document.getElementById('auth-btn');
+  if(btn)btn.textContent=mode==='signup'?'إنشاء حساب':'دخول';
+  if(isPhone){
+    document.getElementById('phone-step-1').style.display='flex';
+    document.getElementById('phone-step-2').style.display='none';
+    document.getElementById('auth-otp').value='';
+    initRecaptcha();
+  }
+}
+
+function showAuthErr(msg){
+  if(!msg)return;
+  const e=document.getElementById('auth-err');
+  if(e){e.textContent=msg;setTimeout(()=>{e.textContent='';},4000);}
+}
+function showPhoneErr(msg){
+  const e=document.getElementById('phone-err');
+  if(e){e.textContent=msg;setTimeout(()=>{e.textContent='';},4000);}
+}
+function showOTPErr(msg){
+  const e=document.getElementById('otp-err');
+  if(e){e.textContent=msg;setTimeout(()=>{e.textContent='';},4000);}
+}
+
+function setAuthLoading(v){
+  const l=document.getElementById('auth-loading');
+  if(l)l.style.display=v?'flex':'none';
+  document.querySelectorAll('#auth-screen .btn,#auth-screen .auth-social').forEach(b=>b.disabled=v);
+}
+
 function showToast(msg){
   let t=document.getElementById('mq-toast');
   if(!t){t=document.createElement('div');t.id='mq-toast';t.style.cssText='position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);border-radius:14px;padding:10px 20px;font-size:14px;font-weight:700;color:var(--text);z-index:9999;max-width:90%;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.4);transition:opacity .3s;white-space:nowrap';document.body.appendChild(t);}
   t.textContent=msg;t.style.opacity='1';clearTimeout(t._to);t._to=setTimeout(()=>{t.style.opacity='0'},2800);
 }
-function authGoogle(){showToast('قريبًا! سيتم إضافة تسجيل الدخول بـ Google 🔜');}
-function authFacebook(){showToast('قريبًا! سيتم إضافة تسجيل الدخول بـ Facebook 🔜');}
+
+function togglePassVis(){
+  const inp=document.getElementById('auth-pass');
+  const btn=document.getElementById('pass-eye');
+  inp.type=inp.type==='password'?'text':'password';
+  btn.textContent=inp.type==='password'?'👁':'🙈';
+}
+
+// ═══════════════════════ EMAIL / PASSWORD ═══════════════════════
+async function authSubmit(){
+  if(!firebaseReady){showAuthErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
+  const email=document.getElementById('auth-email').value.trim().toLowerCase();
+  const pass=document.getElementById('auth-pass').value;
+  const name=document.getElementById('auth-name').value.trim();
+  if(!email||!email.includes('@')){showAuthErr('أدخل بريد إلكتروني صحيح');return;}
+  if(!pass||pass.length<6){showAuthErr('كلمة السر لازم تكون 6 أحرف على الأقل');return;}
+  setAuthLoading(true);
+  try{
+    let cred;
+    if(authMode==='signup'){
+      if(!name){showAuthErr('أدخل اسمك');setAuthLoading(false);return;}
+      cred=await auth.createUserWithEmailAndPassword(email,pass);
+      await cred.user.updateProfile({displayName:name});
+    }else{
+      cred=await auth.signInWithEmailAndPassword(email,pass);
+    }
+    afterFirebaseAuth(cred.user);
+  }catch(e){showAuthErr(firebaseErrMsg(e.code));}
+  finally{setAuthLoading(false);}
+}
+
+// ═══════════════════════ GOOGLE ═══════════════════════
+async function authGoogle(){
+  if(!firebaseReady){showAuthErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
+  setAuthLoading(true);
+  try{
+    const provider=new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({prompt:'select_account'});
+    const cred=await auth.signInWithPopup(provider);
+    afterFirebaseAuth(cred.user);
+  }catch(e){if(e.code!=='auth/cancelled-popup-request')showAuthErr(firebaseErrMsg(e.code));}
+  finally{setAuthLoading(false);}
+}
+
+// ═══════════════════════ FACEBOOK ═══════════════════════
+async function authFacebook(){
+  if(!firebaseReady){showAuthErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
+  setAuthLoading(true);
+  try{
+    const provider=new firebase.auth.FacebookAuthProvider();
+    const cred=await auth.signInWithPopup(provider);
+    afterFirebaseAuth(cred.user);
+  }catch(e){if(e.code!=='auth/cancelled-popup-request')showAuthErr(firebaseErrMsg(e.code));}
+  finally{setAuthLoading(false);}
+}
+
+// ═══════════════════════ PHONE / OTP ═══════════════════════
+function initRecaptcha(){
+  if(!firebaseReady)return;
+  try{
+    if(recaptchaVerifier){try{recaptchaVerifier.clear();}catch(_){}}
+    recaptchaVerifier=new firebase.auth.RecaptchaVerifier('recaptcha-container',{
+      size:'invisible',
+      callback:()=>{}
+    });
+  }catch(e){console.log('reCAPTCHA:',e.message);}
+}
+
+async function sendOTP(){
+  if(!firebaseReady){showPhoneErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
+  const code=document.getElementById('country-code').value;
+  const num=document.getElementById('auth-phone').value.trim().replace(/^0/,'');
+  const full=code+num;
+  if(!num||num.length<7){showPhoneErr('أدخل رقم هاتف صحيح');return;}
+  setAuthLoading(true);
+  try{
+    if(!recaptchaVerifier)initRecaptcha();
+    confirmationResult=await auth.signInWithPhoneNumber(full,recaptchaVerifier);
+    document.getElementById('phone-step-1').style.display='none';
+    document.getElementById('phone-step-2').style.display='flex';
+  }catch(e){
+    showPhoneErr(firebaseErrMsg(e.code));
+    try{recaptchaVerifier.clear();}catch(_){}
+    recaptchaVerifier=null;
+    setTimeout(initRecaptcha,500);
+  }
+  finally{setAuthLoading(false);}
+}
+
+async function verifyOTP(){
+  if(!confirmationResult){showOTPErr('أعد إرسال الكود أولاً');return;}
+  const otp=document.getElementById('auth-otp').value.trim();
+  if(!otp||otp.length<6){showOTPErr('أدخل الكود المكون من 6 أرقام');return;}
+  setAuthLoading(true);
+  try{
+    const cred=await confirmationResult.confirm(otp);
+    afterFirebaseAuth(cred.user);
+  }catch(e){showOTPErr(firebaseErrMsg(e.code));}
+  finally{setAuthLoading(false);}
+}
+
+// ═══════════════════════ GUEST ═══════════════════════
 function authGuest(){
   const uid='guest_'+Date.now();
   setSession({uid,email:'',name:'زائر',isGuest:true});
   afterAuth();
 }
+
+// ═══════════════════════ AFTER AUTH ═══════════════════════
+function afterFirebaseAuth(user){
+  const sess={
+    uid:user.uid,
+    email:user.email||'',
+    name:user.displayName||user.email||user.phoneNumber||'مستخدم',
+    isGuest:false
+  };
+  setSession(sess);
+  afterAuth();
+}
+
 function afterAuth(){
+  if(authStateHandled)return;
+  authStateHandled=true;
   document.getElementById('auth-screen').style.display='none';
   load();
   applyTheme(D.theme||'dark');
-  const sess=getSession();
-  if(!D.pin){document.getElementById('pin-title').textContent='حط رقمك السري';document.getElementById('pin-sub').textContent='اختر رقم سري من 4 أرقام 🔐';}
+  if(!D.pin){
+    document.getElementById('pin-title').textContent='حط رقمك السري';
+    document.getElementById('pin-sub').textContent='اختر رقم سري من 4 أرقام 🔐';
+  }
   document.getElementById('pin-screen').style.display='flex';
 }
-function togglePassVis(){
-  const inp=document.getElementById('auth-pass');
-  const btn=document.getElementById('pass-eye');
-  if(inp.type==='password'){inp.type='text';btn.textContent='🙈';}
-  else{inp.type='password';btn.textContent='👁';}
-}
-function authLogout(){
-  if(!confirm('تقدر تدخل بنفس حسابك تاني لاحقًا.\nتخرج؟')){return;}
+
+async function authLogout(){
+  if(!confirm('تقدر تدخل بنفس حسابك تاني لاحقًا.\nتخرج؟'))return;
+  if(firebaseReady&&auth){try{await auth.signOut();}catch(_){}}
   clearSession();
   location.reload();
 }
@@ -1815,21 +2109,48 @@ function authLogout(){
 window.addEventListener('load',()=>{
   applyTheme('dark');
   if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
-  // Splash
+  initFirebase();
+
   setTimeout(()=>{
     document.getElementById('splash').classList.add('hide');
     setTimeout(()=>{
       document.getElementById('splash').style.display='none';
-      const sess=getSession();
-      if(!sess){
-        // No session → show auth screen
-        document.getElementById('auth-screen').style.display='flex';
+      authStateHandled=false;
+
+      if(firebaseReady){
+        // Firebase configured → use onAuthStateChanged
+        const unsub=auth.onAuthStateChanged(user=>{
+          if(authStateHandled)return;
+          unsub(); // unsubscribe after first call
+          if(user){
+            // Firebase user is signed in
+            afterFirebaseAuth(user);
+          }else{
+            // Check for local guest session
+            const sess=getSession();
+            if(sess&&sess.isGuest){
+              afterAuth();
+            }else{
+              clearSession();
+              document.getElementById('auth-screen').style.display='flex';
+            }
+          }
+        });
+        // Timeout fallback: if Firebase takes too long, show auth screen
+        setTimeout(()=>{
+          if(!authStateHandled){
+            authStateHandled=false; // allow auth screen to proceed
+            document.getElementById('auth-screen').style.display='flex';
+          }
+        },4000);
       }else{
-        // Session exists → load user data and go to PIN
-        load();
-        applyTheme(D.theme||'dark');
-        if(!D.pin){document.getElementById('pin-title').textContent='حط رقمك السري';document.getElementById('pin-sub').textContent='اختر رقم سري من 4 أرقام 🔐';}
-        document.getElementById('pin-screen').style.display='flex';
+        // Firebase not configured → use local guest session
+        const sess=getSession();
+        if(sess){
+          afterAuth();
+        }else{
+          document.getElementById('auth-screen').style.display='flex';
+        }
       }
     },500);
   },2000);
