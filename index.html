@@ -1852,9 +1852,8 @@ const FIREBASE_CONFIG = {
   appId: "1:731029211860:web:f58554a49e3525bbc64941",
   measurementId: "G-JDCGRKYBMN"
 };
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
 // ═══════════════════════ AUTH STATE ═══════════════════════
 let firebaseReady = false;
 let auth = null;
