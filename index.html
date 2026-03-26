@@ -1838,18 +1838,16 @@ function exportData(){const b=new Blob([JSON.stringify(D,null,2)],{type:'applica
 function resetAll(){if(confirm('أنت متأكد؟ كل بياناتك هتتمسح!\nلا يمكن التراجع!')){const k=getStorageKey();localStorage.removeItem(k);['mq_v3','mq_v2','mq_v1'].forEach(k=>localStorage.removeItem(k));location.reload();}}
 
 // ═══════════════════════ FIREBASE CONFIG ═══════════════════════
-// ⚠️  قم بتغيير هذه القيم بقيم مشروعك على Firebase
-// 1. اذهب إلى https://console.firebase.google.com/
-// 2. أنشئ مشروعاً جديداً أو افتح مشروعاً موجوداً
-// 3. Project Settings → Your apps → Add app (Web)
-// 4. انسخ الإعدادات والصقها هنا
-const FIREBASE_CONFIG = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId:             "YOUR_APP_ID"
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAKOScMMOQIavUOe70WFAAqLtdr-FAc2h0",
+  authDomain: "mostaqbaly-52957.firebaseapp.com",
+  projectId: "mostaqbaly-52957",
+  storageBucket: "mostaqbaly-52957.firebasestorage.app",
+  messagingSenderId: "731029211860",
+  appId: "1:731029211860:web:f58554a49e3525bbc64941",
+  measurementId: "G-JDCGRKYBMN"
+};
 };
 
 // ═══════════════════════ AUTH STATE ═══════════════════════
