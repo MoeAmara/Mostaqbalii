@@ -13,16 +13,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#070c18;--surface:#0d1426;--surface2:#131d35;--card:#182040;
+  --bg:#060b17;--surface:#0b1122;--surface2:#111828;--card:#141f38;
   --gold:#f5c842;--gold-dim:rgba(245,200,66,.13);
   --blue:#5eaeff;--blue-dim:rgba(94,174,255,.12);
   --green:#3dd68c;--green-dim:rgba(61,214,140,.12);
   --red:#ff6b6b;--red-dim:rgba(255,107,107,.12);
   --purple:#b98ef8;--purple-dim:rgba(185,142,248,.12);
   --orange:#fb923c;--teal:#22d3ee;--pink:#f472b6;
-  --text:#e4e9f5;--dim:#5a6580;--border:rgba(255,255,255,.06);
-  --nav:64px;--shadow:0 4px 24px rgba(0,0,0,.35);
-  --modal-bg:rgba(0,0,0,.82);
+  --text:#e8eeff;--dim:#4e5e80;--border:rgba(255,255,255,.07);
+  --nav:0px;--shadow:0 8px 32px rgba(0,0,0,.5);
+  --modal-bg:rgba(0,0,0,.88);
 }
 [data-theme="light"]{
   --bg:#f0f3ff;--surface:#e6eaf8;--surface2:#dde3f5;--card:#ffffff;
@@ -36,8 +36,7 @@
   --shadow:0 4px 24px rgba(26,32,64,.12);
   --modal-bg:rgba(240,243,255,.88);
 }
-[data-theme="light"] .bottom-nav{background:rgba(240,243,255,.97)}
-[data-theme="light"] .hero{background:linear-gradient(135deg,#dae0ff,#eef1ff)}
+[data-theme="light"] .hero{background:linear-gradient(135deg,#d8e0ff,#e8eeff,#dde3f5)}
 [data-theme="light"] .hero::before{background:radial-gradient(circle,rgba(212,160,0,.1),transparent 70%)}
 [data-theme="light"] .pts-val{background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
@@ -46,12 +45,19 @@ html,body{height:100%}
 body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:430px;margin:0 auto;overflow-x:hidden;position:relative}
 
 /* SPLASH */
-#splash{position:fixed;inset:0;z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);transition:opacity .5s}
+#splash{position:fixed;inset:0;z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);transition:opacity .6s}
 #splash.hide{opacity:0;pointer-events:none}
-.splash-logo{width:180px;height:180px;object-fit:contain;animation:splashPop .7s cubic-bezier(.34,1.56,.64,1) forwards}
-@keyframes splashPop{0%{transform:scale(0.4);opacity:0}100%{transform:scale(1);opacity:1}}
-.splash-sub{font-size:15px;color:var(--dim);margin-top:12px;animation:fadeIn .8s .4s both}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.splash-logo{width:200px;height:200px;object-fit:contain;animation:splashPop .8s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes splashPop{0%{transform:scale(0.3) rotate(-8deg);opacity:0}80%{transform:scale(1.05) rotate(2deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+.splash-sub{font-size:16px;color:var(--dim);margin-top:16px;animation:fadeIn .8s .5s both;font-weight:600}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* CUSTOM EMOJI INPUT */
+.ep-btn-plus{height:40px;border-radius:10px;border:2px dashed var(--gold);background:var(--gold-dim);font-size:16px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;color:var(--gold);font-weight:800}
+.ep-btn-plus:active{transform:scale(.93)}
+.custom-emoji-input{background:var(--surface2);border:2px solid var(--gold);border-radius:12px;padding:10px 14px;color:var(--text);font-size:22px;width:100%;outline:none;margin-top:8px;text-align:center;letter-spacing:4px}
+.custom-emoji-row{margin-top:8px;display:none}
+.custom-emoji-row.show{display:block}
 
 /* PIN */
 #pin-screen{position:fixed;inset:0;background:var(--bg);z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:24px}
@@ -70,25 +76,61 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
 .pin-btn:active{transform:scale(.9);background:var(--surface2);border-color:var(--gold);box-shadow:0 0 16px rgba(245,200,66,.3)}
 .pin-btn.empty{background:transparent;border:none;pointer-events:none}
 
+/* AUTH SCREEN */
+#auth-screen{position:fixed;inset:0;background:var(--bg);z-index:999;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto}
+.auth-title{font-size:22px;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;margin-bottom:18px}
+.auth-tabs{display:flex;gap:0;background:var(--surface2);border-radius:14px;padding:4px;margin-bottom:18px;width:100%;max-width:340px}
+.auth-tab{flex:1;border:none;background:transparent;color:var(--dim);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;padding:9px;border-radius:11px;cursor:pointer;transition:all .2s}
+.auth-tab.active{background:var(--gold);color:#000}
+.auth-box{width:100%;max-width:340px;display:flex;flex-direction:column;gap:12px}
+.auth-field{display:flex;flex-direction:column;gap:6px}
+.auth-field label{font-size:13px;font-weight:700;color:var(--dim)}
+.auth-field input{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:15px;outline:none;transition:border-color .2s;width:100%}
+.auth-field input:focus{border-color:var(--gold)}
+.auth-err{color:var(--red);font-size:13px;text-align:center;min-height:18px}
+.auth-divider{display:flex;align-items:center;gap:10px;color:var(--dim);font-size:13px}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.auth-social{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
+.auth-social:hover{border-color:var(--gold);background:var(--card)}
+.auth-guest{background:transparent;border:none;color:var(--dim);font-family:'Space Grotesk',sans-serif;font-size:13px;cursor:pointer;padding:6px;text-decoration:underline;text-underline-offset:3px}
+.w100{width:100%}
+.auth-user-badge{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);border-radius:40px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--dim);z-index:200;display:none;align-items:center;gap:6px;white-space:nowrap}
+
 /* APP */
-#app{display:none;padding-bottom:var(--nav)}
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:var(--nav);background:rgba(7,12,24,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;z-index:100;padding:0 2px}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:6px 5px;border-radius:12px;transition:all .2s;position:relative;min-width:42px}
-.nav-item .ni{font-size:18px}
-.nav-item .nl{font-size:8.5px;color:var(--dim);font-weight:600;white-space:nowrap}
-.nav-item.active .ni{transform:translateY(-2px)}
+#app{display:none;padding-bottom:0}
+
+/* HAMBURGER FAB */
+#menu-fab{position:fixed;bottom:24px;left:20px;z-index:200;width:56px;height:56px;border-radius:20px;background:linear-gradient(135deg,var(--gold),var(--orange));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 8px 28px rgba(245,200,66,.4);transition:all .2s;color:#000}
+#menu-fab:active{transform:scale(.93)}
+#menu-fab.open{background:linear-gradient(135deg,var(--red),#ff4040);box-shadow:0 8px 28px rgba(255,107,107,.4)}
+
+/* SIDE NAV OVERLAY */
+#nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(10px);z-index:150;display:none;justify-content:flex-start}
+#nav-overlay.show{display:flex;animation:fadeOverlay .25s ease}
+@keyframes fadeOverlay{from{opacity:0}to{opacity:1}}
+#side-nav{background:linear-gradient(180deg,var(--surface) 0%,var(--bg) 100%);border-left:1px solid var(--border);width:290px;height:100%;padding:56px 16px 30px;overflow-y:auto;animation:slideRight .3s cubic-bezier(.25,.86,.4,1);display:flex;flex-direction:column;gap:6px}
+[data-theme="light"] #side-nav{background:linear-gradient(180deg,#ffffff 0%,#f0f3ff 100%)}
+@keyframes slideRight{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+.nav-item{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:16px;cursor:pointer;transition:all .22s;border:1px solid transparent;position:relative}
+.nav-item:active{transform:scale(.97)}
+.nav-item .ni{font-size:22px;flex-shrink:0;width:30px;text-align:center}
+.nav-item .nl{font-size:15px;font-weight:700;color:var(--dim);letter-spacing:-.2px}
+.nav-item.active{background:linear-gradient(135deg,var(--gold-dim),rgba(251,146,60,.06));border-color:rgba(245,200,66,.25);box-shadow:0 4px 16px rgba(245,200,66,.08)}
 .nav-item.active .nl{color:var(--gold)}
-.nav-item.active::after{content:'';position:absolute;bottom:-8px;width:5px;height:5px;border-radius:50%;background:var(--gold)}
+.nav-item.active::before{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);width:4px;height:60%;background:linear-gradient(var(--gold),var(--orange));border-radius:4px 0 0 4px}
+.nav-divider{height:1px;background:var(--border);margin:8px 0}
+.nav-header-lbl{font-size:10px;font-weight:800;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;padding:4px 18px 2px}
 
 /* PAGES */
-.page{display:none;padding:0 16px 20px;animation:pgIn .28s ease}
+.page{display:none;padding:0 16px 24px;animation:pgIn .32s cubic-bezier(.25,.86,.4,1)}
 .page.active{display:block}
-@keyframes pgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.ph{padding:18px 0 12px;display:flex;align-items:center;justify-content:space-between}
-.pt{font-size:22px;font-weight:900}
+@keyframes pgIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.ph{padding:20px 0 14px;display:flex;align-items:center;justify-content:space-between}
+.pt{font-size:28px;font-weight:900;letter-spacing:-.5px;background:linear-gradient(135deg,var(--text),rgba(228,233,245,.7));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
 /* CARDS */
-.card{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.card::after{content:'';position:absolute;top:0;right:0;width:120px;height:120px;background:radial-gradient(circle at top right,rgba(255,255,255,.03),transparent 70%);pointer-events:none}
 .ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .ct{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
 
@@ -187,14 +229,15 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
 .reward-edit-btns{display:flex;gap:6px;margin-top:8px}
 
 /* HOME HERO */
-.hero{background:linear-gradient(135deg,#162040,#0d1426);border:1px solid rgba(245,200,66,.18);border-radius:24px;padding:20px;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
-.hero::before{content:'';position:absolute;top:-50px;right:-50px;width:160px;height:160px;background:radial-gradient(circle,rgba(245,200,66,.12),transparent 70%);pointer-events:none}
-.hero-date{font-size:12px;color:var(--dim)}
-.pts-row{display:flex;align-items:baseline;gap:6px;margin-top:12px}
-.pts-val{font-family:'Space Grotesk',sans-serif;font-size:42px;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.pts-lbl{color:var(--dim);font-size:14px}
-.streak-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,107,107,.12);border:1px solid rgba(255,107,107,.25);border-radius:100px;padding:5px 13px;margin-top:10px}
-.streak-num{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;color:var(--red)}
+.hero{background:linear-gradient(145deg,#1a2850,#0e1730,#0a1220);border:1px solid rgba(245,200,66,.22);border-radius:28px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,.6),0 0 0 1px rgba(245,200,66,.06)}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(245,200,66,.15),transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-40px;left:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(94,174,255,.08),transparent 70%);pointer-events:none}
+.hero-date{font-size:13px;color:var(--dim);font-weight:600}
+.pts-row{display:flex;align-items:baseline;gap:8px;margin-top:14px}
+.pts-val{font-family:'Space Grotesk',sans-serif;font-size:52px;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--orange),#ff6b35);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.pts-lbl{color:var(--dim);font-size:16px;font-weight:600}
+.streak-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,107,107,.14);border:1px solid rgba(255,107,107,.3);border-radius:100px;padding:6px 14px;margin-top:12px}
+.streak-num{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--red)}
 .fire-anim{animation:fireBounce 1.2s ease-in-out infinite}
 @keyframes fireBounce{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-4px) scale(1.15)}}
 
@@ -311,9 +354,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 .empty-sub{font-size:13px;margin-top:5px}
 
 /* FAB */
-.fab{position:fixed;bottom:calc(var(--nav) + 14px);left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:398px;z-index:90}
-.fab-btn{width:100%;background:linear-gradient(135deg,var(--gold),var(--orange));color:#000;border:none;border-radius:16px;padding:14px;font-family:'Tajawal';font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 20px rgba(245,200,66,.35);transition:all .2s}
-.fab-btn:active{transform:scale(.97)}
+.fab{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:398px;z-index:90}
+.fab-btn{width:100%;background:linear-gradient(135deg,var(--gold),var(--orange));color:#000;border:none;border-radius:18px;padding:15px;font-family:'Tajawal';font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 24px rgba(245,200,66,.4),0 2px 8px rgba(0,0,0,.3);transition:all .2s}
+.fab-btn:active{transform:scale(.97);box-shadow:0 3px 12px rgba(245,200,66,.3)}
 
 /* SETTINGS CARD */
 .settings-card{background:var(--card);border:1px solid rgba(245,200,66,.15);border-radius:22px;padding:22px;text-align:center;margin-top:24px;box-shadow:var(--shadow)}
@@ -337,7 +380,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 <!-- SPLASH -->
 <div id="splash">
   <img id="splash-logo" src="./logo-dark.png" alt="مستقبلي" class="splash-logo">
-  <div class="splash-sub">مستقبلك يبدأ اليوم 🚀</div>
+  <div class="splash-sub">مستقبلك بيبتدي من انهاردة 🚀</div>
 </div>
 
 <!-- CELEBRATION -->
@@ -348,6 +391,39 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
   <div class="cel-pts" id="cel-pts">+100</div>
   <div style="font-size:13px;color:#aaa;margin-top:-6px">نقطة مكافأة! 🏆</div>
   <button class="btn btn-gold" style="width:200px;margin-top:14px" onclick="hideCel()">🙌 يلا نكمل!</button>
+</div>
+
+<!-- AUTH SCREEN -->
+<div id="auth-screen" style="display:none">
+  <img id="auth-logo" src="./logo-dark.png" alt="مستقبلي" style="height:72px;object-fit:contain;margin-bottom:18px;filter:drop-shadow(0 4px 18px rgba(245,200,66,.35))">
+  <div class="auth-title">مرحبًا بك في مستقبلي 👋</div>
+  <div class="auth-tabs">
+    <button class="auth-tab active" id="tab-login" onclick="authTab('login')">دخول</button>
+    <button class="auth-tab" id="tab-signup" onclick="authTab('signup')">حساب جديد</button>
+  </div>
+  <div class="auth-box">
+    <div class="auth-field" id="auth-name-field" style="display:none">
+      <label>الاسم</label>
+      <input type="text" id="auth-name" placeholder="اسمك هنا" autocomplete="name">
+    </div>
+    <div class="auth-field">
+      <label>البريد الإلكتروني</label>
+      <input type="email" id="auth-email" placeholder="email@example.com" autocomplete="email" dir="ltr">
+    </div>
+    <div class="auth-field">
+      <label>كلمة السر</label>
+      <div style="position:relative">
+        <input type="password" id="auth-pass" placeholder="كلمة السر" autocomplete="current-password" dir="ltr">
+        <button onclick="togglePassVis()" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--dim);font-size:18px" id="pass-eye">👁</button>
+      </div>
+    </div>
+    <div class="auth-err" id="auth-err"></div>
+    <button class="btn btn-gold w100" id="auth-btn" onclick="authSubmit()">دخول</button>
+    <div class="auth-divider"><span>أو</span></div>
+    <button class="auth-social" onclick="authGoogle()"><span>🔵</span> الدخول بـ Google</button>
+    <button class="auth-social" onclick="authFacebook()"><span>🔷</span> الدخول بـ Facebook</button>
+    <button class="auth-guest" onclick="authGuest()">🚶 دخول بدون حساب</button>
+  </div>
 </div>
 
 <!-- PIN SCREEN -->
@@ -402,6 +478,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
         <button class="ep-btn" onclick="pickEmoji('course','🔬',this)">🔬</button>
         <button class="ep-btn" onclick="pickEmoji('course','🇪🇸',this)">🇪🇸</button>
         <button class="ep-btn" onclick="pickEmoji('course','🇬🇧',this)">🇬🇧</button>
+        <button class="ep-btn-plus" onclick="toggleCustomEmoji('course')" title="أضف إيموجي من الكيبورد">+</button>
+      </div>
+      <div class="custom-emoji-row" id="course-custom-row">
+        <input class="custom-emoji-input" id="course-custom-input" type="text" placeholder="✍️ اكتب أو الصق إيموجي هنا" maxlength="4" oninput="applyCustomEmoji('course',this.value)">
       </div>
     </div>
     <div class="field"><label>عدد الفيديوهات / المحاضرات *</label><input type="number" id="f-ctotal" placeholder="مثال: 120" min="1" max="9999"></div>
@@ -518,6 +598,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
         <button class="ep-btn" onclick="pickEmoji('rec','🛒',this)">🛒</button>
         <button class="ep-btn" onclick="pickEmoji('rec','💸',this)">💸</button>
         <button class="ep-btn" onclick="pickEmoji('rec','🌿',this)">🌿</button>
+        <button class="ep-btn-plus" onclick="toggleCustomEmoji('rec')" title="أضف إيموجي من الكيبورد">+</button>
+      </div>
+      <div class="custom-emoji-row" id="rec-custom-row">
+        <input class="custom-emoji-input" id="rec-custom-input" type="text" placeholder="✍️ اكتب أو الصق إيموجي هنا" maxlength="4" oninput="applyCustomEmoji('rec',this.value)">
       </div>
     </div>
     <div class="field"><label>وصف / سبب التعافي (اختياري)</label><input type="text" id="f-rdesc" placeholder="مثال: مضيع وقتي كتير" maxlength="80"></div>
@@ -557,6 +641,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
         <button class="ep-btn" onclick="pickEmoji('rwd','🍦',this)">🍦</button>
         <button class="ep-btn" onclick="pickEmoji('rwd','💐',this)">💐</button>
         <button class="ep-btn" onclick="pickEmoji('rwd','🎸',this)">🎸</button>
+        <button class="ep-btn-plus" onclick="toggleCustomEmoji('rwd')" title="أضف إيموجي من الكيبورد">+</button>
+      </div>
+      <div class="custom-emoji-row" id="rwd-custom-row">
+        <input class="custom-emoji-input" id="rwd-custom-input" type="text" placeholder="✍️ اكتب أو الصق إيموجي هنا" maxlength="4" oninput="applyCustomEmoji('rwd',this.value)">
       </div>
     </div>
     <div class="field"><label>النقاط عند الفتح</label>
@@ -621,17 +709,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 <!-- HOME -->
 <div id="page-home" class="page active">
   <div class="ph">
-    <div><img id="home-logo" src="./logo-dark.png" alt="مستقبلي" style="height:36px;object-fit:contain"></div>
+    <div><img id="home-logo" src="./logo-dark.png" alt="مستقبلي" style="height:52px;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(245,200,66,.25))"></div>
     <div style="display:flex;align-items:center;gap:8px">
       <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">🌙 داكن</button>
       <div class="streak-pill"><span class="fire-anim">🔥</span><span class="streak-num" id="h-streak">0</span><span style="font-size:11px;color:var(--dim)">يوم</span></div>
     </div>
-  </div>
-
-  <div id="install-banner">
-    <span style="font-size:22px">📱</span>
-    <div style="flex:1"><div style="font-weight:700;font-size:13px">ثبّت التطبيق!</div><div style="font-size:11px;color:var(--dim)">إضافة للشاشة الرئيسية</div></div>
-    <button onclick="promptInstall()" class="btn btn-ghost" style="padding:7px 11px;font-size:12px">تثبيت</button>
   </div>
 
   <div class="hero">
@@ -795,11 +877,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
     <div><div style="font-weight:700">📍 مواقيت الصلاة</div><div style="font-size:12px;color:var(--dim)" id="location-lbl">اضغط للتحديث</div></div>
     <button class="btn btn-ghost" style="font-size:13px;padding:8px 14px" onclick="getPrayerTimes(true)">تحديث</button>
   </div>
-  <div class="sl-label">التطبيق</div>
-  <div class="toggle-row">
-    <div><div style="font-weight:700">📱 تثبيت التطبيق</div><div style="font-size:12px;color:var(--dim)">إضافة للشاشة الرئيسية</div></div>
-    <button class="btn btn-ghost" style="font-size:13px;padding:8px 14px" onclick="promptInstall()">تثبيت</button>
-  </div>
   <div class="sl-label">البيانات</div>
   <div class="toggle-row">
     <div><div style="font-weight:700">📤 تصدير البيانات</div><div style="font-size:12px;color:var(--dim)">نسخة احتياطية JSON</div></div>
@@ -810,24 +887,43 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
     <button class="btn btn-red" style="font-size:13px;padding:8px 14px" onclick="resetAll()">مسح</button>
   </div>
   <div class="settings-card">
-    <img id="settings-logo" src="./logo-dark.png" alt="مستقبلي" style="width:70px;height:70px;object-fit:contain;margin-bottom:8px">
-    <div style="font-weight:900;font-size:17px">مستقبلي v3.0</div>
-    <div style="color:var(--dim);font-size:13px;margin-top:4px">نظام تتبع الأهداف والمكافآت</div>
-    <div style="color:var(--dim);font-size:11px;margin-top:8px">بياناتك محفوظة محليًا على جهازك ✓</div>
+    <img id="settings-logo" src="./logo-dark.png" alt="مستقبلي" style="width:80px;height:80px;object-fit:contain;margin-bottom:12px;filter:drop-shadow(0 4px 16px rgba(245,200,66,.3))">
+    <div style="font-weight:900;font-size:20px;background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent">مستقبلي v1.31</div>
+    <div style="color:var(--dim);font-size:13px;margin-top:6px">نظام تتبع الأهداف والمكافآت</div>
+    <div style="color:var(--dim);font-size:12px;margin-top:10px">المطور: <a href="https://www.instagram.com/mohamed.abdelmksod/" target="_blank" style="color:var(--blue);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(94,174,255,.3);padding-bottom:1px">Mohamed Abdelmaksoud 📷</a></div>
+    <div style="color:var(--dim);font-size:11px;margin-top:6px" id="session-info">بياناتك محفوظة محليًا على جهازك ✓</div>
+    <button class="btn btn-red" style="font-size:12px;padding:7px 18px;margin-top:12px" onclick="authLogout()" id="logout-btn">🚪 تسجيل الخروج</button>
   </div>
 </div>
 
-<!-- NAV -->
-<nav class="bottom-nav">
-  <div class="nav-item active" onclick="goTo('home')" id="nav-home"><span class="ni">🏠</span><span class="nl">الرئيسية</span></div>
-  <div class="nav-item" onclick="goTo('prayer')" id="nav-prayer"><span class="ni">🤲</span><span class="nl">الصلاة</span></div>
-  <div class="nav-item" onclick="goTo('courses')" id="nav-courses"><span class="ni">📚</span><span class="nl">الكورسات</span></div>
-  <div class="nav-item" onclick="goTo('uni')" id="nav-uni"><span class="ni">🎓</span><span class="nl">الكلية</span></div>
-  <div class="nav-item" onclick="goTo('gym')" id="nav-gym"><span class="ni">💪</span><span class="nl">الجيم</span></div>
-  <div class="nav-item" onclick="goTo('recovery')" id="nav-recovery"><span class="ni">🌱</span><span class="nl">التعافي</span></div>
-  <div class="nav-item" onclick="goTo('rewards')" id="nav-rewards"><span class="ni">🏆</span><span class="nl">مكافآتي</span></div>
-  <div class="nav-item" onclick="goTo('settings')" id="nav-settings"><span class="ni">⚙️</span><span class="nl">إعدادات</span></div>
-</nav>
+<!-- HAMBURGER BUTTON -->
+<button id="menu-fab" onclick="toggleNav()">☰</button>
+
+<!-- SIDE NAV OVERLAY -->
+<div id="nav-overlay" onclick="navOverlayClick(event)">
+  <div id="side-nav">
+    <div style="padding:0 18px 16px;border-bottom:1px solid var(--border);margin-bottom:10px">
+      <img id="sidenav-logo" src="./logo-dark.png" alt="مستقبلي" style="height:44px;object-fit:contain">
+      <div style="font-size:11px;color:var(--dim);margin-top:6px;font-weight:700">v1.31 — مستقبلك بيبتدي من انهاردة 🚀</div>
+    </div>
+    <div class="nav-header-lbl">القائمة</div>
+    <div class="nav-item active" onclick="goTo('home')" id="nav-home"><span class="ni">🏠</span><span class="nl">الرئيسية</span></div>
+    <div class="nav-item" onclick="goTo('prayer')" id="nav-prayer"><span class="ni">🤲</span><span class="nl">الصلاة</span></div>
+    <div class="nav-divider"></div>
+    <div class="nav-header-lbl">التعلم</div>
+    <div class="nav-item" onclick="goTo('courses')" id="nav-courses"><span class="ni">📚</span><span class="nl">الكورسات</span></div>
+    <div class="nav-item" onclick="goTo('uni')" id="nav-uni"><span class="ni">🎓</span><span class="nl">الكلية</span></div>
+    <div class="nav-divider"></div>
+    <div class="nav-header-lbl">الصحة</div>
+    <div class="nav-item" onclick="goTo('gym')" id="nav-gym"><span class="ni">💪</span><span class="nl">الجيم</span></div>
+    <div class="nav-item" onclick="goTo('recovery')" id="nav-recovery"><span class="ni">🌱</span><span class="nl">التعافي</span></div>
+    <div class="nav-divider"></div>
+    <div class="nav-header-lbl">الأخرى</div>
+    <div class="nav-item" onclick="goTo('rewards')" id="nav-rewards"><span class="ni">🏆</span><span class="nl">مكافآتي</span></div>
+    <div class="nav-item" onclick="goTo('settings')" id="nav-settings"><span class="ni">⚙️</span><span class="nl">الإعدادات</span></div>
+  </div>
+</div>
+
 </div>
 
 <script>
@@ -877,8 +973,17 @@ let togStates={quiz:false,section:false,lab:false};
 let deferredInstallPrompt=null;
 
 // ═══════════════════════ STORAGE ═══════════════════════
+function getStorageKey(){
+  const sess=getSession();
+  return sess?'mq_v3_'+sess.uid:'mq_v3';
+}
 function load(){
-  const s=localStorage.getItem('mq_v3');
+  const key=getStorageKey();
+  // Migrate legacy mq_v3 data to per-user key on first use
+  if(key!=='mq_v3'&&!localStorage.getItem(key)&&localStorage.getItem('mq_v3')){
+    localStorage.setItem(key,localStorage.getItem('mq_v3'));
+  }
+  const s=localStorage.getItem(key);
   if(s){
     try{
       D=JSON.parse(s);
@@ -906,7 +1011,7 @@ function load(){
     }else{D=JSON.parse(JSON.stringify(DEF));}
   }
 }
-function save(){localStorage.setItem('mq_v3',JSON.stringify(D))}
+function save(){localStorage.setItem(getStorageKey(),JSON.stringify(D))}
 
 // ═══════════════════════ THEME ═══════════════════════
 function applyTheme(t){
@@ -918,7 +1023,7 @@ function applyTheme(t){
   const lbl=document.getElementById('theme-label');
   if(lbl)lbl.textContent=isLight?'☀️ الوضع الفاتح':'🌙 الوضع الداكن';
   const logo=isLight?'./logo-light.png':'./logo-dark.png';
-  ['splash-logo','pin-logo','home-logo','settings-logo'].forEach(id=>{const el=document.getElementById(id);if(el)el.src=logo;});
+  ['splash-logo','pin-logo','home-logo','settings-logo','sidenav-logo','auth-logo'].forEach(id=>{const el=document.getElementById(id);if(el)el.src=logo;});
   const meta=document.querySelector('meta[name="theme-color"]');
   if(meta)meta.content=isLight?'#f0f3ff':'#070c18';
 }
@@ -932,7 +1037,7 @@ function submitPin(){
   if(!D.pin){
     if(pinStep===0){tmpPin=pinBuf;pinBuf='';pinStep=1;document.getElementById('pin-title').textContent='أكد الرقم السري';document.getElementById('pin-sub').textContent='أعد إدخال نفس الرقم';updDots();}
     else{if(pinBuf===tmpPin){D.pin=pinBuf;save();unlock();}
-    else{pinErr('الرقمان غير متطابقان 😅');pinBuf='';pinStep=0;tmpPin='';document.getElementById('pin-title').textContent='ضع رقمك السري';document.getElementById('pin-sub').textContent='اختر رقم سري من 4 أرقام 🔐';updDots();}}
+    else{pinErr('الرقمان غير متطابقان 😅');pinBuf='';pinStep=0;tmpPin='';document.getElementById('pin-title').textContent='حط رقمك السري';document.getElementById('pin-sub').textContent='اختر رقم سري من 4 أرقام 🔐';updDots();}}
   }else{if(pinBuf===D.pin)unlock();else{pinErr('رقم خاطئ، حاول تاني 🚫');pinBuf='';updDots();}}
 }
 function pinErr(msg){const e=document.getElementById('pin-err');e.textContent=msg;e.className='pin-error shake';setTimeout(()=>{e.textContent='';e.className='pin-error'},2500)}
@@ -942,6 +1047,12 @@ function changePin(){const n=prompt('الرقم السري الجديد (4 أر�
 // ═══════════════════════ INIT ═══════════════════════
 function initApp(){
   applyTheme(D.theme||'dark');
+  // Update session info in settings
+  const sess=getSession();
+  const si=document.getElementById('session-info');
+  if(si&&sess){
+    si.textContent=sess.isGuest?'وضع الزائر — بياناتك محفوظة محليًا 👤':'مسجّل بـ: '+sess.email+' ✓';
+  }
   checkNewDay();
   checkNewRecoveryDay();
   gymVM={y:new Date().getFullYear(),m:new Date().getMonth()};
@@ -979,7 +1090,24 @@ function checkNewRecoveryDay(){
 }
 
 // ═══════════════════════ NAVIGATION ═══════════════════════
+function openNav(){
+  document.getElementById('nav-overlay').classList.add('show');
+  document.getElementById('menu-fab').classList.add('open');
+  document.getElementById('menu-fab').textContent='✕';
+}
+function closeNav(){
+  document.getElementById('nav-overlay').classList.remove('show');
+  document.getElementById('menu-fab').classList.remove('open');
+  document.getElementById('menu-fab').textContent='☰';
+}
+function toggleNav(){
+  const isOpen=document.getElementById('nav-overlay').classList.contains('show');
+  if(isOpen)closeNav();else openNav();
+}
+function navOverlayClick(e){if(e.target===document.getElementById('nav-overlay'))closeNav();}
+
 function goTo(pg){
+  closeNav();
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+pg).classList.add('active');
@@ -993,6 +1121,17 @@ function goTo(pg){
   if(pg==='rewards'){const el=document.getElementById('rwd-fab');if(el)el.style.display='block';checkAllRewards();renderRewards();}
   if(pg==='home'){updHome();drawProgressChart();}
   if(pg==='prayer')renderCommitGrid();
+}
+
+// ═══════════════════════ CUSTOM EMOJI ═══════════════════════
+function toggleCustomEmoji(type){
+  const row=document.getElementById(type+'-custom-row');
+  if(row){row.classList.toggle('show');if(row.classList.contains('show')){const inp=document.getElementById(type+'-custom-input');if(inp)inp.focus();}}
+}
+function applyCustomEmoji(type,val){
+  const v=val.trim();if(!v)return;
+  picked[type]=picked[type]||{};picked[type].emoji=v;
+  document.querySelectorAll('#'+type+'-emoji-pick .ep-btn').forEach(b=>b.classList.remove('selected'));
 }
 
 // ═══════════════════════ OVERLAYS ═══════════════════════
@@ -1475,9 +1614,41 @@ function renderRewards(){
   const all=D.rewards||[];
   const achieved=all.filter(r=>r.achieved).length;
   const cnt=document.getElementById('rwd-cnt');if(cnt)cnt.textContent=`${achieved}/${all.length}`;
-  if(all.length===0){container.innerHTML=`<div class="empty-state"><div class="empty-ico">🎯</div><div class="empty-txt">مفيش مكافآت لسه</div><div class="empty-sub">اضغط الزرار في الأسفل لتضيف أول مكافأة</div></div><div style="height:80px"></div>`;return;}
+
+  // Build course milestone rewards section
+  const courseRewards=[];
+  (D.courses||[]).forEach(c=>{
+    [25,50,75,100].forEach(pct=>{
+      const rw=c.rewards?.[`r${pct}`];if(!rw)return;
+      const target=Math.round(c.total*pct/100);
+      const reached=c.done>=target;
+      courseRewards.push({courseName:c.name,courseIcon:c.icon||'📚',courseColor:c.color||'var(--blue)',pct,reward:rw,reached,target,done:c.done});
+    });
+  });
+
+  let courseSection='';
+  if(courseRewards.length>0){
+    courseSection=`<div class="section-divider">مكافآت الكورسات</div>`+
+    courseRewards.map(cr=>`<div class="reward-card ${cr.reached?'unlocked':'locked'}" style="--c-glow:${cr.courseColor}22">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="font-size:36px;flex-shrink:0">${cr.reached?'✅':'🔒'}</div>
+        <div style="flex:1">
+          <div class="reward-title">${cr.reward}</div>
+          <div class="reward-cond">${cr.courseIcon} ${cr.courseName} — عند ${cr.pct}% (${cr.done}/${cr.target})</div>
+          <div style="margin-top:4px;font-size:12px;color:${cr.reached?'var(--gold)':'var(--dim)'}">${cr.reached?'🎉 تم تحقيقها!':'🔒 لم تُفتح بعد'}</div>
+        </div>
+        <div style="background:${cr.courseColor}22;color:${cr.courseColor};border-radius:10px;padding:5px 10px;font-family:Space Grotesk;font-weight:700;font-size:13px;flex-shrink:0">${cr.pct}%</div>
+      </div></div>`).join('');
+  }
+
+  if(all.length===0&&courseRewards.length===0){container.innerHTML=`<div class="empty-state"><div class="empty-ico">🎯</div><div class="empty-txt">مفيش مكافآت لسه</div><div class="empty-sub">اضغط الزرار في الأسفل لتضيف أول مكافأة</div></div><div style="height:80px"></div>`;return;}
   const sorted=[...all].sort((a,b)=>(b.achieved?1:0)-(a.achieved?1:0));
-  container.innerHTML=sorted.map(r=>`<div class="reward-card ${r.achieved?'unlocked':'locked'}"><div style="display:flex;align-items:center;gap:12px"><div class="reward-ico" style="margin:0;font-size:36px">${r.icon||'🏆'}</div><div style="flex:1"><div class="reward-title">${r.name}</div><div class="reward-cond">${getCondLabel(r)}</div><div style="margin-top:4px;font-size:12px;color:${r.achieved?'var(--gold)':'var(--dim)'}">${r.achieved?`🎉 +${r.pts||100} نقطة — مفتوح!`:`🔒 ${r.pts||100} نقطة عند الفتح`}</div></div></div><div class="reward-edit-btns"><button class="btn btn-ghost" style="flex:1;font-size:12px;padding:8px" onclick="openRwdDrawer('${r.id}')">✏️ تعديل</button><button class="btn btn-red" style="font-size:12px;padding:8px" onclick="deleteReward('${r.id}')">🗑️</button>${r.condType==='manual'&&!r.achieved?`<button class="btn btn-gold" style="flex:1;font-size:12px;padding:8px" onclick="unlockManual('${r.id}')">🏆 افتح!</button>`:''}</div></div>`).join('')+'<div style="height:80px"></div>';
+  let myRewardsSection='';
+  if(sorted.length>0){
+    myRewardsSection=`<div class="section-divider">مكافآتي الشخصية</div>`+
+    sorted.map(r=>`<div class="reward-card ${r.achieved?'unlocked':'locked'}"><div style="display:flex;align-items:center;gap:12px"><div class="reward-ico" style="margin:0;font-size:36px">${r.icon||'🏆'}</div><div style="flex:1"><div class="reward-title">${r.name}</div><div class="reward-cond">${getCondLabel(r)}</div><div style="margin-top:4px;font-size:12px;color:${r.achieved?'var(--gold)':'var(--dim)'}">${r.achieved?`🎉 +${r.pts||100} نقطة — مفتوح!`:`🔒 ${r.pts||100} نقطة عند الفتح`}</div></div></div><div class="reward-edit-btns"><button class="btn btn-ghost" style="flex:1;font-size:12px;padding:8px" onclick="openRwdDrawer('${r.id}')">✏️ تعديل</button><button class="btn btn-red" style="font-size:12px;padding:8px" onclick="deleteReward('${r.id}')">🗑️</button>${r.condType==='manual'&&!r.achieved?`<button class="btn btn-gold" style="flex:1;font-size:12px;padding:8px" onclick="unlockManual('${r.id}')">🏆 افتح!</button>`:''}</div></div>`).join('');
+  }
+  container.innerHTML=courseSection+myRewardsSection+'<div style="height:80px"></div>';
 }
 function getCondLabel(r){
   if(r.condType==='pray_streak')return`🙏 استريك الصلاة ${r.condValue} يوم`;
@@ -1566,20 +1737,100 @@ window.addEventListener('appinstalled',()=>{document.getElementById('install-ban
 
 // ═══════════════════════ EXPORT / RESET ═══════════════════════
 function exportData(){const b=new Blob([JSON.stringify(D,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='mostaqbaly_backup.json';a.click();}
-function resetAll(){if(confirm('أنت متأكد؟ كل بياناتك هتتمسح!\nلا يمكن التراجع!')){['mq_v3','mq_v2','mq_v1'].forEach(k=>localStorage.removeItem(k));location.reload();}}
+function resetAll(){if(confirm('أنت متأكد؟ كل بياناتك هتتمسح!\nلا يمكن التراجع!')){const k=getStorageKey();localStorage.removeItem(k);['mq_v3','mq_v2','mq_v1'].forEach(k=>localStorage.removeItem(k));location.reload();}}
+
+// ═══════════════════════ AUTH ═══════════════════════
+let authMode='login';
+function getSession(){try{const s=localStorage.getItem('mq_session');return s?JSON.parse(s):null;}catch(e){return null;}}
+function setSession(sess){localStorage.setItem('mq_session',JSON.stringify(sess));}
+function clearSession(){localStorage.removeItem('mq_session');}
+function getUsers(){try{const u=localStorage.getItem('mq_users');return u?JSON.parse(u):{}}catch(e){return {}}}
+function saveUsers(u){localStorage.setItem('mq_users',JSON.stringify(u));}
+function hashPass(p){let h=0;for(let i=0;i<p.length;i++){h=((h<<5)-h)+p.charCodeAt(i);h|=0;}return h.toString(36);}
+function makeUID(){return Math.random().toString(36).slice(2)+Date.now().toString(36);}
+function showAuthErr(msg){const e=document.getElementById('auth-err');e.textContent=msg;setTimeout(()=>{e.textContent='';},3000);}
+function authTab(mode){
+  authMode=mode;
+  document.getElementById('tab-login').classList.toggle('active',mode==='login');
+  document.getElementById('tab-signup').classList.toggle('active',mode==='signup');
+  document.getElementById('auth-name-field').style.display=mode==='signup'?'flex':'none';
+  document.getElementById('auth-btn').textContent=mode==='login'?'دخول':'إنشاء حساب';
+}
+function authSubmit(){
+  const email=document.getElementById('auth-email').value.trim().toLowerCase();
+  const pass=document.getElementById('auth-pass').value;
+  const name=document.getElementById('auth-name').value.trim();
+  if(!email||!email.includes('@')){showAuthErr('أدخل بريد إلكتروني صحيح');return;}
+  if(!pass||pass.length<4){showAuthErr('كلمة السر لازم تكون 4 أرقام على الأقل');return;}
+  const users=getUsers();
+  if(authMode==='signup'){
+    if(!name){showAuthErr('أدخل اسمك');return;}
+    if(users[email]){showAuthErr('الإيميل ده موجود بالفعل، ادخل بحساب موجود');return;}
+    const uid=makeUID();
+    users[email]={uid,name,passHash:hashPass(pass)};
+    saveUsers(users);
+    setSession({uid,email,name,isGuest:false});
+    afterAuth();
+  }else{
+    const u=users[email];
+    if(!u){showAuthErr('الإيميل ده مش موجود، سجّل حساب جديد');return;}
+    if(u.passHash!==hashPass(pass)){showAuthErr('كلمة السر غلط، حاول تاني 🚫');return;}
+    setSession({uid:u.uid,email,name:u.name,isGuest:false});
+    afterAuth();
+  }
+}
+function showToast(msg){
+  let t=document.getElementById('mq-toast');
+  if(!t){t=document.createElement('div');t.id='mq-toast';t.style.cssText='position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);border-radius:14px;padding:10px 20px;font-size:14px;font-weight:700;color:var(--text);z-index:9999;max-width:90%;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.4);transition:opacity .3s;white-space:nowrap';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';clearTimeout(t._to);t._to=setTimeout(()=>{t.style.opacity='0'},2800);
+}
+function authGoogle(){showToast('قريبًا! سيتم إضافة تسجيل الدخول بـ Google 🔜');}
+function authFacebook(){showToast('قريبًا! سيتم إضافة تسجيل الدخول بـ Facebook 🔜');}
+function authGuest(){
+  const uid='guest_'+Date.now();
+  setSession({uid,email:'',name:'زائر',isGuest:true});
+  afterAuth();
+}
+function afterAuth(){
+  document.getElementById('auth-screen').style.display='none';
+  load();
+  applyTheme(D.theme||'dark');
+  const sess=getSession();
+  if(!D.pin){document.getElementById('pin-title').textContent='حط رقمك السري';document.getElementById('pin-sub').textContent='اختر رقم سري من 4 أرقام 🔐';}
+  document.getElementById('pin-screen').style.display='flex';
+}
+function togglePassVis(){
+  const inp=document.getElementById('auth-pass');
+  const btn=document.getElementById('pass-eye');
+  if(inp.type==='password'){inp.type='text';btn.textContent='🙈';}
+  else{inp.type='password';btn.textContent='👁';}
+}
+function authLogout(){
+  if(!confirm('تقدر تدخل بنفس حسابك تاني لاحقًا.\nتخرج؟')){return;}
+  clearSession();
+  location.reload();
+}
 
 // ═══════════════════════ STARTUP ═══════════════════════
 window.addEventListener('load',()=>{
-  load();
-  applyTheme(D.theme||'dark');
+  applyTheme('dark');
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
   // Splash
   setTimeout(()=>{
     document.getElementById('splash').classList.add('hide');
     setTimeout(()=>{
       document.getElementById('splash').style.display='none';
-      if(!D.pin){document.getElementById('pin-title').textContent='ضع رقمك السري';document.getElementById('pin-sub').textContent='اختر رقم سري من 4 أرقام 🔐';}
-      document.getElementById('pin-screen').style.display='flex';
-      if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
+      const sess=getSession();
+      if(!sess){
+        // No session → show auth screen
+        document.getElementById('auth-screen').style.display='flex';
+      }else{
+        // Session exists → load user data and go to PIN
+        load();
+        applyTheme(D.theme||'dark');
+        if(!D.pin){document.getElementById('pin-title').textContent='حط رقمك السري';document.getElementById('pin-sub').textContent='اختر رقم سري من 4 أرقام 🔐';}
+        document.getElementById('pin-screen').style.display='flex';
+      }
     },500);
   },2000);
 });
