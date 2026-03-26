@@ -418,8 +418,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
   <div class="auth-box">
     <!-- Firebase config warning -->
     <div class="firebase-warn" id="firebase-warn">
-      ⚠️ أضف Firebase Config في الكود أولاً<br>
-      <span style="font-size:11px;opacity:.8">ابحث عن FIREBASE_CONFIG في index.html واستبدل القيم بقيم مشروعك</span>
+       Firebase Config <br>
+      <span style="font-size:11px;opacity:.8">FIREBASE_CONFIG في index.html </span>
     </div>
 
     <!-- Social buttons -->
@@ -1975,7 +1975,7 @@ function togglePassVis(){
 
 // ═══════════════════════ EMAIL / PASSWORD ═══════════════════════
 async function authSubmit(){
-  if(!firebaseReady){showAuthErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
+  if(!firebaseReady){showAuthErr(' Firebase Configاً ⚙️');return;}
   const email=document.getElementById('auth-email').value.trim().toLowerCase();
   const pass=document.getElementById('auth-pass').value;
   const name=document.getElementById('auth-name').value.trim();
@@ -1998,7 +1998,7 @@ async function authSubmit(){
 
 // ═══════════════════════ GOOGLE ═══════════════════════
 async function authGoogle(){
-  if(!firebaseReady){showAuthErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
+  if(!firebaseReady){showAuthErr(' Firebase Configاً ⚙️');return;}
   setAuthLoading(true);
   try{
     const provider=new firebase.auth.GoogleAuthProvider();
@@ -2011,7 +2011,7 @@ async function authGoogle(){
 
 // ═══════════════════════ FACEBOOK ═══════════════════════
 async function authFacebook(){
-  if(!firebaseReady){showAuthErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
+  if(!firebaseReady){showAuthErr(' Firebase Configاً ⚙️');return;}
   setAuthLoading(true);
   try{
     const provider=new firebase.auth.FacebookAuthProvider();
@@ -2034,7 +2034,7 @@ function initRecaptcha(){
 }
 
 async function sendOTP(){
-  if(!firebaseReady){showPhoneErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
+  if(!firebaseReady){showPhoneErr(' Firebase Configاً ⚙️');return;}
   const code=document.getElementById('country-code').value;
   const num=document.getElementById('auth-phone').value.trim().replace(/^0/,'');
   const full=code+num;
