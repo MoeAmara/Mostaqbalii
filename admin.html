@@ -515,7 +515,13 @@ async function loadDashboard(){
     feedbackSnap = await db.collection('feedback').orderBy('createdAt','desc').limit(400).get();
   }catch(e){
     console.warn('feedback orderBy failed, fallback to plain get', e);
-    feedbackSnap = await db.collection('feedback').limit(400).get();
+    try{
+      feedbackSnap = await db.collection('feedback').limit(400).get();
+    }catch(feedbackErr){
+      console.warn('feedback load failed', feedbackErr);
+      feedbackSnap = {docs:[]};
+      showGlobal('تم تحميل المستخدمين، لكن قسم الفيدباك يحتاج صلاحية أو قواعد Firestore محدثة.', 'var(--orange)');
+    }
   }
   allUsers=snap.docs.map(doc=>({id:doc.id,...doc.data()}));
   allFeedback=feedbackSnap.docs.map(doc=>({id:doc.id,...doc.data()}));
