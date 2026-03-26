@@ -1844,12 +1844,13 @@ function resetAll(){if(confirm('أنت متأكد؟ كل بياناتك هتتم
 // 3. Project Settings → Your apps → Add app (Web)
 // 4. انسخ الإعدادات والصقها هنا
 const FIREBASE_CONFIG = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId:             "YOUR_APP_ID"
+  apiKey: "AIzaSyAKOScMMOQIavUOe70WFAAqLtdr-FAc2h0",
+  authDomain: "mostaqbaly-52957.firebaseapp.com",
+  projectId: "mostaqbaly-52957",
+  storageBucket: "mostaqbaly-52957.firebasestorage.app",
+  messagingSenderId: "731029211860",
+  appId: "1:731029211860:web:f58554a49e3525bbc64941",
+  measurementId: "G-JDCGRKYBMN"
 };
 
 // ═══════════════════════ AUTH STATE ═══════════════════════
@@ -1975,7 +1976,7 @@ function togglePassVis(){
 
 // ═══════════════════════ EMAIL / PASSWORD ═══════════════════════
 async function authSubmit(){
-  if(!firebaseReady){showAuthErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
+  if(!firebaseReady){showAuthErr(' Firebase Config ⚙️');return;}
   const email=document.getElementById('auth-email').value.trim().toLowerCase();
   const pass=document.getElementById('auth-pass').value;
   const name=document.getElementById('auth-name').value.trim();
@@ -1998,7 +1999,7 @@ async function authSubmit(){
 
 // ═══════════════════════ GOOGLE ═══════════════════════
 async function authGoogle(){
-  if(!firebaseReady){showAuthErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
+  if(!firebaseReady){showAuthErr(' Firebase Config ⚙️');return;}
   setAuthLoading(true);
   try{
     const provider=new firebase.auth.GoogleAuthProvider();
@@ -2011,7 +2012,7 @@ async function authGoogle(){
 
 // ═══════════════════════ FACEBOOK ═══════════════════════
 async function authFacebook(){
-  if(!firebaseReady){showAuthErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
+  if(!firebaseReady){showAuthErr(' Firebase Config ⚙️');return;}
   setAuthLoading(true);
   try{
     const provider=new firebase.auth.FacebookAuthProvider();
@@ -2034,7 +2035,7 @@ function initRecaptcha(){
 }
 
 async function sendOTP(){
-  if(!firebaseReady){showPhoneErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
+  if(!firebaseReady){showPhoneErr(' Firebase Config ⚙️');return;}
   const code=document.getElementById('country-code').value;
   const num=document.getElementById('auth-phone').value.trim().replace(/^0/,'');
   const full=code+num;
