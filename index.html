@@ -4478,6 +4478,13 @@ function isFirebaseConfigured(){
 }
 
 function initFirebase(){
+  if(isLocalFileMode()){
+    const warn=document.getElementById('firebase-warn');
+    if(warn){
+      warn.innerHTML='⚠️ فتح التطبيق مباشرة كملف محلي يعطل Google / Facebook / OTP غالبًا.<br><span style="font-size:11px;opacity:.8">شغّله من localhost أو استضافة مصرّح بها، أو استخدم دخول الإيميل المحلي للتجربة.</span>';
+      warn.style.display='block';
+    }
+  }
   if(!isFirebaseConfigured()){
     document.getElementById('firebase-warn').style.display='block';
     return;
@@ -4507,6 +4514,25 @@ function getSession(){
 }
 function setSession(sess){localStorage.setItem('mq_session',JSON.stringify(sess));}
 function clearSession(){localStorage.removeItem('mq_session');}
+function isLocalFileMode(){return location.protocol==='file:'}
+function getLocalUsers(){try{return JSON.parse(localStorage.getItem('mq_local_users')||'[]')}catch(_){return []}}
+function saveLocalUsers(users){localStorage.setItem('mq_local_users',JSON.stringify(users||[]))}
+function localAuthSubmit(email,pass,name){
+  const users=getLocalUsers();
+  const idx=users.findIndex(u=>String(u.email||'').toLowerCase()===email);
+  if(authMode==='signup'){
+    if(idx!==-1)throw new Error('LOCAL_EMAIL_EXISTS');
+    const user={id:'local_'+Date.now(),email,pass,name:name||email.split('@')[0]||'مستخدم'};
+    users.push(user);
+    saveLocalUsers(users);
+    setSession({uid:user.id,email:user.email,name:user.name,isGuest:false,isLocal:true});
+    return user;
+  }
+  if(idx===-1)throw new Error('LOCAL_USER_NOT_FOUND');
+  if(users[idx].pass!==pass)throw new Error('LOCAL_WRONG_PASSWORD');
+  setSession({uid:users[idx].id,email:users[idx].email,name:users[idx].name,isGuest:false,isLocal:true});
+  return users[idx];
+}
 
 // Firebase error messages in Arabic
 function firebaseErrMsg(code){
@@ -4533,6 +4559,15 @@ function firebaseErrMsg(code){
     'auth/app-not-authorized':'الدومين غير مصرّح به في Firebase Console',
   };
   return m[code]||('حدث خطأ: '+(code||'unknown'));
+}
+function localAuthErrMsg(err){
+  const code=err?.message||err;
+  const m={
+    LOCAL_EMAIL_EXISTS:'الإيميل ده متسجل محليًا بالفعل',
+    LOCAL_USER_NOT_FOUND:'الحساب المحلي غير موجود، اعمل تسجيل جديد',
+    LOCAL_WRONG_PASSWORD:'كلمة السر المحلية غير صحيحة',
+  };
+  return m[code]||'تعذر تسجيل الدخول محليًا';
 }
 
 // ═══════════════════════ AUTH UI ═══════════════════════
@@ -4803,7 +4838,6 @@ function togglePassVis(){
 
 // ═══════════════════════ EMAIL / PASSWORD ═══════════════════════
 async function authSubmit(){
-  if(!firebaseReady){showAuthErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
   const email=document.getElementById('auth-email').value.trim().toLowerCase();
   const pass=document.getElementById('auth-pass').value;
   const name=document.getElementById('auth-name').value.trim();
@@ -4811,6 +4845,12 @@ async function authSubmit(){
   if(!pass||pass.length<6){showAuthErr('كلمة السر لازم تكون 6 أحرف على الأقل');return;}
   setAuthLoading(true);
   try{
+    if(!firebaseReady||isLocalFileMode()){
+      if(authMode==='signup'&&!name){showAuthErr('أدخل اسمك');setAuthLoading(false);return;}
+      localAuthSubmit(email,pass,name);
+      afterAuth();
+      return;
+    }
     let cred;
     if(authMode==='signup'){
       if(!name){showAuthErr('أدخل اسمك');setAuthLoading(false);return;}
@@ -4820,32 +4860,53 @@ async function authSubmit(){
       cred=await auth.signInWithEmailAndPassword(email,pass);
     }
     afterFirebaseAuth(cred.user);
-  }catch(e){showAuthErr(firebaseErrMsg(e.code));}
+  }catch(e){showAuthErr((!firebaseReady||isLocalFileMode())?localAuthErrMsg(e):firebaseErrMsg(e.code));}
   finally{setAuthLoading(false);}
 }
 
 // ═══════════════════════ GOOGLE ═══════════════════════
 async function authGoogle(){
-  if(!firebaseReady){showAuthErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
+  if(!firebaseReady){showAuthErr('Firebase غير جاهز الآن، جرّب دخول الإيميل أو الزائر');return;}
+  if(isLocalFileMode()){showAuthErr('تسجيل Google يحتاج تشغيل التطبيق من localhost أو دومين مصرّح به في Firebase');return;}
   setAuthLoading(true);
   try{
     const provider=new firebase.auth.GoogleAuthProvider();
     provider.setCustomParameters({prompt:'select_account'});
     const cred=await auth.signInWithPopup(provider);
     afterFirebaseAuth(cred.user);
-  }catch(e){if(e.code!=='auth/cancelled-popup-request')showAuthErr(firebaseErrMsg(e.code));}
+  }catch(e){
+    if(e.code==='auth/popup-blocked'||e.code==='auth/cancelled-popup-request'){
+      try{
+        const provider=new firebase.auth.GoogleAuthProvider();
+        provider.setCustomParameters({prompt:'select_account'});
+        await auth.signInWithRedirect(provider);
+        return;
+      }catch(_){}
+    }
+    if(e.code!=='auth/cancelled-popup-request')showAuthErr(firebaseErrMsg(e.code));
+  }
   finally{setAuthLoading(false);}
 }
 
 // ═══════════════════════ FACEBOOK ═══════════════════════
 async function authFacebook(){
-  if(!firebaseReady){showAuthErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
+  if(!firebaseReady){showAuthErr('Firebase غير جاهز الآن، جرّب دخول الإيميل أو الزائر');return;}
+  if(isLocalFileMode()){showAuthErr('تسجيل Facebook يحتاج تشغيل التطبيق من localhost أو دومين مصرّح به في Firebase');return;}
   setAuthLoading(true);
   try{
     const provider=new firebase.auth.FacebookAuthProvider();
     const cred=await auth.signInWithPopup(provider);
     afterFirebaseAuth(cred.user);
-  }catch(e){if(e.code!=='auth/cancelled-popup-request')showAuthErr(firebaseErrMsg(e.code));}
+  }catch(e){
+    if(e.code==='auth/popup-blocked'||e.code==='auth/cancelled-popup-request'){
+      try{
+        const provider=new firebase.auth.FacebookAuthProvider();
+        await auth.signInWithRedirect(provider);
+        return;
+      }catch(_){}
+    }
+    if(e.code!=='auth/cancelled-popup-request')showAuthErr(firebaseErrMsg(e.code));
+  }
   finally{setAuthLoading(false);}
 }
 
@@ -4862,7 +4923,8 @@ function initRecaptcha(){
 }
 
 async function sendOTP(){
-  if(!firebaseReady){showPhoneErr('أضف Firebase Config في الكود أولاً ⚙️');return;}
+  if(!firebaseReady){showPhoneErr('Firebase غير جاهز الآن');return;}
+  if(isLocalFileMode()){showPhoneErr('تسجيل الهاتف يحتاج localhost أو دومين مصرّح به في Firebase');return;}
   const code=document.getElementById('country-code').value;
   const num=document.getElementById('auth-phone').value.trim().replace(/^0/,'');
   const full=code+num;
