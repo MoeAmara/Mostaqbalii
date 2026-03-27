@@ -4557,6 +4557,7 @@ function firebaseErrMsg(code){
     'auth/invalid-api-key':'Firebase API Key غير صحيح ⚙️',
     'auth/configuration-not-found':'أضف Firebase Config الصحيح في الكود ⚙️',
     'auth/app-not-authorized':'الدومين غير مصرّح به في Firebase Console',
+    'auth/internal-error':'Firebase رجّع خطأ داخلي. لو التطبيق مفتوح كملف مباشر شغّله من localhost، ولو على استضافة راجع Authorized Domains وطرق تسجيل الدخول في Firebase.',
   };
   return m[code]||('حدث خطأ: '+(code||'unknown'));
 }
@@ -4860,7 +4861,21 @@ async function authSubmit(){
       cred=await auth.signInWithEmailAndPassword(email,pass);
     }
     afterFirebaseAuth(cred.user);
-  }catch(e){showAuthErr((!firebaseReady||isLocalFileMode())?localAuthErrMsg(e):firebaseErrMsg(e.code));}
+  }catch(e){
+    if(e?.code==='auth/internal-error'){
+      try{
+        if(authMode==='signup'&&!name){showAuthErr('أدخل اسمك');setAuthLoading(false);return;}
+        localAuthSubmit(email,pass,name);
+        showToast('تم استخدام الدخول المحلي مؤقتًا لأن Firebase رجّع internal-error');
+        afterAuth();
+        return;
+      }catch(localErr){
+        showAuthErr(localAuthErrMsg(localErr));
+        return;
+      }
+    }
+    showAuthErr((!firebaseReady||isLocalFileMode())?localAuthErrMsg(e):firebaseErrMsg(e.code));
+  }
   finally{setAuthLoading(false);}
 }
 
