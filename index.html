@@ -130,6 +130,7 @@ body{font-family:'Cairo',sans-serif;background:transparent;color:var(--text);min
 .otp-note{font-size:12px;color:var(--dim);text-align:center;line-height:1.5}
 #recaptcha-container{display:flex;justify-content:center}
 .firebase-warn{background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--red);text-align:center;line-height:1.6;display:none}
+.firebase-debug{background:rgba(94,174,255,.08);border:1px solid rgba(94,174,255,.18);border-radius:10px;padding:10px 14px;font-size:11px;color:#b9d7ff;text-align:right;line-height:1.8;display:none;white-space:pre-wrap;word-break:break-word}
 
 /* APP */
 #app{display:none;padding-bottom:0;padding-top:18px}
@@ -1377,6 +1378,7 @@ padding-right:24px}
       ⚠️ أضف Firebase Config في الكود أولاً<br>
       <span style="font-size:11px;opacity:.8">ابحث عن FIREBASE_CONFIG في index.html واستبدل القيم بقيم مشروعك</span>
     </div>
+    <div class="firebase-debug" id="firebase-debug"></div>
 
     <!-- Social buttons -->
     <button class="auth-social auth-google" onclick="authGoogle()">
@@ -4497,11 +4499,19 @@ function initFirebase(){
     auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     firestoreReady = true;
     firebaseReady = true;
+    showFirebaseDebug({
+      protocol: location.protocol,
+      authDomain: FIREBASE_CONFIG.authDomain,
+      projectId: FIREBASE_CONFIG.projectId,
+      appId: FIREBASE_CONFIG.appId,
+      initialized: 'ok'
+    });
   }catch(e){
     console.error('Firebase init error:',e);
     firebaseReady = false;
     firestoreReady = false;
     document.getElementById('firebase-warn').style.display='block';
+    showFirebaseDebug({initError:e?.message||'unknown',code:e?.code||'n/a'});
   }
 }
 
@@ -4518,6 +4528,21 @@ function clearSession(){localStorage.removeItem('mq_session');}
 function isLocalFileMode(){return location.protocol==='file:'}
 function getLocalUsers(){try{return JSON.parse(localStorage.getItem('mq_local_users')||'[]')}catch(_){return []}}
 function saveLocalUsers(users){localStorage.setItem('mq_local_users',JSON.stringify(users||[]))}
+function showFirebaseDebug(payload){
+  const box=document.getElementById('firebase-debug');
+  if(!box)return;
+  const lines=[
+    `origin: ${location.origin||location.protocol}`,
+    `host: ${location.host||'n/a'}`,
+    `secure: ${window.isSecureContext?'yes':'no'}`,
+    `firebaseReady: ${firebaseReady?'yes':'no'}`
+  ];
+  if(payload&&typeof payload==='object'){
+    Object.entries(payload).forEach(([k,v])=>lines.push(`${k}: ${String(v)}`));
+  }
+  box.textContent=lines.join('\n');
+  box.style.display='block';
+}
 function localAuthSubmit(email,pass,name){
   const users=getLocalUsers();
   const idx=users.findIndex(u=>String(u.email||'').toLowerCase()===email);
@@ -4863,6 +4888,13 @@ async function authSubmit(){
     }
     afterFirebaseAuth(cred.user);
   }catch(e){
+    showFirebaseDebug({
+      action:`email-${authMode}`,
+      code:e?.code||'n/a',
+      message:e?.message||'n/a',
+      email,
+      apiKeySuffix:String(FIREBASE_CONFIG.apiKey||'').slice(-6)
+    });
     if(e?.code==='auth/internal-error'){
       try{
         if(authMode==='signup'&&!name){showAuthErr('أدخل اسمك');setAuthLoading(false);return;}
@@ -4891,6 +4923,7 @@ async function authGoogle(){
     const cred=await auth.signInWithPopup(provider);
     afterFirebaseAuth(cred.user);
   }catch(e){
+    showFirebaseDebug({action:'google',code:e?.code||'n/a',message:e?.message||'n/a'});
     if(e.code==='auth/popup-blocked'||e.code==='auth/cancelled-popup-request'){
       try{
         const provider=new firebase.auth.GoogleAuthProvider();
@@ -4914,6 +4947,7 @@ async function authFacebook(){
     const cred=await auth.signInWithPopup(provider);
     afterFirebaseAuth(cred.user);
   }catch(e){
+    showFirebaseDebug({action:'facebook',code:e?.code||'n/a',message:e?.message||'n/a'});
     if(e.code==='auth/popup-blocked'||e.code==='auth/cancelled-popup-request'){
       try{
         const provider=new firebase.auth.FacebookAuthProvider();
