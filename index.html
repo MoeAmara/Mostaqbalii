@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="مستقبلي">
 <title>مستقبلي</title>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com https://www.google.com https://www.gstatic.com/recaptcha/ https://www.google.com/recaptcha/; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self' https://*.googleapis.com https://*.gstatic.com https://*.firebaseio.com https://*.firebaseapp.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://api.aladhan.com https://nominatim.openstreetmap.org; frame-src https://www.google.com https://www.gstatic.com; object-src 'none'; base-uri 'self'; form-action 'self' mailto:; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com https://apis.google.com https://accounts.google.com https://www.google.com https://www.gstatic.com/recaptcha/ https://www.google.com/recaptcha/; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self' https://*.googleapis.com https://apis.google.com https://accounts.google.com https://*.gstatic.com https://*.firebaseio.com https://*.firebaseapp.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://api.aladhan.com https://nominatim.openstreetmap.org; frame-src https://www.google.com https://www.gstatic.com https://accounts.google.com https://apis.google.com https://*.firebaseapp.com; object-src 'none'; base-uri 'self'; form-action 'self' mailto:; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="manifest" href="./manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa+Ink:wght@400;700&family=Cairo:wght@300;400;500;700;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
@@ -2538,6 +2538,7 @@ let activeNoteId=null;
 let stashTxnMode='income';
 let editingStashCardId=null;
 let stashBalancesUnlocked=false;
+const SW_ENABLED=false;
 const NOTE_MENTIONS=['الصلاة','الكورسات','الكلية','الجيم','التعافي','المكافآت','الإعدادات','الرئيسية','المسارات','التحويشة'];
 
 // ═══════════════════════ STORAGE ═══════════════════════
@@ -5122,10 +5123,28 @@ async function authGuest(){
   afterAuth();
 }
 
+async function cleanupLegacyCaches(){
+  if(!('serviceWorker' in navigator))return;
+  try{
+    const regs=await navigator.serviceWorker.getRegistrations();
+    await Promise.all(regs.map(reg=>reg.unregister()));
+  }catch(_){}
+  try{
+    if('caches' in window){
+      const keys=await caches.keys();
+      await Promise.all(keys.map(key=>caches.delete(key)));
+    }
+  }catch(_){}
+}
+
 window.addEventListener('load',()=>{
   applyTheme('dark');
-  if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js?v=6').catch(()=>{});
-  initFirebase();
+  cleanupLegacyCaches().finally(()=>{
+    if(SW_ENABLED&&'serviceWorker' in navigator){
+      navigator.serviceWorker.register('./sw.js?v=7').catch(()=>{});
+    }
+    initFirebase();
+  });
 
   setTimeout(()=>{
     document.getElementById('splash').classList.add('hide');
