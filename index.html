@@ -618,7 +618,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 @keyframes cfFall{0%{opacity:1;transform:translateY(-10px) rotate(0)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
 
 /* CHART */
-.chart-wrap{background:var(--surface2);border-radius:16px;padding:14px;margin-bottom:14px;border:1px solid var(--border)}
+.chart-wrap{background:var(--surface2);border-radius:16px;padding:20px 14px 14px;margin-bottom:14px;border:1px solid var(--border)}
 .chart-wrap canvas{width:100%;display:block}
 
 /* COMMIT GRID */
@@ -1048,7 +1048,6 @@ padding-right:24px}
     linear-gradient(145deg, rgba(22,34,68,.98), rgba(11,19,40,.96) 45%, rgba(7,13,26,.96));
   border:1px solid rgba(255,138,42,.18);
   box-shadow:0 28px 60px rgba(0,0,0,.34), var(--brand-shadow), inset 0 1px 0 rgba(255,255,255,.05);
-  animation:heroBreath 7s ease-in-out infinite;
 }
 [data-theme="light"] .hero{
   background:
@@ -1255,17 +1254,12 @@ padding-right:24px}
 }
 .reveal{opacity:0;transform:translateY(18px) scale(.985)}
 .reveal.in{opacity:1;transform:translateY(0) scale(1);transition:opacity .5s ease,transform .5s cubic-bezier(.2,.8,.2,1)}
-.magnetic{transform-style:preserve-3d;will-change:transform}
+.magnetic{transform-style:preserve-3d}
 @keyframes ambientFloat{
   0%{transform:translate3d(0,0,0) scale(1)}
   50%{transform:translate3d(-30px,35px,0) scale(1.08)}
   100%{transform:translate3d(18px,70px,0) scale(.96)}
 }
-@keyframes heroBreath{
-  0%,100%{transform:translateY(0) scale(1)}
-  50%{transform:translateY(-3px) scale(1.005)}
-}
-
 /* IOS-LIKE POLISH */
 :root{
   --ios-ease:cubic-bezier(.22,1,.36,1);
@@ -1404,10 +1398,6 @@ padding-right:24px}
     border-color .32s ease,
     background-color .32s ease,
     opacity .28s ease;
-  will-change:transform;
-}
-.hero{
-  animation:heroBreath 8.5s var(--ios-ease) infinite;
 }
 .card:hover,.subj-card:hover,.course-card:hover,.reward-card:hover,.rec-item:hover,.settings-card:hover,.notes-card:hover,.undo-card:hover,.scard:hover,.chart-wrap:hover{
   transform:translateY(-4px) scale(1.01);
@@ -1438,7 +1428,7 @@ padding-right:24px}
 #sidenav-logo{height:56px !important;filter:drop-shadow(0 10px 22px rgba(245,200,66,.18))}
 #settings-logo{width:96px !important;height:96px !important;filter:drop-shadow(0 14px 28px rgba(245,200,66,.18))}
 .stash-shell{display:grid;gap:16px}
-.stash-verse{padding:20px 18px;border-radius:26px;background:linear-gradient(135deg,rgba(38,12,18,.96),rgba(21,10,20,.92));border:1px solid rgba(255,77,87,.22);box-shadow:var(--shadow),0 18px 38px rgba(215,38,56,.18);position:relative;overflow:hidden}
+.stash-verse{padding:20px 18px;border-radius:26px;background:linear-gradient(135deg,rgba(56,18,27,.94),rgba(34,16,29,.88));border:1px solid rgba(255,77,87,.20);box-shadow:var(--shadow),0 18px 38px rgba(215,38,56,.14);position:relative;overflow:hidden}
 .stash-verse::before{content:'';position:absolute;inset:auto -30px -40px auto;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(245,200,66,.16),transparent 70%)}
 .stash-verse-kicker{font-size:11px;font-weight:900;letter-spacing:1px;color:#ffb3b8;text-transform:uppercase}
 .stash-verse-text{font-size:24px;line-height:1.95;color:#fff1f1;margin-top:8px;font-family:'Aref Ruqaa Ink',serif}
@@ -1755,7 +1745,7 @@ padding-right:24px}
   transform:translateX(50%);
   width:min(402px,calc(100% - 16px));
   display:grid;
-  grid-template-columns:repeat(6,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:8px;
   padding:10px;
   border-radius:28px;
@@ -1781,7 +1771,7 @@ padding-right:24px}
   cursor:pointer;
   padding:6px 4px;
 }
-.bottom-nav-item strong{font-size:11px;font-weight:900}
+.bottom-nav-item strong{font-size:12px;font-weight:900}
 .bottom-nav-item span:first-child{font-size:20px;line-height:1}
 .bottom-nav-item.active{
   background:linear-gradient(135deg,rgba(255,77,87,.22),rgba(255,138,42,.12));
@@ -1967,7 +1957,7 @@ padding-right:24px}
 .mnav,.course-act-btn{min-width:44px;min-height:44px}
 .grade-badge{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
 #menu-fab{display:none!important}
-#app{padding-bottom:108px}
+#app{padding-bottom:calc(80px + env(safe-area-inset-bottom))}
 body.nav-open .bottom-nav-item[data-page="more"]{
   background:linear-gradient(135deg,rgba(255,77,87,.22),rgba(255,138,42,.12));
   color:#fff4ef;
@@ -2217,7 +2207,7 @@ body.nav-open .bottom-nav{
         <button class="auth-back" onclick="authShowView('hub')">← رجوع</button>
         <div class="auth-view-head"><h3>الدخول بالبريد</h3><div class="auth-subtle">ادخل بياناتك وارجع مباشرة لتطبيقك.</div></div>
         <div class="auth-field"><label>البريد الإلكتروني</label><input type="email" id="login-email" placeholder="email@example.com" autocomplete="email" dir="ltr"></div>
-        <div class="auth-field"><label>كلمة السر</label><input type="password" id="login-pass" placeholder="6 أحرف على الأقل" autocomplete="current-password" dir="ltr"></div>
+        <div class="auth-field"><label>كلمة السر</label><input type="password" id="login-pass" placeholder="6 أحرف على الأقل" autocomplete="current-password" dir="ltr"><button type="button" class="btn btn-ghost" style="width:auto;align-self:flex-end;padding:8px 12px" onclick="togglePassVis('login-pass',this)">إظهار كلمة السر</button></div>
         <div class="auth-err" id="login-err"></div>
         <button class="btn btn-gold w100" onclick="authSubmit()">دخول</button>
       </div>
@@ -2227,7 +2217,7 @@ body.nav-open .bottom-nav{
         <div class="auth-view-head"><h3>إنشاء حساب جديد</h3><div class="auth-subtle">املأ البيانات الأول، وبعدها هنطلب منك كود تحقق لتأكيد الحساب.</div></div>
         <div class="auth-field"><label>اسمك</label><input type="text" id="signup-name" placeholder="اسمك هنا" autocomplete="name"></div>
         <div class="auth-field"><label>البريد الإلكتروني</label><input type="email" id="signup-email" placeholder="email@example.com" autocomplete="email" dir="ltr"></div>
-        <div class="auth-field"><label>كلمة السر</label><input type="password" id="signup-pass" placeholder="6 أحرف على الأقل" autocomplete="new-password" dir="ltr"></div>
+        <div class="auth-field"><label>كلمة السر</label><input type="password" id="signup-pass" placeholder="6 أحرف على الأقل" autocomplete="new-password" dir="ltr"><button type="button" class="btn btn-ghost" style="width:auto;align-self:flex-end;padding:8px 12px" onclick="togglePassVis('signup-pass',this)">إظهار كلمة السر</button></div>
         <div class="auth-err" id="signup-err"></div>
         <button class="btn btn-gold w100" onclick="sendEmailSignupCode()">إرسال كود التحقق</button>
       </div>
@@ -2883,7 +2873,7 @@ body.nav-open .bottom-nav{
           <div class="hero-streak-toggle-inner">
             <div class="hero-streak-face front">
               <div class="fire-anim" style="font-size:24px">🔥</div>
-              <small>دوس هنا عشان الاستريك</small>
+              <small>سجّل يومك</small>
             </div>
             <div class="hero-streak-face back">
               <div class="fire-anim" style="font-size:20px">🔥</div>
@@ -2930,9 +2920,9 @@ body.nav-open .bottom-nav{
     <div class="section-caption">أكتر 3 أقسام بتفتحها عندك</div>
   </div>
   <div class="quick-jump-row">
-    <button class="btn btn-ghost" id="quick-jump-1" onclick="goTo('prayer')">🤲 الصلاة</button>
-    <button class="btn btn-ghost" id="quick-jump-2" onclick="goTo('courses')">📚 الكورسات</button>
-    <button class="btn btn-ghost" id="quick-jump-3" onclick="goTo('gym')">💪 الجيم</button>
+    <button class="btn btn-ghost" id="quick-jump-prayer" onclick="goTo('prayer')">🤲 الصلاة</button>
+    <button class="btn btn-ghost" id="quick-jump-courses" onclick="goTo('courses')">📚 الكورسات</button>
+    <button class="btn btn-ghost" id="quick-jump-gym" onclick="goTo('gym')">💪 الجيم</button>
   </div>
 
   <div id="streak-warn-home" class="streak-warn">
@@ -3064,10 +3054,10 @@ body.nav-open .bottom-nav{
       <button class="mnav" onclick="chMonth(-1)">›</button>
     </div>
     <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;text-align:center">
-      <div style="font-size:10px;color:var(--dim)">س</div><div style="font-size:10px;color:var(--dim)">ح</div>
-      <div style="font-size:10px;color:var(--dim)">ن</div><div style="font-size:10px;color:var(--dim)">ث</div>
-      <div style="font-size:10px;color:var(--dim)">ر</div><div style="font-size:10px;color:var(--dim)">خ</div>
-      <div style="font-size:10px;color:var(--dim)">ج</div>
+      <div style="font-size:10px;color:var(--dim)">ح</div><div style="font-size:10px;color:var(--dim)">ن</div>
+      <div style="font-size:10px;color:var(--dim)">ث</div><div style="font-size:10px;color:var(--dim)">ر</div>
+      <div style="font-size:10px;color:var(--dim)">خ</div><div style="font-size:10px;color:var(--dim)">ج</div>
+      <div style="font-size:10px;color:var(--dim)">س</div>
     </div>
     <div id="gym-cal" style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px"></div>
     <div class="gym-legend">
@@ -3275,7 +3265,7 @@ body.nav-open .bottom-nav{
       <div class="stash-card">
         <div class="stash-head">
           <div><div class="stash-title">أهدافي</div><div class="stash-subtitle">اعمل تحويشات مخصوصة للعربية، السفر، اللابتوب أو أي هدف نفسك توصله.</div></div>
-          <button class="btn btn-gold" onclick="openStashGoalDrawer()">هدف جديد</button>
+          <button class="btn btn-gold" id="stash-goal-add-btn" style="padding:10px 16px;border-radius:16px" onclick="openStashGoalDrawer()">🎯 هدف جديد</button>
         </div>
         <div class="stash-goals" id="stash-goals"></div>
       </div>
@@ -3447,6 +3437,7 @@ body.nav-open .bottom-nav{
     </div>
     <div class="more-grid">
       <button class="more-card nav-item accent-blue" onclick="goTo('uni')" id="nav-uni"><span class="ni">🎓</span><strong class="nl">الكلية</strong><span class="more-copy">درجاتك وموادك وجدول محاضراتك.</span></button>
+      <button class="more-card nav-item accent-red" onclick="goTo('stash')" id="nav-stash"><span class="ni">💳</span><strong class="nl">التحويشة</strong><span class="more-copy">بطاقاتك، أهدافك، وحركة فلوسك بشكل واضح.</span></button>
       <button class="more-card nav-item accent-green" onclick="goTo('recovery')" id="nav-recovery"><span class="ni">🌱</span><strong class="nl">التعافي</strong><span class="more-copy">تابع العادات اللي عايز تبعد عنها.</span></button>
       <button class="more-card nav-item accent-red" onclick="goTo('schedule')" id="nav-schedule"><span class="ni">🗓️</span><strong class="nl">جدولي</strong><span class="more-copy">كل مواعيد الأسبوع بشكل مرتب وواضح.</span></button>
       <button class="more-card nav-item accent-gold" onclick="goTo('rewards')" id="nav-rewards"><span class="ni">🏆</span><strong class="nl">مكافآتي</strong><span class="more-copy">شوف أقرب مكافأة ومستوى تقدمك.</span></button>
@@ -3463,7 +3454,6 @@ body.nav-open .bottom-nav{
   <button class="bottom-nav-item" data-page="prayer" onclick="goTo('prayer')"><span>🤲</span><strong>الصلاة</strong></button>
   <button class="bottom-nav-item" data-page="courses" onclick="goTo('courses')"><span>📚</span><strong>الكورسات</strong></button>
   <button class="bottom-nav-item" data-page="gym" onclick="goTo('gym')"><span>💪</span><strong>الجيم</strong></button>
-  <button class="bottom-nav-item" data-page="stash" onclick="goTo('stash')"><span>💳</span><strong>التحويشة</strong></button>
   <button class="bottom-nav-item" data-page="more" onclick="openNav()"><span>☰</span><strong>المزيد</strong></button>
 </div>
 
@@ -3617,7 +3607,7 @@ const STASH_CARD_COLORS=['#14532d','#0f766e','#1d4ed8','#4338ca','#7c2d12','#b91
 
 let D={};
 let pinBuf='',pinStep=0,tmpPin='',gymVM=null;
-let countdownInterval=null,prayerTimersScheduled=false;
+let countdownInterval=null,prayerTimersScheduled=false,prayerInterval=null;
 let notificationHeartbeat=null;
 let editingCourseId=null,editingSubjId=null,editingRecId=null,editingRwdId=null,editingCustomId=null;
 let picked={course:{emoji:'📚',color:'#5eaeff'},subj:{color:'#5eaeff'},rec:{emoji:'🚫'},rwd:{emoji:'🏆'},custom:{emoji:'🧩'}};
@@ -3683,10 +3673,10 @@ function rememberUndo(label){
   D.undoStack=D.undoStack.slice(0,20);
 }
 function getLastUndo(){return(D.undoStack||[])[0]||null}
-function undoLastAction(skipConfirm=false){
+async function undoLastAction(skipConfirm=false){
   const last=getLastUndo();
   if(!last){showToast('لا يوجد إجراء للتراجع عنه الآن');return;}
-  if(!skipConfirm&&!confirm(`هترجع آخر تعديل: ${last.label}\nهل أنت متأكد؟`))return;
+  if(!skipConfirm&&!await askConfirm(`هترجع آخر تعديل: ${last.label}`,'تأكيد التراجع'))return;
   const rest=(D.undoStack||[]).slice(1);
   D=normalizeDataShape(last.data||{});
   D.undoStack=rest;
@@ -4185,7 +4175,8 @@ function initApp(){
   startNotificationEngine();
   if(countdownInterval)clearInterval(countdownInterval);
   countdownInterval=setInterval(()=>{updPrayerCountdown();checkStreakWarning()},1000);
-  setInterval(()=>getPrayerTimes(false),3600000);
+  if(prayerInterval)clearInterval(prayerInterval);
+  prayerInterval=setInterval(()=>getPrayerTimes(false),3600000);
   updHomeGrid();checkAllRewards();
   const bootPage=D.meta?.lastPage||'home';
   if(document.getElementById('page-'+bootPage))goTo(bootPage);
@@ -4239,7 +4230,7 @@ function checkNewRecoveryDay(){
 }
 
 // ═══════════════════════ NAVIGATION ═══════════════════════
-const PRIMARY_PAGES=['home','prayer','courses','gym','stash'];
+const PRIMARY_PAGES=['home','prayer','courses','gym'];
 const PAGE_PARENTS={'dayshot-compare':'dayshot','dayshot-album':'dayshot','dayshot-archive':'dayshot'};
 function setBottomNavState(pg){
   document.querySelectorAll('.bottom-nav-item').forEach(btn=>btn.classList.toggle('active',btn.dataset.page===pg));
@@ -4680,7 +4671,7 @@ function openStashGoalFunding(goalId,mode){
   document.getElementById('stash-goal-fund-note').value='';
   const sel=document.getElementById('stash-goal-fund-card');
   sel.innerHTML=`<option value="">من خارج التطبيق / يدوي</option>`+(D.savings.cards||[]).map(c=>`<option value="${c.id}">${safeText(c.name||bankMeta(c.bankId).name)}</option>`).join('');
-  sel.value='';
+  sel.value=goal.cardId||'';
   openOverlay('stash-goal-fund-overlay');
 }
 function saveStashCard(){
@@ -4754,17 +4745,24 @@ function saveStashGoalFunding(){
   const date=document.getElementById('stash-goal-fund-date').value||todayKey();
   const note=document.getElementById('stash-goal-fund-note').value.trim();
   if(amount<=0){showToast('اكتب مبلغ صحيح للحركة');return;}
+  const card=(D.savings.cards||[]).find(c=>c.id===cardId);
+  if(cardId&&!goal.cardId)goal.cardId=cardId;
   goal.transactions=goal.transactions||[];
   goal.transactions.unshift({id:uid(),type:activeStashGoalFundMode,amount,date,cardId,note});
-  goal.saved=activeStashGoalFundMode==='withdraw'?Math.max(0,(goal.saved||0)-amount):(goal.saved||0)+amount;
+  const currentSaved=parseFloat(goal.saved||0)||0;
+  goal.saved=activeStashGoalFundMode==='withdraw'?Math.max(0,currentSaved-amount):(currentSaved+amount);
+  if(card){
+    if(activeStashGoalFundMode==='withdraw')card.balance=(parseFloat(card.balance||0)||0)+amount;
+    else card.balance=Math.max(0,(parseFloat(card.balance||0)||0)-amount);
+  }
   save();
   closeOverlay('stash-goal-fund-overlay');
   renderStash();
 }
-function deleteStashGoal(goalId){
+async function deleteStashGoal(goalId){
   const goal=(D.savings.goals||[]).find(g=>g.id===goalId);
   if(!goal)return;
-  if(!confirm(`هتحذف الهدف المالي "${goal.name}" بكل حركاته. تكمل؟`))return;
+  if(!await askConfirm(`هتحذف الهدف المالي "${goal.name}" بكل حركاته. تكمل؟`,'حذف الهدف المالي'))return;
   rememberUndo('استرجاع الهدف المالي المحذوف');
   D.savings.goals=(D.savings.goals||[]).filter(g=>g.id!==goalId);
   save();
@@ -5020,9 +5018,11 @@ function renderStash(){
 // ═══════════════════════ CUSTOM EMOJI ═══════════════════════
 function renderStashGoals(){
   const list=document.getElementById('stash-goals');if(!list)return;
+  const addBtn=document.getElementById('stash-goal-add-btn');
   const goals=D.savings.goals||[];
   const locked=isStashLocked();
-  if(!goals.length){list.innerHTML=`<div class="stash-empty stash-goal-empty-actions"><div style="font-size:38px">🎯</div><div>لسه ما فيش أهداف مالية. ابدأ أول هدف تحويش بشكل واضح وقدامك نسبة الوصول من أول يوم.</div><button class="btn btn-gold" onclick="openStashGoalDrawer()">إضافة أول هدف</button></div>`;return;}
+  if(addBtn)addBtn.style.display=goals.length?'inline-flex':'none';
+  if(!goals.length){list.innerHTML=`<div class="stash-empty stash-goal-empty-actions"><div style="font-size:38px">🎯</div><div>لسه ما فيش أهداف مالية. ابدأ أول هدف تحويش بشكل واضح وقدامك نسبة الوصول من أول يوم.</div><button class="btn btn-gold" style="padding:12px 18px;border-radius:16px;margin-top:14px" onclick="openStashGoalDrawer()">🎯 إضافة أول هدف</button></div>`;return;}
   list.innerHTML=goals.map(goal=>{
     const pct=Math.min(100,Math.round(((goal.saved||0)/(goal.target||1))*100));
     const card=(D.savings.cards||[]).find(c=>c.id===goal.cardId);
@@ -5314,8 +5314,8 @@ function openOverlay_course(courseId){
 function saveCourse(){
   const name=document.getElementById('f-cname').value.trim();
   const total=parseInt(document.getElementById('f-ctotal').value)||0;
-  if(!name){alert('اكتب اسم الكورس!');return}
-  if(!total||total<1){alert('اكتب عدد الفيديوهات!');return}
+  if(!name){showToast('اكتب اسم الكورس');return}
+  if(!total||total<1){showToast('اكتب عدد الفيديوهات');return}
   const rewardEnabled=document.getElementById('course-reward-toggle')?.classList.contains('on');
   const reward25=document.getElementById('f-cr25').value.trim();
   const course={
@@ -5333,7 +5333,7 @@ function saveCourse(){
   }
   save();closeOverlay('course-overlay');renderCourses();checkAllRewards();renderRewards();updHome();renderUndoCard();
 }
-function deleteCourse(id){if(!confirm('هتحذف الكورس ده نهائي من قائمتك الحالية. تكمل؟'))return;rememberUndo('استرجاع الكورس المحذوف');D.courses=D.courses.filter(c=>c.id!==id);save();renderCourses();renderRewards();updHome();renderUndoCard();showToast('تم حذف الكورس','تراجع',()=>undoLastAction(true));}
+async function deleteCourse(id){if(!await askConfirm('هتحذف الكورس ده نهائي من قائمتك الحالية. تكمل؟','حذف الكورس'))return;rememberUndo('استرجاع الكورس المحذوف');D.courses=D.courses.filter(c=>c.id!==id);save();renderCourses();renderRewards();updHome();renderUndoCard();showToast('تم حذف الكورس','تراجع',()=>undoLastAction(true));}
 function courseMilestonePoints(total,pct){
   return Math.round(Math.max(1,safeInt(total,1))*pct/100)*4;
 }
@@ -5361,7 +5361,7 @@ function submitCourseToday(){
   const remain=Math.max(0,total-done);
   const input=document.getElementById('f-course-today');
   const watched=safeInt(input?.value,-1);
-  if(watched<0){alert('اكتب رقم صحيح.');return;}
+  if(watched<0){showToast('اكتب رقم صحيح');return;}
   if(watched===0){showToast('تمام، ما ضفناش أي فيديو النهاردة.');closeOverlay('course-log-overlay');return;}
   const added=Math.min(remain,watched);
   rememberUndo(`التراجع عن تحديث مشاهدة اليوم في كورس ${c.name}`);
@@ -5467,7 +5467,7 @@ function updTogUI(type){
 }
 function saveSubject(){
   const name=document.getElementById('f-sname').value.trim();
-  if(!name){alert('اكتب اسم المادة!');return}
+  if(!name){showToast('اكتب اسم المادة');return}
   const subj={
     id:editingSubjId||uid(),name,nameAr:document.getElementById('f-sname-ar').value.trim(),color:picked.subj.color||'#5eaeff',
     midterms:chipVals.midterm||0,
@@ -5485,7 +5485,7 @@ function saveSubject(){
   else{rememberUndo('التراجع عن إضافة مادة');D.uni.subjects.push(subj);}
   save();closeOverlay('subj-overlay');renderSubjects();renderUndoCard();
 }
-function deleteSubject(id){if(!confirm('هتحذف المادة دي من الكلية. تكمل؟'))return;rememberUndo('استرجاع المادة المحذوفة');D.uni.subjects=D.uni.subjects.filter(s=>s.id!==id);save();renderSubjects();renderUndoCard();showToast('تم حذف المادة','تراجع',()=>undoLastAction(true));}
+async function deleteSubject(id){if(!await askConfirm('هتحذف المادة دي من الكلية. تكمل؟','حذف المادة'))return;rememberUndo('استرجاع المادة المحذوفة');D.uni.subjects=D.uni.subjects.filter(s=>s.id!==id);save();renderSubjects();renderUndoCard();showToast('تم حذف المادة','تراجع',()=>undoLastAction(true));}
 function renderSubjects(){
   const container=document.getElementById('subjs-container');if(!container)return;
   const fab=document.getElementById('uni-fab');
@@ -5783,7 +5783,7 @@ function fillRec(name,icon){
 }
 function saveRecovery(){
   const name=document.getElementById('f-rname').value.trim();
-  if(!name){alert('اكتب اسم الشيء اللي عايز تتعافى منه!');return}
+  if(!name){showToast('اكتب اسم الشيء اللي عايز تتعافى منه');return}
   const item={
     id:editingRecId||uid(),name,icon:picked.rec.emoji||'🚫',desc:document.getElementById('f-rdesc').value.trim(),
     streak:0,best:0,lastClean:null,todayDate:todayKey(),todayClean:null,history:{}
@@ -5792,7 +5792,7 @@ function saveRecovery(){
   else{rememberUndo('التراجع عن إضافة عنصر تعافي');D.recovery.items.push(item);}
   save();closeOverlay('rec-overlay');renderRecovery();checkAllRewards();renderUndoCard();
 }
-function deleteRec(id){if(!confirm('هتحذف مسار التعافي ده من المتابعة. تكمل؟'))return;rememberUndo('استرجاع عنصر التعافي المحذوف');D.recovery.items=D.recovery.items.filter(r=>r.id!==id);save();renderRecovery();renderRewards();renderUndoCard();showToast('تم حذف مسار التعافي','تراجع',()=>undoLastAction(true));}
+async function deleteRec(id){if(!await askConfirm('هتحذف مسار التعافي ده من المتابعة. تكمل؟','حذف مسار التعافي'))return;rememberUndo('استرجاع عنصر التعافي المحذوف');D.recovery.items=D.recovery.items.filter(r=>r.id!==id);save();renderRecovery();renderRewards();renderUndoCard();showToast('تم حذف مسار التعافي','تراجع',()=>undoLastAction(true));}
 function togRec(id,clean){
   const item=D.recovery.items.find(x=>x.id===id);if(!item)return;
   const t=todayKey();item.todayDate=t;
@@ -5860,7 +5860,7 @@ function updateCustomStreakUI(){
 }
 function saveCustomGoal(){
   const name=document.getElementById('f-xname').value.trim();
-  if(!name){alert('اكتب اسم المسار.');return;}
+  if(!name){showToast('اكتب اسم المسار');return;}
   const item={
     id:editingCustomId||uid(),
     name,
@@ -5881,7 +5881,7 @@ function saveCustomGoal(){
   }
   save();closeOverlay('custom-overlay');renderCustomGoals();updHomeGrid();renderUndoCard();
 }
-function deleteCustomGoal(id){if(!confirm('هتحذف المسار ده من متابعتك. تكمل؟'))return;rememberUndo('استرجاع المسار المحذوف');D.customGoals=D.customGoals.filter(x=>x.id!==id);save();renderCustomGoals();updHomeGrid();renderUndoCard();showToast('تم حذف المسار','تراجع',()=>undoLastAction(true));}
+async function deleteCustomGoal(id){if(!await askConfirm('هتحذف المسار ده من متابعتك. تكمل؟','حذف المسار'))return;rememberUndo('استرجاع المسار المحذوف');D.customGoals=D.customGoals.filter(x=>x.id!==id);save();renderCustomGoals();updHomeGrid();renderUndoCard();showToast('تم حذف المسار','تراجع',()=>undoLastAction(true));}
 function normalizeCustomDaily(item){
   const t=todayKey();
   if(item.todayDate!==t){item.todayDate=t;item.todayDone=false;}
@@ -5979,30 +5979,6 @@ function saveNote(){
   renderUndoCard();
   showToast('تم حفظ النوت');
 }
-function deleteNote(id){
-  const note=(D.notes||[]).find(x=>x.id===id);
-  if(!note)return;
-  rememberUndo('استرجاع النوت المحذوفة');
-  D.notes=(D.notes||[]).filter(x=>x.id!==id);
-  save();
-  renderNotes();
-  renderUndoCard();
-}
-function renderNotes(){
-  renderNoteMentions();
-  const container=document.getElementById('notes-container');
-  const cnt=document.getElementById('notes-cnt');
-  if(cnt)cnt.textContent=`${fmtNum((D.notes||[]).length)} ملاحظة`;
-  if(!container)return;
-  const notes=D.notes||[];
-  if(!notes.length){
-    container.innerHTML=`<div class="note-empty">لا توجد نوتات بعد. ابدأ أول ملاحظة ليومك الآن.</div>`;
-    requestAnimationFrame(initInteractiveUI);
-    return;
-  }
-  container.innerHTML=notes.map(note=>`<div class="note-item reveal"><div class="note-head"><div class="note-date">🗓️ ${fmtDateTime(note.createdAt)}</div><button class="course-act-btn" onclick="deleteNote('${note.id}')">🗑️</button></div><div class="note-body">${decorateNoteText(note.text)}</div></div>`).join('');
-  requestAnimationFrame(initInteractiveUI);
-}
 function renderUndoCard(){
   const card=document.getElementById('undo-card');
   if(!card)return;
@@ -6013,21 +5989,6 @@ function renderUndoCard(){
   }
   card.innerHTML=`<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start"><div><div style="font-weight:800">آخر إجراء: ${safeText(last.label)}</div><div class="undo-meta">اتسجل الساعة ${formatUndoTime(last.time)}. التراجع عليه بيرجع النقاط والحالة زي ما كانت بعد رسالة تأكيد.</div></div><button class="btn btn-ghost" style="white-space:nowrap" onclick="undoLastAction()">↩️ تراجع</button></div>`;
 }
-function sendFeedback(){
-  const type=(document.getElementById('feedback-type')?.value||'اقتراح').trim();
-  const input=document.getElementById('feedback-input');
-  const text=input?.value.trim()||'';
-  if(!text){showToast('اكتب الفيدباك الأول');return;}
-  if(!D.feedbackInbox)D.feedbackInbox=[];
-  D.feedbackInbox.unshift({id:uid(),type,text,createdAt:Date.now()});
-  save();
-  const subject=encodeURIComponent(`فيدباك مستقبلي - ${type}`);
-  const body=encodeURIComponent(`${type}\n${text}\n\nالتاريخ: ${fmtDateTime(Date.now())}`);
-  try{window.location.href=`mailto:mohamed.abdelmksod@gmail.com?subject=${subject}&body=${body}`;}catch(_){}
-  if(input)input.value='';
-  showToast('تم حفظ الفيدباك وتجهيز رسالة الإرسال');
-}
-
 // ═══════════════════════ REWARDS ═══════════════════════
 function openRwdDrawer(rwdId){
   editingRwdId=rwdId||null;
@@ -6073,12 +6034,12 @@ function updRwdCondUI(){
 }
 function saveReward(){
   const name=document.getElementById('f-rwname').value.trim();
-  if(!name){alert('اكتب اسم المكافأة!');return}
+  if(!name){showToast('اكتب اسم المكافأة');return}
   const condType=document.getElementById('f-rwcond').value;
-  if(!condType){alert('اختر نوع الشرط!');return}
+  if(!condType){showToast('اختر نوع الشرط');return}
   const condValue=parseInt(document.getElementById('f-rwcval')?.value)||0;
   const condRef=document.getElementById('f-rwcref')?.value||'';
-  if(condType!=='manual'&&!condValue&&condType!=='manual'){alert('اكتب قيمة الشرط!');return}
+  if(condType!=='manual'&&!condValue&&condType!=='manual'){showToast('اكتب قيمة الشرط');return}
   const rwd={
     id:editingRwdId||uid(),name,icon:picked.rwd.emoji||'🏆',
     pts:parseInt(document.getElementById('f-rwpts').value)||100,
@@ -6088,7 +6049,7 @@ function saveReward(){
   else D.rewards.push(rwd);
   save();closeOverlay('rwd-overlay');checkAllRewards();renderRewards();
 }
-function deleteReward(id){if(!confirm('هتحذف المكافأة دي من قائمتك. تكمل؟'))return;rememberUndo('استرجاع المكافأة المحذوفة');D.rewards=D.rewards.filter(r=>r.id!==id);save();renderRewards();showToast('تم حذف المكافأة','تراجع',()=>undoLastAction(true));}
+async function deleteReward(id){if(!await askConfirm('هتحذف المكافأة دي من قائمتك. تكمل؟','حذف المكافأة'))return;rememberUndo('استرجاع المكافأة المحذوفة');D.rewards=D.rewards.filter(r=>r.id!==id);save();renderRewards();showToast('تم حذف المكافأة','تراجع',()=>undoLastAction(true));}
 function checkRewardCondition(r){
   if(r.condType==='manual')return false;
   if(r.condType==='pray_streak')return D.prayers.streak>=(r.condValue||0);
@@ -6245,13 +6206,13 @@ function captureDayPhotoLocation(){
 async function handleDayPhotoUpload(event){
   const file=event?.target?.files?.[0];
   if(!file)return;
-  const reader=new FileReader();
-  reader.onload=async ()=>{
+  try{
+    const imageData=await resizeImageFile(file,800,.7);
     const t=todayKey();
     const locationData=await captureDayPhotoLocation();
     const entries=D.dayPhotos.entries||[];
     const existingIndex=entries.findIndex(entry=>entry.dateKey===t);
-    const entry={id:existingIndex!==-1?entries[existingIndex].id:uid(),dateKey:t,createdAt:new Date().toISOString(),imageData:String(reader.result||''),lat:locationData.lat,lon:locationData.lon,locationText:locationData.locationText};
+    const entry={id:existingIndex!==-1?entries[existingIndex].id:uid(),dateKey:t,createdAt:new Date().toISOString(),imageData,lat:locationData.lat,lon:locationData.lon,locationText:locationData.locationText};
     if(existingIndex!==-1)entries[existingIndex]=entry;
     else{
       rememberUndo('التراجع عن إضافة صورة اليوم');
@@ -6264,12 +6225,13 @@ async function handleDayPhotoUpload(event){
     save();
     renderDayPhoto();
     updHome();
-  };
-  reader.readAsDataURL(file);
+  }catch(_){
+    showToast('تعذر تجهيز الصورة. جرّب صورة أصغر أو أعد المحاولة.');
+  }
   event.target.value='';
 }
-function deleteDayPhotoEntry(id){
-  if(!confirm('تمسح صورة اليوم دي؟'))return;
+async function deleteDayPhotoEntry(id){
+  if(!await askConfirm('تمسح صورة اليوم دي؟','حذف صورة اليوم'))return;
   rememberUndo('استرجاع صورة يومك');
   D.dayPhotos.entries=(D.dayPhotos.entries||[]).filter(entry=>entry.id!==id);
   recomputeDayPhotoStats();
@@ -6494,9 +6456,15 @@ function getTopQuickJumpPages(){
 }
 function renderQuickJump(){
   const top=getTopQuickJumpPages();
-  top.forEach((item,idx)=>{
-    const btn=document.getElementById(`quick-jump-${idx+1}`);
+  const slots=['quick-jump-prayer','quick-jump-courses','quick-jump-gym'];
+  slots.forEach((id,idx)=>{
+    const btn=document.getElementById(id);
     if(!btn)return;
+    const item=top[idx];
+    if(!item){
+      btn.style.display='none';
+      return;
+    }
     btn.style.display='inline-flex';
     btn.textContent=item.label;
     btn.setAttribute('onclick',`goTo('${item.page}')`);
@@ -6616,7 +6584,7 @@ function toggleNotif(){
         await fireSmartNotification(`🔥 جاهزين ${directName()}`,'تم تفعيل التنبيهات الذكية للصلاة والاستريك ✨','notif-enabled');
         const next=getNextPrayerReminderPreview();
         showToast(next?`✅ هتتنبه قبل ${next.name} الساعة ${next.time} بـ 10 دقايق`:'✅ تم تفعيل تنبيهات الصلاة');
-      }else alert('السماح بالإشعارات من إعدادات المتصفح');
+      }else showToast('فعّل السماح بالإشعارات من إعدادات المتصفح');
     });
   }
   else{
@@ -6630,12 +6598,12 @@ function toggleNotif(){
 
 // ═══════════════════════ PWA ═══════════════════════
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;document.getElementById('install-banner').classList.add('show');});
-function promptInstall(){if(deferredInstallPrompt){deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.then(()=>{deferredInstallPrompt=null;document.getElementById('install-banner').classList.remove('show');});}else alert('لتثبيت التطبيق:\n📱 Android Chrome: القائمة ← إضافة إلى الشاشة الرئيسية\n🍎 iPhone Safari: مشاركة ← إضافة إلى الشاشة الرئيسية');}
+function promptInstall(){if(deferredInstallPrompt){deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.then(()=>{deferredInstallPrompt=null;document.getElementById('install-banner').classList.remove('show');});}else showCenterPopup({icon:'📲',title:'تثبيت التطبيق',copy:'Android Chrome: القائمة ثم إضافة إلى الشاشة الرئيسية. iPhone Safari: مشاركة ثم إضافة إلى الشاشة الرئيسية.',actions:[{label:'تمام',kind:'btn-gold',onClick:()=>{}}]});}
 window.addEventListener('appinstalled',()=>{document.getElementById('install-banner').classList.remove('show');});
 
 // ═══════════════════════ EXPORT / RESET ═══════════════════════
 function exportData(){const b=new Blob([JSON.stringify(D,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='mostaqbaly_backup.json';a.click();}
-function resetAll(){if(confirm('أنت متأكد؟ كل بياناتك هتتمسح!\nلا يمكن التراجع!')){const k=getStorageKey();localStorage.removeItem(k);['mq_v3','mq_v2','mq_v1'].forEach(k=>localStorage.removeItem(k));location.reload();}}
+async function resetAll(){if(await askConfirm('كل بياناتك هتتمسح ولا يمكن التراجع.','إعادة ضبط كاملة')){const k=getStorageKey();localStorage.removeItem(k);['mq_v3','mq_v2','mq_v1'].forEach(k=>localStorage.removeItem(k));location.reload();}}
 
 // ═══════════════════════ FIREBASE CONFIG ═══════════════════════
 // ⚠️  قم بتغيير هذه القيم بقيم مشروعك على Firebase
@@ -6715,6 +6683,45 @@ function clearSession(){localStorage.removeItem('mq_session');}
 function isLocalFileMode(){return location.protocol==='file:'}
 function getLocalUsers(){try{return JSON.parse(localStorage.getItem('mq_local_users')||'[]')}catch(_){return []}}
 function saveLocalUsers(users){localStorage.setItem('mq_local_users',JSON.stringify(users||[]))}
+async function hashLocalPassword(pass){
+  const raw=String(pass||'');
+  if(window.crypto?.subtle){
+    const bytes=new TextEncoder().encode(raw);
+    const hashBuffer=await crypto.subtle.digest('SHA-256',bytes);
+    return Array.from(new Uint8Array(hashBuffer)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  try{return btoa(unescape(encodeURIComponent(raw)));}catch(_){return raw;}
+}
+async function verifyLocalPassword(user,pass){
+  if(!user)return false;
+  if(user.passHash)return user.passHash===await hashLocalPassword(pass);
+  return user.pass===pass;
+}
+async function resizeImageFile(file,maxSize=800,quality=.7){
+  if(!file||!String(file.type||'').startsWith('image/'))return '';
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onerror=()=>reject(new Error('IMAGE_READ_FAILED'));
+    reader.onload=()=>{
+      const img=new Image();
+      img.onerror=()=>reject(new Error('IMAGE_LOAD_FAILED'));
+      img.onload=()=>{
+        const scale=Math.min(1,maxSize/Math.max(img.width||1,img.height||1));
+        const width=Math.max(1,Math.round(img.width*scale));
+        const height=Math.max(1,Math.round(img.height*scale));
+        const canvas=document.createElement('canvas');
+        canvas.width=width;
+        canvas.height=height;
+        const ctx=canvas.getContext('2d');
+        if(!ctx){resolve(String(reader.result||''));return;}
+        ctx.drawImage(img,0,0,width,height);
+        resolve(canvas.toDataURL('image/jpeg',quality));
+      };
+      img.src=String(reader.result||'');
+    };
+    reader.readAsDataURL(file);
+  });
+}
 function showFirebaseDebug(payload){
   const box=document.getElementById('firebase-debug');
   if(!box)return;
@@ -6730,13 +6737,13 @@ function showFirebaseDebug(payload){
   box.textContent=lines.join('\n');
   box.style.display='block';
 }
-function localAuthSubmit(email,pass,name){
+async function localAuthSubmit(email,pass,name){
   const wasGuest=!!getSession()?.isGuest;
   const users=getLocalUsers();
   const idx=users.findIndex(u=>String(u.email||'').toLowerCase()===email);
   if(authMode==='signup'){
     if(idx!==-1)throw new Error('LOCAL_EMAIL_EXISTS');
-    const user={id:'local_'+Date.now(),email,pass,name:name||email.split('@')[0]||'مستخدم'};
+    const user={id:'local_'+Date.now(),email,passHash:await hashLocalPassword(pass),name:name||email.split('@')[0]||'مستخدم'};
     users.push(user);
     saveLocalUsers(users);
     setSession({uid:user.id,email:user.email,name:user.name,isGuest:false,isLocal:true});
@@ -6744,7 +6751,12 @@ function localAuthSubmit(email,pass,name){
     return user;
   }
   if(idx===-1)throw new Error('LOCAL_USER_NOT_FOUND');
-  if(users[idx].pass!==pass)throw new Error('LOCAL_WRONG_PASSWORD');
+  if(!await verifyLocalPassword(users[idx],pass))throw new Error('LOCAL_WRONG_PASSWORD');
+  if(!users[idx].passHash){
+    delete users[idx].pass;
+    users[idx].passHash=await hashLocalPassword(pass);
+    saveLocalUsers(users);
+  }
   setSession({uid:users[idx].id,email:users[idx].email,name:users[idx].name,isGuest:false,isLocal:true});
   if(wasGuest)pendingAuthCelebration=true;
   return users[idx];
@@ -6915,6 +6927,19 @@ function hideCenterPopup(){
   if(overlay)overlay.classList.remove('show');
   window.__centerPopupActions=[];
 }
+function askConfirm(copy,title='تأكيد الإجراء'){
+  return new Promise(resolve=>{
+    showCenterPopup({
+      icon:'⚠️',
+      title,
+      copy,
+      actions:[
+        {label:'إلغاء',kind:'btn-ghost',onClick:()=>resolve(false)},
+        {label:'تأكيد',kind:'btn-red',onClick:()=>resolve(true)}
+      ]
+    });
+  });
+}
 function showSuccessThenPinPrompt(){
   showCenterPopup({
     icon:'💚',
@@ -7076,15 +7101,23 @@ function triggerNoteAudio(){const i=document.getElementById('note-audio-input');
 function handleNoteFile(event,type){
   const file=event.target.files?.[0];
   if(!file)return;
-  const reader=new FileReader();
-  reader.onload=()=>{
-    const area=document.getElementById('note-editor-input');
-    if(!area)return;
-    area.focus();
-    if(type==='image')insertHtmlAtCaret(`<div><img src="${reader.result}" alt="note-image"></div>`);
-    else insertHtmlAtCaret(`<div><audio controls src="${reader.result}"></audio></div>`);
-  };
-  reader.readAsDataURL(file);
+  if(type==='image'){
+    resizeImageFile(file,800,.7).then(dataUrl=>{
+      const area=document.getElementById('note-editor-input');
+      if(!area)return;
+      area.focus();
+      insertHtmlAtCaret(`<div><img src="${dataUrl}" alt="note-image"></div>`);
+    }).catch(()=>showToast('تعذر تجهيز الصورة للنوت. حاول بصورة أصغر.'));
+  }else{
+    const reader=new FileReader();
+    reader.onload=()=>{
+      const area=document.getElementById('note-editor-input');
+      if(!area)return;
+      area.focus();
+      insertHtmlAtCaret(`<div><audio controls src="${reader.result}"></audio></div>`);
+    };
+    reader.readAsDataURL(file);
+  }
   event.target.value='';
 }
 function clearCurrentNoteBody(){
@@ -7118,11 +7151,11 @@ function saveNote(){
   renderUndoCard();
   showToast('تم حفظ النوت');
 }
-function deleteNote(id){
+async function deleteNote(id){
   const notes=getNotesData();
   const note=notes.find(n=>n.id===id);
   if(!note)return;
-  if(!confirm('تمسح النوت دي؟'))return;
+  if(!await askConfirm('تمسح النوت دي؟','حذف النوت'))return;
   rememberUndo('استرجاع النوت المحذوفة');
   D.notes=notes.filter(n=>n.id!==id);
   if(activeNoteId===id)activeNoteId=null;
@@ -7149,8 +7182,12 @@ function renderNotes(){
   requestAnimationFrame(initInteractiveUI);
 }
 
-function togglePassVis(){
-  return;
+function togglePassVis(inputId='signup-pass',btn=null){
+  const input=document.getElementById(inputId)||document.querySelector('#auth-screen .auth-view.active input[type="password"], #auth-screen .auth-view.active input[type="text"][autocomplete*="password"]');
+  if(!input)return;
+  const showing=input.type==='text';
+  input.type=showing?'password':'text';
+  if(btn)btn.textContent=showing?'إظهار كلمة السر':'إخفاء كلمة السر';
 }
 
 function sendEmailSignupCode(){
@@ -7162,12 +7199,14 @@ function sendEmailSignupCode(){
   if(!name){if(err)err.textContent='اكتب اسمك';return;}
   if(!email||!email.includes('@')){if(err)err.textContent='أدخل بريد إلكتروني صحيح';return;}
   if(!pass||pass.length<6){if(err)err.textContent='كلمة السر لازم تكون 6 أحرف على الأقل';return;}
-  pendingEmailVerification={name,email,pass,code:String(Math.floor(100000+Math.random()*900000)),createdAt:Date.now()};
+  pendingEmailVerification={name,email,pass,code:String(Math.floor(100000+Math.random()*900000)),createdAt:Date.now(),mode:(!firebaseReady||isLocalFileMode())?'offline-demo':'local-in-app'};
   const copy=document.getElementById('email-verify-copy');
-  if(copy)copy.textContent=`أدخل كود التحقق المرسل إلى ${email}`;
+  if(copy)copy.textContent=pendingEmailVerification.mode==='offline-demo'
+    ?`أدخل كود التحقق المحلي الظاهر لك داخل التطبيق لإكمال الاختبار على ${email}`
+    :`هذا تأكيد داخل التطبيق وليس رسالة بريد حقيقية. أدخل الكود الظاهر لك الآن لإكمال إنشاء الحساب على ${email}`;
   document.getElementById('signup-email-code').value='';
   authShowView('email-verify');
-  showToast(`كود التحقق: ${pendingEmailVerification.code}`);
+  showToast(`كود التحقق المحلي: ${pendingEmailVerification.code}`);
 }
 async function verifyEmailSignupCode(){
   const err=document.getElementById('email-verify-err');
@@ -7179,7 +7218,7 @@ async function verifyEmailSignupCode(){
   try{
     const {name,email,pass}=pendingEmailVerification;
     if(!firebaseReady||isLocalFileMode()){
-      localAuthSubmit(email,pass,name);
+      await localAuthSubmit(email,pass,name);
       pendingEmailVerification=null;
       afterAuth();
       return;
@@ -7203,7 +7242,7 @@ async function authSubmit(){
   setAuthLoading(true);
   try{
     if(!firebaseReady||isLocalFileMode()){
-      localAuthSubmit(email,pass,'');
+      await localAuthSubmit(email,pass,'');
       afterAuth();
       return;
     }
@@ -7219,7 +7258,7 @@ async function authSubmit(){
     });
     if(e?.code==='auth/internal-error'){
       try{
-        localAuthSubmit(email,pass,'');
+        await localAuthSubmit(email,pass,'');
         showToast('تم استخدام الدخول المحلي مؤقتًا لأن Firebase رجّع internal-error');
         afterAuth();
         return;
@@ -7326,13 +7365,6 @@ async function verifyOTP(){
   finally{setAuthLoading(false);}
 }
 
-// ═══════════════════════ GUEST ═══════════════════════
-function authGuest(){
-  const uid='guest_'+Date.now();
-  setSession({uid,email:'',name:'زائر',isGuest:true});
-  afterAuth();
-}
-
 // ═══════════════════════ AFTER AUTH ═══════════════════════
 function afterFirebaseAuth(user){
   if(getSession()?.isGuest)pendingAuthCelebration=true;
@@ -7369,7 +7401,7 @@ async function afterAuth(){
 }
 
 async function authLogout(){
-  if(!confirm('تقدر تدخل بنفس حسابك تاني لاحقًا.\nتخرج؟'))return;
+  if(!await askConfirm('تقدر تدخل بنفس حسابك تاني لاحقًا. تخرج؟','تسجيل الخروج'))return;
   if(cloudSaveTimer){clearTimeout(cloudSaveTimer);cloudSaveTimer=null;}
   await syncCloudData(true);
   if(firebaseReady&&auth){try{await auth.signOut();}catch(_){}}
