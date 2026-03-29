@@ -3489,7 +3489,7 @@ const DEF={
   location:{lat:null,lon:null,city:''},
   notif:false,
   notificationState:{},
-  meta:{updatedAt:0,lastCloudSync:0,appOpenCount:0,pinPromptDismissed:false,lastPage:'home',lockAfterMs:60000,lastUnlockAt:0,openHistory:[],pageVisits:{},streakCardCelebratedDate:'',authPromptDismissedAt:0,authPromptShown:false}
+  meta:{updatedAt:0,lastCloudSync:0,appOpenCount:0,pinPromptDismissed:false,lastPage:'home',lockAfterMs:60000,lastUnlockAt:0,openHistory:[],dayLogHistory:[],pageVisits:{},streakCardCelebratedDate:'',authPromptDismissedAt:0,authPromptShown:false}
 };
 
 const PRAY_NAMES=['الفجر','الظهر','العصر','المغرب','العشاء'];
@@ -3764,6 +3764,8 @@ function normalizeDataShape(data){
   if(!Array.isArray(normalized.planner.items))normalized.planner.items=[];
   if(typeof normalized.planner.mergeUniLife!=='boolean')normalized.planner.mergeUniLife=true;
   if(!normalized.notificationState)normalized.notificationState={};
+  if(!normalized.meta)normalized.meta=deepClone(DEF.meta);
+  if(!Array.isArray(normalized.meta.dayLogHistory))normalized.meta.dayLogHistory=[];
   normalized.meta={...deepClone(DEF.meta),...(normalized.meta||{})};
   return normalized;
 }
@@ -4283,6 +4285,7 @@ function shouldShowGymIntro(){
 }
 function toggleGymCalendar(forceOpen=false){
   const card=document.getElementById('gym-open-card');
+  const panel=document.getElementById('gym-calendar-panel');
   if(forceOpen&&card){
     card.classList.add('opening');
     setTimeout(()=>card.classList.remove('opening'),420);
@@ -4290,7 +4293,16 @@ function toggleGymCalendar(forceOpen=false){
   D.gym.introDismissed=true;
   D.gym.calendarOpen=forceOpen?true:!D.gym.calendarOpen;
   save();
+  if(forceOpen){
+    if(card)card.style.display='none';
+    if(panel)panel.style.display='block';
+  }
   renderGym();
+  if(forceOpen&&panel){
+    requestAnimationFrame(()=>{
+      panel.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  }
 }
 
 function goTo(pg,opts={}){
@@ -4481,6 +4493,7 @@ function setCustomStashColor(target,color){
 }
 function switchStashTab(tab){
   if(tab==='settings')tab='cards';
+  if(!['cards','goals'].includes(tab))tab='cards';
   D.savings.activeTab=tab;
   save();
   renderStash();
@@ -4774,7 +4787,7 @@ function stashRangeDays(){
 }
 function renderStashCards(){
   const wrap=document.getElementById('stash-card-stack');if(!wrap)return;
-  const cards=[...(D.savings.cards||[])];
+  const cards=Array.isArray(D.savings?.cards)?[...D.savings.cards]:[];
   if(!cards.length){
     wrap.innerHTML=`<button class="stash-add-card reveal" onclick="openStashCardDrawer()"><div><div style="font-size:38px">💳</div><strong>ابدأ أول تحويشة</strong><div style="font-size:12px;margin-top:6px">أضف بطاقة أو فلوس كاش، وابدأ تتابع الرصيد والحركة وتنظم فلوسك بسهولة.</div></div></button>`;
     const cnt=document.getElementById('stash-cards-count');if(cnt)cnt.textContent='0 بطاقة';
@@ -4999,8 +5012,14 @@ function renderStashSettings(){
   ['hideBalances','showWalletFirst','showQuote'].forEach(key=>{const el=document.getElementById(`stash-${key.replace(/[A-Z]/g,m=>'-'+m.toLowerCase())}`);if(el)el.classList.toggle('on',!!D.savings.settings[key]);});
 }
 function renderStash(){
+  if(!D.savings)D.savings=deepClone(DEF.savings);
+  if(!Array.isArray(D.savings.cards))D.savings.cards=[];
+  if(!Array.isArray(D.savings.transactions))D.savings.transactions=[];
+  if(!Array.isArray(D.savings.goals))D.savings.goals=[];
+  if(!D.savings.settings)D.savings.settings=deepClone(DEF.savings.settings);
   const quote=document.getElementById('stash-daily-quote');
   if(quote)quote.textContent=D.savings.settings.showQuote!==false?getStashQuote():'المال أداة، والسكينة هي الأصل.';
+  if(!['cards','goals'].includes(D.savings.activeTab||''))D.savings.activeTab='cards';
   if((D.savings.activeTab||'cards')==='settings')D.savings.activeTab='cards';
   document.querySelectorAll('.stash-tab').forEach(el=>el.classList.remove('active'));
   document.querySelectorAll('.stash-panel').forEach(el=>el.classList.remove('active'));
@@ -5019,7 +5038,7 @@ function renderStash(){
 function renderStashGoals(){
   const list=document.getElementById('stash-goals');if(!list)return;
   const addBtn=document.getElementById('stash-goal-add-btn');
-  const goals=D.savings.goals||[];
+  const goals=Array.isArray(D.savings?.goals)?D.savings.goals:[];
   const locked=isStashLocked();
   if(addBtn)addBtn.style.display=goals.length?'inline-flex':'none';
   if(!goals.length){list.innerHTML=`<div class="stash-empty stash-goal-empty-actions"><div style="font-size:38px">🎯</div><div>لسه ما فيش أهداف مالية. ابدأ أول هدف تحويش بشكل واضح وقدامك نسبة الوصول من أول يوم.</div><button class="btn btn-gold" style="padding:12px 18px;border-radius:16px;margin-top:14px" onclick="openStashGoalDrawer()">🎯 إضافة أول هدف</button></div>`;return;}
@@ -5168,14 +5187,41 @@ function toggleMultiDayChip(selectorId,day,el){
 // ═══════════════════════ PRAYER TIMES ═══════════════════════
 function getPrayerTimes(force){
   const t=todayKey();
-  if(!force&&D.prayerTimes&&D.prayerTimesDate===t&&D.location.lat){renderPrayers();return;}
+  if(!force&&D.prayerTimes&&D.prayerTimesDate===t&&D.location.lat){
+    renderPrayers();
+    updPrayerCountdown();
+    return;
+  }
+  const timeEl=document.getElementById('npb-time');
+  const countdownEl=document.getElementById('npb-countdown');
+  const locationEl=document.getElementById('location-lbl');
+  if(timeEl&&!D.prayerTimes)timeEl.textContent='جاري تحديد أقرب مدينة...';
+  if(countdownEl&&!D.prayerTimes)countdownEl.textContent='--:--';
+  if(locationEl&&!D.location?.city)locationEl.textContent='📍 جاري تحديد موقع تقريبي...';
   if(!navigator.geolocation){fetchPrayerByIP();return;}
+  let settled=false;
+  const fallbackTimer=setTimeout(()=>{
+    if(settled)return;
+    settled=true;
+    fetchPrayerByIP();
+  },2500);
   navigator.geolocation.getCurrentPosition(
-    pos=>{D.location.lat=pos.coords.latitude;D.location.lon=pos.coords.longitude;save();fetchPrayerTimesFromAPI(D.location.lat,D.location.lon);},
-    ()=>{D.location.lat?fetchPrayerTimesFromAPI(D.location.lat,D.location.lon):fetchPrayerByIP();},{timeout:8000}
+    pos=>{
+      if(settled)return;
+      settled=true;
+      clearTimeout(fallbackTimer);
+      D.location.lat=pos.coords.latitude;D.location.lon=pos.coords.longitude;save();fetchPrayerTimesFromAPI(D.location.lat,D.location.lon);
+    },
+    ()=>{
+      if(settled)return;
+      settled=true;
+      clearTimeout(fallbackTimer);
+      D.location.lat?fetchPrayerTimesFromAPI(D.location.lat,D.location.lon):fetchPrayerByIP();
+    },
+    {timeout:5000,maximumAge:600000}
   );
 }
-function fetchPrayerByIP(){fetch('https://ip-api.com/json/?fields=lat,lon,city').then(r=>r.json()).then(d=>{D.location.lat=d.lat;D.location.lon=d.lon;D.location.city=d.city||'';save();fetchPrayerTimesFromAPI(d.lat,d.lon);}).catch(()=>fetchPrayerTimesFromAPI(30.04,31.24));}
+function fetchPrayerByIP(){fetch('https://ip-api.com/json/?fields=lat,lon,city').then(r=>r.json()).then(d=>{D.location.lat=d.lat;D.location.lon=d.lon;D.location.city=d.city||'';save();fetchPrayerTimesFromAPI(d.lat,d.lon);}).catch(()=>{D.location.city='القاهرة';save();fetchPrayerTimesFromAPI(30.04,31.24);});}
 function fetchPrayerTimesFromAPI(lat,lon){
   const now=new Date();
   fetch(`https://api.aladhan.com/v1/timings/${Math.floor(now.getTime()/1000)}?latitude=${lat}&longitude=${lon}&method=5`)
@@ -5184,12 +5230,32 @@ function fetchPrayerTimesFromAPI(lat,lon){
         D.prayerTimes=data.data.timings;D.prayerTimesDate=todayKey();
         const city=D.location.city||`${lat.toFixed(1)},${lon.toFixed(1)}`;
         const lbl=document.getElementById('location-lbl');if(lbl)lbl.textContent='📍 '+city;
-        save();renderPrayers();schedulePrayerReminders(D.prayerTimes);
+        save();renderPrayers();updPrayerCountdown();updHome();schedulePrayerReminders(D.prayerTimes);
       }
-    }).catch(()=>{});
+    }).catch(()=>{
+      const nameEl=document.getElementById('npb-name');
+      const timeEl=document.getElementById('npb-time');
+      const countdownEl=document.getElementById('npb-countdown');
+      if(nameEl)nameEl.textContent='تعذر التحديد الآن';
+      if(timeEl)timeEl.textContent='جرّب تحديث الموقع';
+      if(countdownEl)countdownEl.textContent='--:--';
+    });
 }
-function parseTime12(t){const[h,m]=t.split(':').map(Number);return h*60+m;}
-function formatTime(t){const[h,m]=t.split(':').map(Number);const ap=h<12?'ص':'م';return`${h%12||12}:${p2(m)} ${ap}`}
+function parseTime12(t){
+  const raw=String(t||'').match(/(\d{1,2}):(\d{2})/);
+  if(!raw)return 0;
+  const h=parseInt(raw[1],10)||0;
+  const m=parseInt(raw[2],10)||0;
+  return h*60+m;
+}
+function formatTime(t){
+  const raw=String(t||'').match(/(\d{1,2}):(\d{2})/);
+  if(!raw)return '--:--';
+  const h=parseInt(raw[1],10)||0;
+  const m=parseInt(raw[2],10)||0;
+  const ap=h<12?'ص':'م';
+  return`${h%12||12}:${p2(m)} ${ap}`;
+}
 function getNextPrayer(){
   if(!D.prayerTimes)return null;
   const now=new Date(),cur=now.getHours()*60+now.getMinutes();
@@ -5726,8 +5792,7 @@ function renderGym(){
   const openCard=document.getElementById('gym-open-card');
   const calendarPanel=document.getElementById('gym-calendar-panel');
   const showIntro=shouldShowGymIntro();
-  const isOpen=showIntro?false:true;
-  D.gym.calendarOpen=isOpen;
+  const isOpen=!showIntro;
   if(openCard)openCard.style.display=showIntro?'grid':'none';
   if(calendarPanel)calendarPanel.style.display=isOpen?'block':'none';
   document.getElementById('gym-mlbl').textContent=`${MONTHS_AR[m]} ${y}`;
@@ -6436,9 +6501,24 @@ function getOpenStreakMessage(streak){
   if(streak>=2)return 'كل يوم حضور بيزوّد إحساسك بالتحكم والتقدّم.';
   return 'وجودك اليومي هنا معناه إنك لسه ماشي في طريقك.';
 }
+function computeDayLogStreak(){
+  const history=new Set(Array.isArray(D?.meta?.dayLogHistory)?D.meta.dayLogHistory:[]);
+  let streak=0;
+  const cursor=new Date();
+  while(true){
+    const key=`${cursor.getFullYear()}-${p2(cursor.getMonth()+1)}-${p2(cursor.getDate())}`;
+    if(history.has(key)){streak++;cursor.setDate(cursor.getDate()-1);continue;}
+    break;
+  }
+  return streak;
+}
 function celebrateOpenStreak(){
   if(!D.meta)D.meta=deepClone(DEF.meta);
-  D.meta.streakCardCelebratedDate=todayKey();
+  if(!Array.isArray(D.meta.dayLogHistory))D.meta.dayLogHistory=[];
+  const today=todayKey();
+  if(!D.meta.dayLogHistory.includes(today))D.meta.dayLogHistory.push(today);
+  D.meta.dayLogHistory=D.meta.dayLogHistory.slice(-365);
+  D.meta.streakCardCelebratedDate=today;
   save();
   if(navigator.vibrate)try{navigator.vibrate(40);}catch(_){}
   updHome();
@@ -6512,7 +6592,7 @@ function renderPinNudge(){
 
 function updHome(){
   const ptsEl=document.getElementById('h-pts');if(ptsEl)ptsEl.textContent=fmtNum(D.points);
-  const generalStreak=computeOpenAppStreak();
+  const generalStreak=computeDayLogStreak();
   const heroDisplayStreak=Math.max(1,generalStreak);
   const stEl=document.getElementById('h-streak');if(stEl)stEl.textContent=fmtNum(generalStreak);
   const stEl2=document.getElementById('h-streak2');if(stEl2)stEl2.textContent=fmtNum(generalStreak);
